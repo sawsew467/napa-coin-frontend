@@ -105,18 +105,26 @@ a {
     color-scheme: dark;
   }
 } */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
 * {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
 }
 .overlay {
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.62);
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.62);
 }
 .modal-box {
-  background-color: #fff;
-  border-radius: 10px;
-  padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.btn {
+    padding: 0 8px;
+    border-radius: 10px;
+    font-size: 16px;
 }
