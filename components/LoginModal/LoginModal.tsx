@@ -1,12 +1,7 @@
 import React from "react";
-import styles from "./style.module.scss";
 
 function LoginModal() {
-  return (
-    <>
-      <div className={styles.overlay}>fwef</div>
-    </>
-  );
+  return <div className="overlay">LoginModal</div>;
 }
 
 export default LoginModal;
