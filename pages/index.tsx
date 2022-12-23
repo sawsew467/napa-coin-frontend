@@ -5,14 +5,14 @@ import styles from '../styles/Home.module.css';
 import LoginModal from '../components/LoginModal/LoginModal';
 import Header from '../components/Header/Header';
 import UserDropdown from '../components/UserDropdown';
+import HomePage from './home';
 
 const inter = Inter({ subsets: ['latin'] });
 
 export default function Home() {
     return (
         <>
-            <Header></Header>
-            <LoginModal></LoginModal>
+            <HomePage></HomePage>
         </>
     );
 }
