@@ -113,14 +113,84 @@ a {
     font-family: 'Poppins', sans-serif;
 }
 .overlay {
+    position: fixed;
+    z-index: 0;
+    top: 0;
+    left: 0;
     width: 100vw;
     height: 100vh;
     background-color: rgba(0, 0, 0, 0.62);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .modal-box {
+    width: 456px;
     background-color: #fff;
     border-radius: 10px;
     padding: 20px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+.modal-box .close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    cursor: pointer;
+}
+.modal-box .title {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+.modal-box .input {
+    width: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 20px;
+}
+.modal-box .input input {
+    width: 100%;
+    padding: 16px 40px;
+    border-radius: 10px;
+    background-color: #d9d9d9;
+    border: none;
+    font-size: 16px;
+}
+.modal-box .input .icon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin-top: 16px;
+    margin-left: 8px;
+}
+.modal-box .button-primary {
+    width: 100%;
+    text-align: center;
+    border-radius: 10px;
+    border: none;
+    background-color: #408cf6;
+    font-size: 16px;
+    color: white;
+    padding: 16px 0;
+    cursor: pointer;
+}
+.modal-box .button-secondary {
+    width: 100%;
+    text-align: center;
+    border-radius: 10px;
+    border: 1px solid #408cf6;
+    background-color: #fff;
+    font-size: 16px;
+    color: #408cf6;
+    padding: 15px 0;
+    cursor: pointer;
+}
+.modal-box span {
+    font-size: 16px;
+    text-align: center;
+    margin: 12px auto;
 }
 
 .btn {
