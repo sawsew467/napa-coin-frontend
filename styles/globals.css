@@ -112,6 +112,14 @@ a {
     margin: 0;
     font-family: 'Poppins', sans-serif;
 }
+.wrapper {
+    background-color: #e8e9f0;
+}
+.container {
+    max-width: 1366px;
+    padding: 0 80px;
+    margin: 0 auto;
+}
 .overlay {
     position: fixed;
     z-index: 0;
@@ -124,33 +132,37 @@ a {
     justify-content: center;
     align-items: center;
 }
-.modal-box {
-    width: 456px;
+.box {
     background-color: #fff;
     border-radius: 10px;
     padding: 20px;
+}
+.modal {
+    width: 456px;
+
     position: relative;
     display: flex;
     flex-direction: column;
 }
-.modal-box .close {
+.modal .modal__close {
     position: absolute;
     top: 20px;
     right: 20px;
     cursor: pointer;
 }
-.modal-box .title {
+.modal .modal__title {
     font-size: 24px;
     margin-bottom: 20px;
+    font-weight: 500;
 }
-.modal-box .input {
+.modal .input {
     width: 100%;
     position: relative;
     display: flex;
     flex-direction: row;
     margin-bottom: 20px;
 }
-.modal-box .input input {
+.modal .input input {
     width: 100%;
     padding: 16px 40px;
     border-radius: 10px;
@@ -158,14 +170,14 @@ a {
     border: none;
     font-size: 16px;
 }
-.modal-box .input .icon {
+.modal .input .icon {
     position: absolute;
     top: 0;
     left: 0;
     margin-top: 16px;
     margin-left: 8px;
 }
-.modal-box .button-primary {
+.modal .modal__button--primary {
     width: 100%;
     text-align: center;
     border-radius: 10px;
@@ -176,7 +188,7 @@ a {
     padding: 16px 0;
     cursor: pointer;
 }
-.modal-box .button-secondary {
+.modal .modal__button---secondary {
     width: 100%;
     text-align: center;
     border-radius: 10px;
@@ -187,10 +199,11 @@ a {
     padding: 15px 0;
     cursor: pointer;
 }
-.modal-box span {
+.modal span {
     font-size: 16px;
     text-align: center;
     margin: 12px auto;
+    font-weight: 500;
 }
 
 .btn {

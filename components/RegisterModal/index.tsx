@@ -5,13 +5,27 @@ import password from '../../assets/icons/door-lock-line.svg';
 import user from '../../assets/icons/user-3-line.svg';
 import close from '../../assets/icons/CloseOutlined.svg';
 
-function LoginModal() {
+interface IProps {
+    setIsShowRegisterModal: React.Dispatch<React.SetStateAction<boolean>>;
+    setIsShowLoginModal: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+function LoginModal({ setIsShowRegisterModal, setIsShowLoginModal }: IProps) {
+    const signInClick = () => {
+        setIsShowRegisterModal(false);
+        setIsShowLoginModal(true);
+    };
     return (
         <div className="overlay">
-            <div className="modal-box">
-                <Image className="close" src={close} alt=""></Image>
+            <div className="modal box">
+                <Image
+                    className="modal__close"
+                    src={close}
+                    alt=""
+                    onClick={() => setIsShowRegisterModal(false)}
+                ></Image>
 
-                <div className="title">Sign up</div>
+                <div className="modal__title">Sign up</div>
                 <div className="input">
                     <input placeholder="Full name"></input>
                     <Image className="icon" src={user} alt=""></Image>
@@ -21,12 +35,14 @@ function LoginModal() {
                     <Image className="icon" src={email} alt=""></Image>
                 </div>
                 <div className="input">
-                    <input placeholder="Password"></input>
+                    <input placeholder="Password" type="password"></input>
                     <Image className="icon" src={password} alt=""></Image>
                 </div>
-                <button className="button-primary">Sign up</button>
+                <button className="modal__button--primary">Sign up</button>
                 <span>You have account?</span>
-                <button className="button-secondary">Sign in</button>
+                <button className="modal__button---secondary" onClick={signInClick}>
+                    Sign in
+                </button>
             </div>
         </div>
     );

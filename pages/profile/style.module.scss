@@ -1,0 +1,77 @@
+.profile {
+    width: 1000px;
+    margin: 0 auto;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding-top: 72px;
+    position: relative;
+    &__image {
+        width: 148px;
+        height: 148px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-bottom: -44px;
+        z-index: 1;
+        // position: absolute;
+        // top: 68px;
+    }
+    &__name {
+        margin-top: 40px;
+        font-size: 24px;
+        font-weight: 500;
+    }
+    &__email {
+        font-size: 16px;
+    }
+    &__follow {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        gap: 64px;
+        margin: 16px 0;
+        font-size: 24px;
+        & span {
+            font-weight: 500;
+        }
+    }
+    &__bio {
+        max-width: 650px;
+        font-size: 16px;
+        margin-bottom: 16px;
+    }
+    &__button {
+        &--primary {
+            font-size: 16px;
+            color: #fff;
+            background-color: #408cf6;
+            border-radius: 10px;
+            border: none;
+            width: 416px;
+            padding: 8px 0;
+            cursor: pointer;
+        }
+        &--slate {
+            font-size: 16px;
+            color: #323546;
+            background-color: #d9d9d9;
+            border-radius: 10px;
+            border: none;
+            width: 416px;
+            padding: 8px 0;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            & img {
+                width: 20px;
+                height: 20px;
+            }
+        }
+    }
+}
