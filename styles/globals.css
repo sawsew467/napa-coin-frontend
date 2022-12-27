@@ -106,7 +106,6 @@ a {
   }
 } */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
-
 * {
     box-sizing: border-box;
     padding: 0;
@@ -114,17 +113,93 @@ a {
     font-family: 'Poppins', sans-serif;
     overflow-x: hidden;
 }
-
 .overlay {
+    position: fixed;
+    z-index: 0;
+    top: 0;
+    left: 0;
     width: 100vw;
     height: 100vh;
     background-color: rgba(0, 0, 0, 0.62);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.modal-box {
+.box {
     background-color: #fff;
     border-radius: 10px;
     padding: 20px;
+}
+.modal {
+    width: 456px;
+
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+.modal .modal__close {
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    cursor: pointer;
+}
+.modal .modal__title {
+    font-size: 24px;
+    margin-bottom: 20px;
+    font-weight: 500;
+}
+.modal .input {
+    width: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 20px;
+}
+.modal .input input {
+    width: 100%;
+    padding: 16px 40px;
+    border-radius: 10px;
+    background-color: #d9d9d9;
+    border: none;
+    font-size: 16px;
+}
+.modal .input .icon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin-top: 16px;
+    margin-left: 8px;
+}
+.modal .modal__button--primary {
+    width: 100%;
+    text-align: center;
+    border-radius: 10px;
+    border: none;
+    background-color: #408cf6;
+    font-size: 16px;
+    color: white;
+    padding: 16px 0;
+    cursor: pointer;
+}
+.modal .modal__button---secondary {
+    width: 100%;
+    text-align: center;
+    border-radius: 10px;
+    border: 1px solid #408cf6;
+    background-color: #fff;
+    font-size: 16px;
+    color: #408cf6;
+    padding: 15px 0;
+    cursor: pointer;
+}
+.modal span {
+    font-size: 16px;
+    text-align: center;
+    margin: 12px auto;
+    font-weight: 500;
 }
 
 .btn {

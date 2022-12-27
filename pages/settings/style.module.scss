@@ -1,0 +1,76 @@
+.settings {
+    width: 520px;
+    margin: 0 auto;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding-top: 72px;
+    position: relative;
+    &__title {
+        text-align: start;
+        font-size: 24px;
+        margin-bottom: 20px;
+        font-weight: 500;
+    }
+    &__avatar {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        align-items: flex-start;
+        & p {
+            font-size: 16px;
+            font-weight: 500;
+        }
+        & img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+    }
+    &__input {
+        margin-top: 12px;
+        display: flex;
+        flex-direction: column;
+        align-self: start;
+        width: 480px;
+        & span {
+            text-align: start;
+            margin-bottom: 8px;
+        }
+        & div {
+            text-align: start;
+            background-color: #ccc;
+            border-radius: 10px;
+            padding: 16px 8px 16px 8px;
+            display: flex;
+            flex-direction: row;
+            & img {
+                margin-right: 8px;
+            }
+        }
+    }
+    &__button {
+        margin-top: 12px;
+        display: flex;
+        justify-content: flex-start;
+        gap: 12px;
+    }
+    label,
+    button {
+        text-align: center;
+        border-radius: 10px;
+        border: none;
+        background-color: #408cf6;
+        font-size: 14px;
+        color: white;
+        padding: 4px 20px;
+        cursor: pointer;
+    }
+    &__file {
+        display: none;
+    }
+}
