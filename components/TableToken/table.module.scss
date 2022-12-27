@@ -1,0 +1,37 @@
+#table {
+    max-width: 1377px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 16px;
+
+    .table__tag-row {
+        margin-bottom: 25px;
+        position: relative;
+        display: flex;
+        align-items: flex-end;
+
+        .tags {
+            margin-left: 150px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .btn--watchlist {
+            padding: 6px 8px;
+            border-radius: 10px;
+            border: none;
+
+            &::after {
+                content: '';
+                position: absolute;
+                background: #000;
+                height: 25px;
+                width: 2px;
+                left: 180px;
+                top: 5px;
+            }
+        }
+    }
+}

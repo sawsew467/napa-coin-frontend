@@ -106,20 +106,12 @@ a {
   }
 } */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
-/* @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap'); */
 * {
     box-sizing: border-box;
     padding: 0;
     margin: 0;
     font-family: 'Poppins', sans-serif;
-}
-.wrapper {
-    background-color: #e8e9f0;
-}
-.container {
-    max-width: 1366px;
-    padding: 0 80px;
-    margin: 0 auto;
+    overflow-x: hidden;
 }
 .overlay {
     position: fixed;
@@ -133,6 +125,7 @@ a {
     justify-content: center;
     align-items: center;
 }
+
 .box {
     background-color: #fff;
     border-radius: 10px;
@@ -216,9 +209,22 @@ a {
     font-size: 16px;
 }
 
-.btn-login {
-    color: #fff;
-    background-color: #408cf6;
-    border: none;
-    margin-left: 20px;
+.bg_home {
+    background-color: #e8e9f0;
+    padding-bottom: 50px;
+}
+
+.title-home,
+.title-watchlist {
+    margin-left: 80px;
+    font-size: 24px;
+    margin-top: 32px;
+}
+
+.title-watchlist {
+    margin-top: 104px;
+}
+
+.icon-color {
+    color: #408cf6;
 }
