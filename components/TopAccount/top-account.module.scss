@@ -1,0 +1,24 @@
+.account__container {
+    position: relative;
+    max-width: 1377px;
+    margin: 0 auto;
+    margin-top: 104px;
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+
+    .account__title {
+        & h2 {
+            .star {
+                color: #fff500;
+            }
+            font-weight: 500;
+        }
+    }
+
+    .account__flex {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 12px;
+    }
+}
