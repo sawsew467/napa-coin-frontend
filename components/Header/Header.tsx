@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
-import * as ReactDOM from 'react-dom';
 import { DarkModeSwitch } from 'react-toggle-dark-mode';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMoon, faMagnifyingGlass, faSun } from '@fortawesome/free-solid-svg-icons';
@@ -18,7 +17,6 @@ import { AppInterface } from '../../pages/_app';
 
 interface IProps {
     setIsShowLoginModal: React.Dispatch<React.SetStateAction<boolean>>;
-    // currentUser: AppState['currentUser'];
 }
 
 const Header = ({ setIsShowLoginModal }: IProps) => {
@@ -26,11 +24,16 @@ const Header = ({ setIsShowLoginModal }: IProps) => {
     console.log(currentUser);
     const [isShowMenu, setIsShowMenu] = useState(false);
     const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
+    const [isShowModal, setIsShowModal] = useState<boolean>(false);
     const dispath = useDispatch();
     const { setDarkmode } = bindActionCreators(actionCreators, dispath);
     const toggleDarkMode = (checked: boolean) => {
         isDarkMode ? setDarkmode('light') : setDarkmode('dark');
         setIsDarkMode(checked);
+    };
+
+    const toggleShowModal = () => {
+        setIsShowModal(!isShowModal);
     };
 
     return (
@@ -44,52 +47,65 @@ const Header = ({ setIsShowLoginModal }: IProps) => {
                     </div>
                     <div className={style.header__input}>
                         <div className={style.input__flex}>
-                            <span className={style.light__icon}>
+                            <div className={style.light__icon}>
                                 <DarkModeSwitch
                                     style={{ marginBottom: '2rem', height: '20px', width: '20px' }}
                                     checked={isDarkMode}
                                     onChange={toggleDarkMode}
                                     size={120}
                                 />
-                            </span>
-                            <span className={style.search__icon}>
+                            </div>
+                            <div className={style.search__icon}>
                                 <FontAwesomeIcon icon={faMagnifyingGlass} />
-                            </span>
-                            <input className={style.search} type="text" placeholder="Search" />
-                            {!currentUser.email ? (
-                                <button className={style.btn__login} onClick={() => setIsShowLoginModal(true)}>
-                                    Login
-                                </button>
-                            ) : (
-                                <img src={currentUser.avatar} alt="" className={style.header__avatar}></img>
-                            )}
-
-                            <div className={style.user__dropdown}>
-                                <div className={style.user__flex}>
-                                    <span className={style.user__avatar}>
-                                        <Image src={avatar} alt="avt" />
-                                    </span>
-                                    <span className={style.user__info}>
-                                        <h2>User</h2>
-                                        <small>user@gmail.com</small>
-                                    </span>
-                                </div>
-                                <div className={style.dropdown__list}>
-                                    <ul>
-                                        <li>
-                                            <a href="#">My Profile</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">Watchlist</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">Settings</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">Log out</a>
-                                        </li>
-                                    </ul>
-                                </div>
+                            </div>
+                            <div className={style.search__input}>
+                                <input className={style.search} type="text" placeholder="Search" />
+                            </div>
+                            <div className={style[`button__modal--user`]}>
+                                {!currentUser.email ? (
+                                    <button className={style.btn__login} onClick={() => setIsShowLoginModal(true)}>
+                                        Login
+                                    </button>
+                                ) : (
+                                    // eslint-disable-next-line @next/next/no-img-element
+                                    <div>
+                                        <img
+                                            src={currentUser.avatar}
+                                            alt=""
+                                            className={style.header__avatar}
+                                            onClick={toggleShowModal}
+                                        ></img>
+                                        {isShowModal && (
+                                            <div className={style.user__dropdown}>
+                                                <div className={style.user__flex}>
+                                                    <span className={style.user__avatar}>
+                                                        <Image src={avatar} alt="avt" />
+                                                    </span>
+                                                    <span className={style.user__info}>
+                                                        <h2>User</h2>
+                                                        <small>user@gmail.com</small>
+                                                    </span>
+                                                </div>
+                                                <div className={style.dropdown__list}>
+                                                    <ul>
+                                                        <li>
+                                                            <Link href="/profile">My Profile</Link>
+                                                        </li>
+                                                        <li>
+                                                            <Link href="/watchlist">Watchlist</Link>
+                                                        </li>
+                                                        <li>
+                                                            <Link href="/settings">Settings</Link>
+                                                        </li>
+                                                        <li>
+                                                            <Link href="/">Log out</Link>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </div>

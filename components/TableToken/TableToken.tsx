@@ -6,6 +6,7 @@ import { Table } from 'antd';
 import Image from 'next/image';
 
 import avtCoin from '../../assets/img/avt.png';
+import chartImg from '../../assets/img/Vector.png';
 import style from './table.module.scss';
 import TagToken from './TagToken';
 import Link from 'next/link';
@@ -27,8 +28,8 @@ const columns: ColumnsType<DataType> = [
     {
         title: '',
         render: () => (
-            <span>
-                <FontAwesomeIcon icon={faStar} style={{ color: '#ccc' }} />
+            <span className="table-icon">
+                <FontAwesomeIcon icon={faStar} />
             </span>
         ),
     },
@@ -115,6 +116,10 @@ const columns: ColumnsType<DataType> = [
             compare: (a, b) => a.circulating - b.circulating,
         },
     },
+    {
+        title: 'Last 7 days',
+        render: () => <Image src={chartImg} alt="chart image" />,
+    },
 ];
 
 const data: DataType[] = [
@@ -174,11 +179,13 @@ const TableToken: React.FC = () => {
             <div className={style[`table__tag-row`]}>
                 <Link href="/watchlist">
                     <button className={style[`btn--watchlist`]}>
-                        <FontAwesomeIcon icon={faStar} style={{ color: '#ccc' }} /> Watchlist
+                        <FontAwesomeIcon icon={faStar} className={style[`watchlist-icon`]} /> Watchlist
                     </button>
                 </Link>
                 <div className={style[`tags`]}>
-                    <TagToken></TagToken>
+                    <Link href="/token-detail">
+                        <TagToken></TagToken>
+                    </Link>
                 </div>
             </div>
             <Table columns={columns} dataSource={data} />

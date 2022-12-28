@@ -1,6 +1,5 @@
 #table {
-    max-width: 1377px;
-    margin: 0 auto;
+    margin: 0 80px;
     background-color: #fff;
     padding: 20px;
     border-radius: 10px;
@@ -16,7 +15,6 @@
             background-color: #408cf6 !important;
         }
         .tags {
-            margin-left: 150px;
             font-size: 12px;
             font-weight: bold;
         }
@@ -25,6 +23,15 @@
             padding: 6px 8px;
             border-radius: 10px;
             border: none;
+            margin-right: 20px;
+
+            .watchlist-icon {
+                color: #ccc;
+            }
+
+            &:hover .watchlist-icon {
+                color: #fff500;
+            }
 
             &::after {
                 content: '';
@@ -32,7 +39,7 @@
                 background: #000;
                 height: 25px;
                 width: 2px;
-                left: 180px;
+                left: 110px;
                 top: 5px;
             }
         }

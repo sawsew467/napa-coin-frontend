@@ -1,0 +1,51 @@
+.convert {
+    width: 1500px;
+    display: flex;
+    align-items: center;
+
+    .symbol-image {
+        height: 32px;
+        width: 32px;
+        border-radius: 80px;
+    }
+
+    .convert__token {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 320px;
+
+        .convert_token--symbol {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            & span {
+                font-size: 11px;
+                color: #9ba1bf;
+            }
+
+            & p {
+                font-size: 14px;
+                font-weight: bold;
+            }
+        }
+    }
+
+    .transfer {
+        width: 32px;
+        height: 32px;
+        border-radius: 80px;
+        background-color: #ccc;
+
+        & p {
+            color: #fff;
+            margin-left: 8px;
+            margin-top: 4px;
+        }
+    }
+
+    .value-token {
+        width: 60px;
+    }
+}
