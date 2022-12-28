@@ -1,0 +1,92 @@
+.detail__token {
+    margin: 104px 80px 0 80px;
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+
+    .detail__token--flex {
+        display: flex;
+        gap: 150px;
+
+        .token-col-left {
+            .token-col--img {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+
+            .image-symbol {
+                height: 32px;
+                width: 32px;
+                border-radius: 80px;
+            }
+
+            .name-symbol,
+            .rank {
+                font-size: 14px;
+                padding: 4px 8px;
+                background-color: #eff2f5;
+                border-radius: 10px;
+                font-weight: 500;
+            }
+
+            .rank {
+                margin-left: 42px;
+            }
+        }
+
+        .token-col-right {
+            .token-col--info {
+                padding-bottom: 11px;
+                .info-flex {
+                    display: flex;
+                    gap: 10px;
+                    align-items: center;
+
+                    & h5 {
+                        color: #9ba1bf;
+                        font-size: 12px;
+                        font-weight: normal;
+                    }
+                }
+
+                .caret-icon {
+                    padding: 4px 8px;
+                    border-radius: 10px;
+                    background-color: #cf1919;
+                    color: #fff;
+                }
+            }
+            .caret {
+                color: #07ee3a;
+                font-size: 14px;
+            }
+
+            .stats-container {
+                display: flex;
+                gap: 10px;
+                padding-top: 15px;
+                border-top: 1px solid #9ba1bf;
+
+                .stats-block:not(:last-child) {
+                    padding-right: 10px;
+                    border-right: 1px solid #9ba1bf;
+                }
+
+                .stats-block {
+                    font-size: 12px;
+                    line-height: 1.7;
+
+                    .stats-block-inner {
+                        display: flex;
+                        gap: 10px;
+
+                        & span {
+                            font-weight: bold;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

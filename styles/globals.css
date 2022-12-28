@@ -212,6 +212,7 @@ a {
 .bg_home {
     background-color: #e8e9f0;
     padding-bottom: 50px;
+    min-height: 100vh;
 }
 
 .title-home,
@@ -227,4 +228,11 @@ a {
 
 .icon-color {
     color: #408cf6;
+}
+
+.table-icon {
+    color: #ccc;
+}
+.ant-table-row:hover .table-icon {
+    color: #fff500;
 }
