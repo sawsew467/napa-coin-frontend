@@ -58,54 +58,46 @@ const Header = ({ setIsShowLoginModal }: IProps) => {
                             <div className={style.search__icon}>
                                 <FontAwesomeIcon icon={faMagnifyingGlass} />
                             </div>
-                            <div className={style.search__input}>
-                                <input className={style.search} type="text" placeholder="Search" />
-                            </div>
-                            <div className={style[`button__modal--user`]}>
-                                {!currentUser.email ? (
-                                    <button className={style.btn__login} onClick={() => setIsShowLoginModal(true)}>
-                                        Login
-                                    </button>
-                                ) : (
-                                    // eslint-disable-next-line @next/next/no-img-element
-                                    <div>
-                                        <img
-                                            src={currentUser.avatar}
-                                            alt=""
-                                            className={style.header__avatar}
-                                            onClick={toggleShowModal}
-                                        ></img>
-                                        {isShowModal && (
-                                            <div className={style.user__dropdown}>
-                                                <div className={style.user__flex}>
-                                                    <span className={style.user__avatar}>
-                                                        <Image src={avatar} alt="avt" />
-                                                    </span>
-                                                    <span className={style.user__info}>
-                                                        <h2>User</h2>
-                                                        <small>user@gmail.com</small>
-                                                    </span>
-                                                </div>
-                                                <div className={style.dropdown__list}>
-                                                    <ul>
-                                                        <li>
-                                                            <Link href="/profile">My Profile</Link>
-                                                        </li>
-                                                        <li>
-                                                            <Link href="/watchlist">Watchlist</Link>
-                                                        </li>
-                                                        <li>
-                                                            <Link href="/settings">Settings</Link>
-                                                        </li>
-                                                        <li>
-                                                            <Link href="/">Log out</Link>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        )}
-                                    </div>
-                                )}
+                            <input className={style.search} type="text" placeholder="Search" />
+                            {!currentUser.email ? (
+                                <button className={style.btn__login} onClick={() => setIsShowLoginModal(true)}>
+                                    Login
+                                </button>
+                            ) : (
+                                <img
+                                    src={currentUser.avatar}
+                                    alt=""
+                                    className={style.header__avatar}
+                                    onClick={() => setIsShowMenu(!isShowMenu)}
+                                ></img>
+                            )}
+
+                            <div className={style.user__dropdown}>
+                                <div className={style.user__flex}>
+                                    <span className={style.user__avatar}>
+                                        <Image src={avatar} alt="avt" />
+                                    </span>
+                                    <span className={style.user__info}>
+                                        <h2>User</h2>
+                                        <small>user@gmail.com</small>
+                                    </span>
+                                </div>
+                                <div className={style.dropdown__list}>
+                                    <ul>
+                                        <li>
+                                            <a href="#">My Profile</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Watchlist</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Settings</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Log out</a>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>

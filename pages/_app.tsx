@@ -13,6 +13,7 @@ export interface AppInterface {
         fullname: string;
         email: string;
         avatar: string;
+        bio: string;
     };
 }
 

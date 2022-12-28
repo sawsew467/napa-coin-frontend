@@ -10,6 +10,7 @@ import { useDispatch } from 'react-redux';
 import { actionCreators } from '../../redux';
 import { bindActionCreators } from 'redux';
 import { AppInterface } from '../_app';
+import Link from 'next/link';
 
 function index() {
     const currentUser: AppInterface['currentUser'] = useSelector((state: State) => state.currentUser);
@@ -21,6 +22,7 @@ function index() {
                 email: '',
                 avatar: '',
                 fullname: '',
+                bio: '',
             },
         );
     }, []);
@@ -43,8 +45,8 @@ function index() {
                     <section className={styles[`profile`]}>
                         <img src={currentUser.avatar} alt="" className={styles[`profile__image`]}></img>
                         <div className="box">
-                            <p className={styles[`profile__name`]}>Tran Van Bao Thang</p>
-                            <p className={styles[`profile__email`]}>bao.thang.1912@gmail.com</p>
+                            <p className={styles[`profile__name`]}>{currentUser.fullname}</p>
+                            <p className={styles[`profile__email`]}>{currentUser.email}</p>
                             <div className={styles[`profile__follow`]}>
                                 <p>
                                     <span>230</span>
@@ -55,14 +57,21 @@ function index() {
                                     &nbsp;followers
                                 </p>
                             </div>
+                            {currentUser.bio ? (
+                                <p className={styles[`profile__bio`]}>{currentUser.bio}</p>
+                            ) : (
+                                <p>
+                                    Your bio is empty, go to <Link href={'/settings'}>settings</Link> to update bio.
+                                </p>
+                            )}
                             <p className={styles[`profile__bio`]}>
-                                PlayDapp is a middleware blockchain solution providing companies with SDK's to integrate
+                                {/* PlayDapp is a middleware blockchain solution providing companies with SDK's to integrate
                                 blockchain technology and easily turn their assets into NFT's. Companies with SDK's to
                                 integrate blockchain technology and easily turn their assets into NFT's. PlayDapp is
                                 Solution providing companies with SDK's to integrate blockchain technology and easily
-                                turn their assets into NFT's.
+                                turn their assets into NFT's. */}
                             </p>
-                            {isFollowing ? (
+                            {/* {isFollowing ? (
                                 <button
                                     className={styles[`profile__button--slate`]}
                                     onClick={() => setIsFollowing(false)}
@@ -77,7 +86,7 @@ function index() {
                                 >
                                     + Follow
                                 </button>
-                            )}
+                            )} */}
                         </div>
                     </section>
                 </div>
