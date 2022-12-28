@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
-import * as ReactDOM from 'react-dom';
 import { DarkModeSwitch } from 'react-toggle-dark-mode';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMoon, faMagnifyingGlass, faSun } from '@fortawesome/free-solid-svg-icons';
@@ -25,11 +24,16 @@ const Header = ({ setIsShowLoginModal }: IProps) => {
     console.log(currentUser);
     const [isShowMenu, setIsShowMenu] = useState(false);
     const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
+    const [isShowModal, setIsShowModal] = useState<boolean>(false);
     const dispath = useDispatch();
     const { setDarkmode } = bindActionCreators(actionCreators, dispath);
     const toggleDarkMode = (checked: boolean) => {
         isDarkMode ? setDarkmode('light') : setDarkmode('dark');
         setIsDarkMode(checked);
+    };
+
+    const toggleShowModal = () => {
+        setIsShowModal(!isShowModal);
     };
 
     return (
@@ -43,17 +47,17 @@ const Header = ({ setIsShowLoginModal }: IProps) => {
                     </div>
                     <div className={style.header__input}>
                         <div className={style.input__flex}>
-                            <span className={style.light__icon}>
+                            <div className={style.light__icon}>
                                 <DarkModeSwitch
                                     style={{ marginBottom: '2rem', height: '20px', width: '20px' }}
                                     checked={isDarkMode}
                                     onChange={toggleDarkMode}
                                     size={120}
                                 />
-                            </span>
-                            <span className={style.search__icon}>
+                            </div>
+                            <div className={style.search__icon}>
                                 <FontAwesomeIcon icon={faMagnifyingGlass} />
-                            </span>
+                            </div>
                             <input className={style.search} type="text" placeholder="Search" />
                             {!currentUser.email ? (
                                 <button className={style.btn__login} onClick={() => setIsShowLoginModal(true)}>

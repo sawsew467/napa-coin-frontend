@@ -243,6 +243,7 @@ img {
 .bg_home {
     background-color: #e8e9f0;
     padding-bottom: 50px;
+    min-height: 100vh;
 }
 
 .title-home,
@@ -259,6 +260,14 @@ img {
 .icon-color {
     color: #408cf6;
 }
+
+.table-icon {
+    color: #ccc;
+}
+.ant-table-row:hover .table-icon {
+    color: #fff500;
+}
+
 :where(.css-dev-only-do-not-override-acm2ia).ant-tag-checkable-checked {
     background-color: #408cf6;
 }
