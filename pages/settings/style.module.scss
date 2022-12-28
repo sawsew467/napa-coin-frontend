@@ -35,21 +35,29 @@
         margin-top: 12px;
         display: flex;
         flex-direction: column;
-        align-self: start;
-        width: 480px;
-        & span {
-            text-align: start;
-            margin-bottom: 8px;
-        }
+        align-items: flex-start;
         & div {
-            text-align: start;
-            background-color: #ccc;
-            border-radius: 10px;
-            padding: 16px 8px 16px 8px;
             display: flex;
             flex-direction: row;
+            position: relative;
+
             & img {
-                margin-right: 8px;
+                position: absolute;
+                top: 0;
+                left: 0;
+                margin-top: 24px;
+                margin-left: 8px;
+            }
+            & input,
+            textarea {
+                width: 480px;
+                background-color: #ccc;
+                border: none;
+                border-radius: 10px;
+                padding: 16px 8px 16px 40px;
+                font-size: 16px;
+                outline-offset: -1px;
+                margin-top: 8px;
             }
         }
     }
@@ -69,6 +77,10 @@
         color: white;
         padding: 4px 20px;
         cursor: pointer;
+        transition: all 0.3s;
+        &:hover {
+            background-color: #73adff;
+        }
     }
     &__file {
         display: none;

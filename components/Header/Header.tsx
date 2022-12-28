@@ -6,16 +6,31 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMoon, faMagnifyingGlass, faSun } from '@fortawesome/free-solid-svg-icons';
 
 import style from './header.module.scss';
-import logoLight from '../../assets/img/logo-light.png';
+import logoLight from '../../assets/img/logo-light.svg';
 import logoDark from '../../assets/img/logo-dark.png';
 import avatar from '../../assets/img/avt.png';
 import Link from 'next/link';
+import { IState as AppState } from '../../pages/home';
+import { useDispatch, useSelector } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { actionCreators, State } from '../../redux';
+import { AppInterface } from '../../pages/_app';
 
-const Header = () => {
-    const [isDarkMode, setDarkMode] = useState<boolean>(false);
+interface IProps {
+    setIsShowLoginModal: React.Dispatch<React.SetStateAction<boolean>>;
+    // currentUser: AppState['currentUser'];
+}
 
+const Header = ({ setIsShowLoginModal }: IProps) => {
+    const currentUser: AppInterface['currentUser'] = useSelector((state: State) => state.currentUser);
+    console.log(currentUser);
+    const [isShowMenu, setIsShowMenu] = useState(false);
+    const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
+    const dispath = useDispatch();
+    const { setDarkmode } = bindActionCreators(actionCreators, dispath);
     const toggleDarkMode = (checked: boolean) => {
-        setDarkMode(checked);
+        isDarkMode ? setDarkmode('light') : setDarkmode('dark');
+        setIsDarkMode(checked);
     };
 
     return (
@@ -41,7 +56,14 @@ const Header = () => {
                                 <FontAwesomeIcon icon={faMagnifyingGlass} />
                             </span>
                             <input className={style.search} type="text" placeholder="Search" />
-                            <button className={style.btn__login}>Login</button>
+                            {!currentUser.email ? (
+                                <button className={style.btn__login} onClick={() => setIsShowLoginModal(true)}>
+                                    Login
+                                </button>
+                            ) : (
+                                <img src={currentUser.avatar} alt="" className={style.header__avatar}></img>
+                            )}
+
                             <div className={style.user__dropdown}>
                                 <div className={style.user__flex}>
                                     <span className={style.user__avatar}>
