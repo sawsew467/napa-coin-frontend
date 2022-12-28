@@ -36,7 +36,6 @@ const HomePage = () => {
             },
         );
     }, []);
-
     return (
         <>
             <Header setIsShowLoginModal={setIsShowLoginModal}></Header>
@@ -49,6 +48,7 @@ const HomePage = () => {
                 <LoginModal
                     setIsShowRegisterModal={setIsShowRegisterModal}
                     setIsShowLoginModal={setIsShowLoginModal}
+                    // setCurrentUser={setCurrentUser}
                 ></LoginModal>
             )}
             {isShowRegisterModal && (
