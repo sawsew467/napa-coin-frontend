@@ -18,7 +18,6 @@ import { AppInterface } from '../../pages/_app';
 
 interface IProps {
     setIsShowLoginModal: React.Dispatch<React.SetStateAction<boolean>>;
-    // currentUser: AppState['currentUser'];
 }
 
 const Header = ({ setIsShowLoginModal }: IProps) => {
@@ -61,7 +60,12 @@ const Header = ({ setIsShowLoginModal }: IProps) => {
                                     Login
                                 </button>
                             ) : (
-                                <img src={currentUser.avatar} alt="" className={style.header__avatar}></img>
+                                <img
+                                    src={currentUser.avatar}
+                                    alt=""
+                                    className={style.header__avatar}
+                                    onClick={() => setIsShowMenu(!isShowMenu)}
+                                ></img>
                             )}
 
                             <div className={style.user__dropdown}>

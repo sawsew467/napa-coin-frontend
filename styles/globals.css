@@ -173,6 +173,7 @@ img {
     border: none;
     font-size: 16px;
     outline-offset: -1px;
+    outline-color: #408cf6;
 }
 .modal .modal__input .icon {
     position: absolute;
@@ -223,6 +224,13 @@ img {
     text-align: center;
     margin: 12px auto;
     font-weight: 500;
+}
+.modal__message {
+    color: red;
+    text-align: center;
+    font-size: 14px;
+    margin-top: -16px;
+    margin-bottom: 4px;
 }
 
 .btn {

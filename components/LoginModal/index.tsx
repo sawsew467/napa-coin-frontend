@@ -14,8 +14,34 @@ interface IProps {
     setIsShowLoginModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
+interface IState {
+    userInput: {
+        email: string;
+        password: string;
+    };
+}
+
 function LoginModal({ setIsShowRegisterModal, setIsShowLoginModal }: IProps) {
-    const [userInput, setUserInput] = useState({
+    const [errorMessage, setErrorMessage] = useState<string>('');
+    const validateInput = (userInput: IState['userInput']) => {
+        var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        if (!userInput.email) {
+            setErrorMessage('Please enter your email address!');
+            return false;
+        }
+        if (!userInput.password) {
+            setErrorMessage('Please enter your password!');
+            return false;
+        }
+        if (!userInput.email.match(mailformat)) {
+            console.log('!!!');
+            setErrorMessage('You have entered an invalid email address!');
+
+            return false;
+        }
+        return true;
+    };
+    const [userInput, setUserInput] = useState<IState['userInput']>({
         email: '',
         password: '',
     });
@@ -28,6 +54,9 @@ function LoginModal({ setIsShowRegisterModal, setIsShowLoginModal }: IProps) {
     const [isLoading, setIsLoading] = useState(false);
     const handleSubmit = async () => {
         try {
+            if (!validateInput(userInput)) {
+                return;
+            }
             setIsLoading(true);
             const option = {
                 method: 'POST',
@@ -35,7 +64,6 @@ function LoginModal({ setIsShowRegisterModal, setIsShowLoginModal }: IProps) {
                 data: userInput,
             };
             const response = await axios(option);
-            alert('Login successfully');
             const { token, user } = response.data.data;
             window.localStorage.setItem('token', token);
             window.localStorage.setItem('currentUser', JSON.stringify(user));
@@ -43,7 +71,7 @@ function LoginModal({ setIsShowRegisterModal, setIsShowLoginModal }: IProps) {
             setIsShowLoginModal(false);
             setIsLoading(false);
         } catch (err) {
-            alert('Login failed, try again!');
+            setErrorMessage('Your email or password is incorrect!');
             setIsLoading(false);
         }
     };
@@ -77,6 +105,11 @@ function LoginModal({ setIsShowRegisterModal, setIsShowLoginModal }: IProps) {
                     ></input>
                     <Image className="icon" src={password} alt=""></Image>
                 </div>
+                {errorMessage ? (
+                    <p className="modal__message">{errorMessage}</p>
+                ) : (
+                    <p className="modal__message">&nbsp;</p>
+                )}
                 {isLoading ? (
                     <button className="modal__button modal__button--loading" onClick={handleSubmit}>
                         Loading...
