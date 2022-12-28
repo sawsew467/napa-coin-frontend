@@ -16,8 +16,6 @@
         object-fit: cover;
         margin-bottom: -44px;
         z-index: 1;
-        // position: absolute;
-        // top: 68px;
     }
     &__name {
         margin-top: 40px;
@@ -54,10 +52,14 @@
             width: 416px;
             padding: 8px 0;
             cursor: pointer;
+            transition: all 0.3s;
+            &:hover {
+                background-color: #73adff;
+            }
         }
         &--slate {
             font-size: 16px;
-            color: #323546;
+            color: #000;
             background-color: #d9d9d9;
             border-radius: 10px;
             border: none;
@@ -68,6 +70,10 @@
             align-items: center;
             justify-content: center;
             margin: 0 auto;
+            transition: all 0.3s;
+            &:hover {
+                background-color: #abaaaa;
+            }
             & img {
                 width: 20px;
                 height: 20px;

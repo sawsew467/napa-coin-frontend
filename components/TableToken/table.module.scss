@@ -10,7 +10,10 @@
         position: relative;
         display: flex;
         align-items: flex-end;
-
+        .span:hover,
+        .span {
+            background-color: #408cf6 !important;
+        }
         .tags {
             font-size: 12px;
             font-weight: bold;

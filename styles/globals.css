@@ -113,9 +113,16 @@ a {
     font-family: 'Poppins', sans-serif;
     overflow-x: hidden;
 }
+img {
+    object-fit: cover;
+}
+
+.wrapper {
+    background-color: #e8e9f1;
+}
 .overlay {
     position: fixed;
-    z-index: 0;
+    z-index: 1;
     top: 0;
     left: 0;
     width: 100vw;
@@ -151,49 +158,65 @@ a {
     margin-bottom: 20px;
     font-weight: 500;
 }
-.modal .input {
+.modal .modal__input {
     width: 100%;
     position: relative;
     display: flex;
     flex-direction: row;
     margin-bottom: 20px;
 }
-.modal .input input {
+.modal .modal__input input {
     width: 100%;
     padding: 16px 40px;
     border-radius: 10px;
     background-color: #d9d9d9;
     border: none;
     font-size: 16px;
+    outline-offset: -1px;
 }
-.modal .input .icon {
+.modal .modal__input .icon {
     position: absolute;
     top: 0;
     left: 0;
     margin-top: 16px;
     margin-left: 8px;
 }
+
 .modal .modal__button--primary {
-    width: 100%;
-    text-align: center;
-    border-radius: 10px;
     border: none;
     background-color: #408cf6;
-    font-size: 16px;
     color: white;
+    font-size: 16px;
     padding: 16px 0;
     cursor: pointer;
 }
 .modal .modal__button---secondary {
+    border: 1px solid #408cf6;
+    background-color: #fff;
+    color: #408cf6;
+    cursor: pointer;
+}
+
+.modal .modal__button--loading {
+    border: none;
+    background-color: #73a6ff;
+    color: white;
+    cursor: not-allowed;
+}
+
+.modal__button {
     width: 100%;
     text-align: center;
     border-radius: 10px;
-    border: 1px solid #408cf6;
-    background-color: #fff;
+    transition: all 0.3s;
     font-size: 16px;
-    color: #408cf6;
-    padding: 15px 0;
-    cursor: pointer;
+    padding: 16px 0;
+}
+.modal .modal__button--primary:hover {
+    background-color: #73adff;
+}
+.modal .modal__button---secondary:hover {
+    background-color: #dceaff;
 }
 .modal span {
     font-size: 16px;
@@ -235,4 +258,8 @@ a {
 }
 .ant-table-row:hover .table-icon {
     color: #fff500;
+}
+
+:where(.css-dev-only-do-not-override-acm2ia).ant-tag-checkable-checked {
+    background-color: #408cf6;
 }
