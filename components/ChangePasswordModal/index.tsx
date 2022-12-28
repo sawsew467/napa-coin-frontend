@@ -27,7 +27,7 @@ function index({ setIsShowChangePasswordModal }: IProps) {
                     <label>Confirm new password</label>
                     <input placeholder="Repeat your new password"></input>
                 </div>
-                <button className="modal__button--primary">Change password</button>
+                <button className="modal__button modal__button--primary">Change password</button>
             </div>
         </div>
     );

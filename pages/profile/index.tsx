@@ -1,11 +1,30 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from '../../components/Header/Header';
 import styles from './style.module.scss';
 import Image from 'next/image';
 import Avatar from '../../assets/img/avatar.jpeg';
 import Check from '../../assets/icons/check-line.svg';
+import { useSelector } from 'react-redux';
+import { State } from '../../redux';
+import { useDispatch } from 'react-redux';
+import { actionCreators } from '../../redux';
+import { bindActionCreators } from 'redux';
+import { AppInterface } from '../_app';
 
 function index() {
+    const currentUser: AppInterface['currentUser'] = useSelector((state: State) => state.currentUser);
+    const dispath = useDispatch();
+    const { setCurrentUser } = bindActionCreators(actionCreators, dispath);
+    useEffect(() => {
+        setCurrentUser(
+            JSON.parse(`${window.localStorage.getItem('currentUser')}`) ?? {
+                email: '',
+                avatar: '',
+                fullname: '',
+            },
+        );
+    }, []);
+
     const [isFollowing, setIsFollowing] = useState(false);
     return (
         <>
@@ -17,12 +36,12 @@ function index() {
                     right: 0,
                 }}
             >
-                <Header></Header>
+                <Header setIsShowLoginModal={() => {}}></Header>
             </div>
             <div className="wrapper">
                 <div className="container">
                     <section className={styles[`profile`]}>
-                        <Image src={Avatar} alt="" className={styles[`profile__image`]}></Image>
+                        <img src={currentUser.avatar} alt="" className={styles[`profile__image`]}></img>
                         <div className="box">
                             <p className={styles[`profile__name`]}>Tran Van Bao Thang</p>
                             <p className={styles[`profile__email`]}>bao.thang.1912@gmail.com</p>

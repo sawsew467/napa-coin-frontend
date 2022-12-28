@@ -21,17 +21,26 @@ function LoginModal({ setIsShowRegisterModal, setIsShowLoginModal }: IProps) {
         email: '',
         password: '',
     });
+    const [isLoading, setIsLoading] = useState(false);
     const handleSubmit = async () => {
         try {
+            setIsLoading(true);
+
             const option = {
                 method: 'POST',
-                url: 'http://localhost:5000/api/v1/auth/register',
+                url: 'http://172.16.6.214:5000/api/v1/auth/register',
                 data: userInput,
             };
             await axios(option);
+            setIsLoading(false);
             alert('Register successfully');
-        } catch (err) {
-            console.log(err);
+            setIsShowRegisterModal(false);
+            setIsShowLoginModal(true);
+        } catch (err: any) {
+            console.log(err.response);
+
+            alert('Register failed, try again!');
+            setIsLoading(false);
         }
     };
     return (
@@ -45,7 +54,7 @@ function LoginModal({ setIsShowRegisterModal, setIsShowLoginModal }: IProps) {
                 ></Image>
 
                 <div className="modal__title">Sign up</div>
-                <div className="input">
+                <div className="modal__input">
                     <input
                         placeholder="Full name"
                         onChange={(e) =>
@@ -57,7 +66,7 @@ function LoginModal({ setIsShowRegisterModal, setIsShowLoginModal }: IProps) {
                     ></input>
                     <Image className="icon" src={user} alt=""></Image>
                 </div>
-                <div className="input">
+                <div className="modal__input">
                     <input
                         placeholder="Email address"
                         onChange={(e) =>
@@ -69,7 +78,7 @@ function LoginModal({ setIsShowRegisterModal, setIsShowLoginModal }: IProps) {
                     ></input>
                     <Image className="icon" src={email} alt=""></Image>
                 </div>
-                <div className="input">
+                <div className="modal__input">
                     <input
                         placeholder="Password"
                         type="password"
@@ -82,11 +91,18 @@ function LoginModal({ setIsShowRegisterModal, setIsShowLoginModal }: IProps) {
                     ></input>
                     <Image className="icon" src={password} alt=""></Image>
                 </div>
-                <button className="modal__button--primary" onClick={handleSubmit}>
-                    Sign up
-                </button>
+                {isLoading ? (
+                    <button className="modal__button modal__button--loading" onClick={handleSubmit}>
+                        Loading...
+                    </button>
+                ) : (
+                    <button className="modal__button modal__button--primary" onClick={handleSubmit}>
+                        Sign up
+                    </button>
+                )}
+
                 <span>You have account?</span>
-                <button className="modal__button---secondary" onClick={signInClick}>
+                <button className="modal__button modal__button---secondary" onClick={signInClick}>
                     Sign in
                 </button>
             </div>

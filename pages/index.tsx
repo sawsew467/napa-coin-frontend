@@ -6,6 +6,7 @@ import LoginModal from '../components/LoginModal';
 import RegisterModal from '../components/RegisterModal';
 import Header from '../components/Header/Header';
 import HomePage from './home';
+import { useState } from 'react';
 
 const inter = Inter({ subsets: ['latin'] });
 

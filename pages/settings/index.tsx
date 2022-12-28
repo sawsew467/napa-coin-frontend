@@ -6,8 +6,25 @@ import Avatar from '../../assets/img/avatar.jpeg';
 import User from '../../assets/icons/user-3-line.svg';
 import Bio from '../../assets/icons/bill-line.svg';
 import ChangePasswordModal from '../../components/ChangePasswordModal';
+import { useDispatch, useSelector } from 'react-redux';
+import { actionCreators, State } from '../../redux';
+import { bindActionCreators } from 'redux';
+import { useEffect } from 'react';
+import { AppInterface } from '../_app';
 
 function index() {
+    const currentUser: AppInterface['currentUser'] = useSelector((state: State) => state.currentUser);
+    const dispath = useDispatch();
+    const { setCurrentUser } = bindActionCreators(actionCreators, dispath);
+    useEffect(() => {
+        setCurrentUser(
+            JSON.parse(`${window.localStorage.getItem('currentUser')}`) ?? {
+                email: '',
+                avatar: '',
+                fullname: '',
+            },
+        );
+    }, []);
     const [isShowChangePasswordModal, setIsShowChangePasswordModal] = useState<boolean>(false);
     const [imageSrc, setImageSrc] = useState();
     const [uploadData, setUploadData] = useState();
@@ -45,7 +62,7 @@ function index() {
                     right: 0,
                 }}
             >
-                <Header></Header>
+                <Header setIsShowLoginModal={() => {}}></Header>
             </div>
             <div className="wrapper">
                 <div className="container">
@@ -54,7 +71,7 @@ function index() {
                             <div className={styles[`settings__title`]}>Edit profile</div>
                             <div className={styles[`settings__avatar`]}>
                                 <p>Your avatar</p>
-                                <Image src={imageSrc ?? Avatar} alt="" width={80} height={80}></Image>
+                                <img src={imageSrc ?? currentUser.avatar} alt="" width={80} height={80}></img>
                                 <label htmlFor="file">Change</label>
                                 <input
                                     className={styles[`settings__file`]}
@@ -68,18 +85,19 @@ function index() {
                                 <span>Full name</span>
                                 <div>
                                     <Image className="modal__close" src={User} alt=""></Image>
-                                    <p>Tran Van Bao Thang</p>
+                                    <input defaultValue={'Tran Van Bao Thang'}></input>
                                 </div>
                             </div>
                             <div className={styles[`settings__input`]}>
                                 <span>Bio</span>
                                 <div>
                                     <Image className="modal__close" src={Bio} alt=""></Image>
-                                    <p>
-                                        PlayDapp is a middleware blockchain solution providing companies with SDK's to
+                                    <textarea
+                                        rows={4}
+                                        defaultValue="PlayDapp is a middleware blockchain solution providing companies with SDK's to
                                         integrate blockchain technology and easily turn their assets into NFT's.
-                                        Companies with SDK's to
-                                    </p>
+                                        Companies with SDK's to"
+                                    ></textarea>
                                 </div>
                             </div>
                             <div className={styles[`settings__button`]}>
