@@ -5,10 +5,10 @@ const { CheckableTag } = Tag;
 const tagsData = ['DeFi', 'NFT', 'Metaverse', 'Polkadot', 'BNB Chain', 'Solana'];
 
 const TagToken = () => {
-    const [selectedTags, setSelectedTags] = useState<string[]>(['NFT']);
+    const [selectedTags, setSelectedTags] = useState<string>('NFT');
 
     const handleChange = (tag: string, checked: boolean) => {
-        const nextSelectedTags = checked ? [...selectedTags, tag] : selectedTags.filter((t) => t !== tag);
+        const nextSelectedTags = checked ? selectedTags : tag;
         console.log('You are interested in: ', nextSelectedTags);
         setSelectedTags(nextSelectedTags);
     };
@@ -20,6 +20,8 @@ const TagToken = () => {
                     checked={selectedTags.indexOf(tag) > -1}
                     onChange={(checked) => handleChange(tag, checked)}
                 >
+
+
                     {tag}
                 </CheckableTag>
             ))}

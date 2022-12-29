@@ -23,9 +23,9 @@ interface IProps {
 const Header = ({ setIsShowLoginModal }: IProps) => {
     const currentUser: AppInterface['currentUser'] = useSelector((state: State) => state.currentUser);
     console.log(currentUser);
-    const [isShowMenu, setIsShowMenu] = useState(false);
     const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
     const [isShowModal, setIsShowModal] = useState<boolean>(false);
+    const [isShowMenu, setIsShowMenu] = useState<boolean>(false);
     const dispath = useDispatch();
     const { setDarkmode } = bindActionCreators(actionCreators, dispath);
     const toggleDarkMode = (checked: boolean) => {

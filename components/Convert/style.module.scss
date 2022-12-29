@@ -2,6 +2,16 @@
     width: 1500px;
     display: flex;
     align-items: center;
+    gap: 10px;
+    flex-basis: 50%;
+    &::before {
+        content: '';
+        position: absolute;
+        width: 3px;
+        height: 85px;
+        background-color: #ccc;
+        left: 29.2%;
+    }
 
     .symbol-image {
         height: 32px;
@@ -37,6 +47,7 @@
         height: 32px;
         border-radius: 80px;
         background-color: #ccc;
+        position: relative;
 
         & p {
             color: #fff;

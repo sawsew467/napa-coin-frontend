@@ -271,3 +271,7 @@ img {
 :where(.css-dev-only-do-not-override-acm2ia).ant-tag-checkable-checked {
     background-color: #408cf6;
 }
+
+:where(.css-dev-only-do-not-override-9ntgx0).ant-table-wrapper .ant-table-pagination-right {
+    justify-content: center;
+}

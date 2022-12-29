@@ -82,6 +82,14 @@
                     background-color: #73adff;
                 }
             }
+
+            .header__avatar,
+            .user__avatar img {
+                width: 32px;
+                height: 32px;
+                border-radius: 80px;
+                margin-left: 20px;
+            }
         }
     }
 }
