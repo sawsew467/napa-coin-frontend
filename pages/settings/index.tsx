@@ -3,6 +3,8 @@ import Header from '../../components/Header/Header';
 import styles from './style.module.scss';
 import Image from 'next/image';
 import Avatar from '../../assets/img/avatar.jpeg';
+import camera from '../../assets/img/camera.svg';
+import password from '../../assets/icons/door-lock-line.svg';
 import User from '../../assets/icons/user-3-line.svg';
 import Bio from '../../assets/icons/bill-line.svg';
 import ChangePasswordModal from '../../components/ChangePasswordModal';
@@ -54,16 +56,7 @@ function index() {
     };
     return (
         <>
-            <div
-                style={{
-                    position: 'fixed',
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                }}
-            >
-                <Header setIsShowLoginModal={() => {}}></Header>
-            </div>
+            <Header setIsShowLoginModal={() => {}}></Header>
             <div className="wrapper">
                 <div className="container">
                     <section className={styles[`settings`]}>
@@ -71,8 +64,14 @@ function index() {
                             <div className={styles[`settings__title`]}>Edit profile</div>
                             <div className={styles[`settings__avatar`]}>
                                 <p>Your avatar</p>
-                                <img src={imageSrc ?? currentUser.avatar} alt="" width={80} height={80}></img>
-                                <label htmlFor="file">Change</label>
+                                <div>
+                                    <img src={imageSrc ?? currentUser.avatar} alt="" width={80} height={80}></img>
+
+                                    <label htmlFor="file">
+                                        <Image src={camera} alt=""></Image>
+                                    </label>
+                                </div>
+
                                 <input
                                     className={styles[`settings__file`]}
                                     type="file"
@@ -85,24 +84,33 @@ function index() {
                                 <span>Full name</span>
                                 <div>
                                     <Image className="modal__close" src={User} alt=""></Image>
-                                    <input defaultValue={'Tran Van Bao Thang'}></input>
+                                    <input defaultValue={currentUser.fullname}></input>
                                 </div>
                             </div>
                             <div className={styles[`settings__input`]}>
                                 <span>Bio</span>
                                 <div>
                                     <Image className="modal__close" src={Bio} alt=""></Image>
-                                    <textarea
-                                        rows={4}
-                                        defaultValue="PlayDapp is a middleware blockchain solution providing companies with SDK's to
-                                        integrate blockchain technology and easily turn their assets into NFT's.
-                                        Companies with SDK's to"
-                                    ></textarea>
+                                    <textarea rows={4} defaultValue={currentUser.bio}></textarea>
+                                </div>
+                            </div>
+                            <div className={styles[`settings__input`]}>
+                                <span>Old password</span>
+                                <div>
+                                    <Image className="modal__close" src={password} alt=""></Image>
+                                    <input type="password"></input>
+                                </div>
+                            </div>
+                            <div className={styles[`settings__input`]}>
+                                <span>New password</span>
+                                <div>
+                                    <Image className="modal__close" src={password} alt=""></Image>
+                                    <input type="password"></input>
                                 </div>
                             </div>
                             <div className={styles[`settings__button`]}>
                                 <button>Save</button>
-                                <button onClick={() => setIsShowChangePasswordModal(true)}>Change password</button>
+                                {/* <button onClick={() => setIsShowChangePasswordModal(true)}>Change password</button> */}
                             </div>
                         </div>
                     </section>

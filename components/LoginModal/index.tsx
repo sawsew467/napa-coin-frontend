@@ -61,6 +61,7 @@ function LoginModal({ setIsShowRegisterModal, setIsShowLoginModal }: IProps) {
             const option = {
                 method: 'POST',
                 url: 'http://172.16.6.214:5000/api/v1/auth/login',
+                // url: 'http://localhost:5000/api/v1/auth/login',
                 data: userInput,
             };
             const response = await axios(option);
