@@ -45,12 +45,12 @@
             &__avatar {
                 width: 40px;
                 height: 40px;
-                border-radius: 50%;
+                // border-radius: 50%;
                 cursor: pointer;
             }
             &__menu {
                 display: none;
-                position: absolute;
+                // position: fixed;
                 top: 72px;
                 right: 80px;
                 width: 248px;
@@ -83,13 +83,13 @@
                 }
             }
 
-            .header__avatar,
-            .user__avatar img {
-                width: 32px;
-                height: 32px;
-                border-radius: 80px;
-                margin-left: 20px;
-            }
+            // .header__avatar,
+            // .user__avatar img {
+            //     width: 32px;
+            //     height: 32px;
+            //     border-radius: 80px;
+            //     margin-left: 20px;
+            // }
         }
     }
 }
