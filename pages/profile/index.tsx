@@ -49,11 +49,11 @@ function index() {
                             <p className={styles[`profile__email`]}>{currentUser.email}</p>
                             <div className={styles[`profile__follow`]}>
                                 <p>
-                                    <span>230</span>
+                                    <span>0</span>
                                     &nbsp;following
                                 </p>
                                 <p>
-                                    <span>3720</span>
+                                    <span>0</span>
                                     &nbsp;followers
                                 </p>
                             </div>
