@@ -29,6 +29,8 @@
         border: none;
         color: #fff;
         margin-left: 12px;
+        cursor: pointer;
+        transition: all 0.2s ease-in;
 
         &:hover {
             background-color: #73adff;

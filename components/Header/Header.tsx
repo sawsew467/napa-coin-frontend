@@ -22,7 +22,6 @@ interface IProps {
 const Header = ({ setIsShowLoginModal }: IProps) => {
     const currentUser: AppInterface['currentUser'] = useSelector((state: State) => state.currentUser);
     console.log(currentUser);
-    const [isShowMenu, setIsShowMenu] = useState(false);
     const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
     const [isShowModal, setIsShowModal] = useState<boolean>(false);
     const dispath = useDispatch();
@@ -64,41 +63,44 @@ const Header = ({ setIsShowLoginModal }: IProps) => {
                                     Login
                                 </button>
                             ) : (
-                                <img
-                                    src={currentUser.avatar}
-                                    alt=""
-                                    className={style.header__avatar}
-                                    onClick={() => setIsShowMenu(!isShowMenu)}
-                                ></img>
+                                <div className={style[`user-modal`]}>
+                                    <img
+                                        src={currentUser.avatar}
+                                        alt=""
+                                        className={style.header__avatar}
+                                        onClick={toggleShowModal}
+                                    ></img>
+                                    {
+                                        <div className={style.user__dropdown}>
+                                            <div className={style.user__flex}>
+                                                <span className={style.user__avatar}>
+                                                    <Image src={avatar} alt="avt" />
+                                                </span>
+                                                <span className={style.user__info}>
+                                                    <h2>User</h2>
+                                                    <small>user@gmail.com</small>
+                                                </span>
+                                            </div>
+                                            <div className={style.dropdown__list}>
+                                                <ul>
+                                                    <li>
+                                                        <a href="#">My Profile</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#">Watchlist</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#">Settings</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#">Log out</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
                             )}
-
-                            <div className={style.user__dropdown}>
-                                <div className={style.user__flex}>
-                                    <span className={style.user__avatar}>
-                                        <Image src={avatar} alt="avt" />
-                                    </span>
-                                    <span className={style.user__info}>
-                                        <h2>User</h2>
-                                        <small>user@gmail.com</small>
-                                    </span>
-                                </div>
-                                <div className={style.dropdown__list}>
-                                    <ul>
-                                        <li>
-                                            <a href="#">My Profile</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">Watchlist</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">Settings</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">Log out</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>

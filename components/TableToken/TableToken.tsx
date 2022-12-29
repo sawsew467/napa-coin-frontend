@@ -183,9 +183,7 @@ const TableToken: React.FC = () => {
                     </button>
                 </Link>
                 <div className={style[`tags`]}>
-                    <Link href="/token-detail">
-                        <TagToken></TagToken>
-                    </Link>
+                    <TagToken></TagToken>
                 </div>
             </div>
             <Table columns={columns} dataSource={data} />
