@@ -25,69 +25,8 @@
                 .button__modal--user {
                     position: relative;
 
-                    .user__dropdown {
-                        background-color: #fff;
-                        position: fixed;
-                        width: 247px;
-                        height: 204px;
-                        top: 72px;
-                        left: 1210px;
-                        overflow: hidden;
-                        padding: 8px;
-                        border-radius: 10px;
-                        box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.25);
-
-                        .user__flex {
-                            display: flex;
-                            gap: 8px;
-                            border-bottom: 2px solid #343444;
-
-                            .user__avatar img {
-                                height: 48px;
-                                width: 48px;
-                                border-radius: 160px;
-                            }
-
-                            .user__info {
-                                h2 {
-                                    margin-top: 5px;
-                                    font-size: 16px;
-                                }
-
-                                small {
-                                    font-size: 10px;
-                                    text-decoration: underline;
-                                    margin-bottom: 11px;
-                                    display: block;
-                                }
-                            }
-                        }
-
-                        .dropdown__list {
-                            ul {
-                                display: flex;
-                                flex-direction: column;
-                                margin-top: 8px;
-                            }
-
-                            ul li {
-                                border-radius: 8px;
-                                list-style: none;
-                                height: 32px;
-
-                                &:hover {
-                                    background-color: #d9d9d9;
-                                }
-
-                                a {
-                                    text-decoration: none;
-                                    color: #000;
-                                    padding: 8px;
-                                    font-size: 12px;
-                                    line-height: 32px;
-                                }
-                            }
-                        }
+                    .user-modal {
+                        position: relative;
                     }
                 }
 
@@ -113,7 +52,70 @@
                     }
                 }
             }
+            .user__dropdown {
+                background-color: #fff;
+                position: fixed;
+                width: 247px;
+                height: 204px;
+                top: 72px;
+                left: 1210px;
+                top: 75px;
+                padding: 8px;
+                border-radius: 10px;
+                box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.25);
 
+                .user__flex {
+                    display: flex;
+                    gap: 8px;
+                    border-bottom: 2px solid #343444;
+
+                    .user__avatar img {
+                        height: 48px;
+                        width: 48px;
+                        border-radius: 160px;
+                    }
+
+                    .user__info {
+                        h2 {
+                            margin-top: 5px;
+                            font-size: 16px;
+                        }
+
+                        small {
+                            font-size: 10px;
+                            text-decoration: underline;
+                            margin-bottom: 11px;
+                            display: block;
+                        }
+                    }
+                }
+
+                .dropdown__list {
+                    ul {
+                        display: flex;
+                        flex-direction: column;
+                        margin-top: 8px;
+                    }
+
+                    ul li {
+                        border-radius: 8px;
+                        list-style: none;
+                        height: 32px;
+
+                        &:hover {
+                            background-color: #d9d9d9;
+                        }
+
+                        a {
+                            text-decoration: none;
+                            color: #000;
+                            padding: 8px;
+                            font-size: 12px;
+                            line-height: 32px;
+                        }
+                    }
+                }
+            }
             .light__icon {
                 font-size: 24px;
                 margin-right: 29px;
@@ -132,6 +134,14 @@
                 border-radius: 10px;
                 border: none;
                 background-color: #d9d9d9;
+            }
+
+            .header__avatar,
+            .user__avatar img {
+                width: 32px;
+                height: 32px;
+                border-radius: 80px;
+                margin-left: 20px;
             }
         }
     }

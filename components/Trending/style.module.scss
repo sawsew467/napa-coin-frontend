@@ -1,0 +1,27 @@
+.trending {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .trending__coin {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+
+        .symbol-image {
+            height: 32px;
+            width: 32px;
+            border-radius: 80px;
+        }
+
+        .symbol-name {
+            font-size: 14px;
+        }
+    }
+
+    .trending__rank--pos {
+        padding: 4px 8px;
+        background-color: #ccc;
+        border-radius: 10px;
+    }
+}
