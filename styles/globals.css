@@ -263,9 +263,11 @@ img {
 
 .table-icon {
     color: #ccc;
+    cursor: pointer;
 }
-.ant-table-row:hover .table-icon {
-    color: #fff500;
+
+.table-icon:hover {
+    color: rgb(164, 159, 6);
 }
 
 :where(.css-dev-only-do-not-override-acm2ia).ant-tag-checkable-checked {
@@ -274,4 +276,12 @@ img {
 
 :where(.css-dev-only-do-not-override-9ntgx0).ant-table-wrapper .ant-table-pagination-right {
     justify-content: center;
+}
+
+.swiper {
+    height: 65px;
+}
+
+.swiper-pagination.swiper-pagination-clickable.swiper-pagination-bullets.swiper-pagination-horizontal {
+    top: 35px;
 }
