@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { use, useEffect, useState } from 'react';
 import Header from '../../components/Header/Header';
 import styles from './style.module.scss';
 import Image from 'next/image';
@@ -11,11 +11,38 @@ import { actionCreators } from '../../redux';
 import { bindActionCreators } from 'redux';
 import { AppInterface } from '../_app';
 import Link from 'next/link';
+import axios from 'axios';
+import { useRouter } from 'next/router';
+import { getInfo } from '../../apis/usersApis';
+
+interface IState {
+    user: {
+        fullname: string;
+        email: string;
+        bio: string;
+        avatar: string;
+    };
+}
 
 function index() {
     const currentUser: AppInterface['currentUser'] = useSelector((state: State) => state.currentUser);
     const dispath = useDispatch();
     const { setCurrentUser } = bindActionCreators(actionCreators, dispath);
+    const [user, setUser] = useState<IState['user']>({
+        fullname: '',
+        email: '',
+        bio: '',
+        avatar: '',
+    });
+    const router = useRouter();
+    const { uid } = router.query;
+    useEffect(() => {
+        if (uid) {
+            getInfo(uid).then((res) => {
+                setUser(res.results);
+            });
+        }
+    }, [uid]);
     useEffect(() => {
         setCurrentUser(
             JSON.parse(`${window.localStorage.getItem('currentUser')}`) ?? {
@@ -34,10 +61,10 @@ function index() {
             <div className="wrapper">
                 <div className="container">
                     <section className={styles[`profile`]}>
-                        <img src={currentUser.avatar} alt="" className={styles[`profile__image`]}></img>
+                        <img src={user.avatar} alt="" className={styles[`profile__image`]}></img>
                         <div className="box">
-                            <p className={styles[`profile__name`]}>{currentUser.fullname}</p>
-                            <p className={styles[`profile__email`]}>{currentUser.email}</p>
+                            <p className={styles[`profile__name`]}>{user.fullname}</p>
+                            <p className={styles[`profile__email`]}>{user.email}</p>
                             <div className={styles[`profile__follow`]}>
                                 <p>
                                     <span>0</span>
@@ -48,13 +75,14 @@ function index() {
                                     &nbsp;followers
                                 </p>
                             </div>
-                            {currentUser.bio ? (
-                                <p className={styles[`profile__bio`]}>{currentUser.bio}</p>
+                            {/* {user.bio ? (
+                                <p className={styles[`profile__bio`]}>{user.bio}</p>
                             ) : (
                                 <p>
                                     Your bio is empty, go to <Link href={'/settings'}>settings</Link> to update bio.
                                 </p>
-                            )}
+                            )} */}
+                            <p className={styles[`profile__bio`]}>{user.bio}</p>
                             <p className={styles[`profile__bio`]}>
                                 {/* PlayDapp is a middleware blockchain solution providing companies with SDK's to integrate
                                 blockchain technology and easily turn their assets into NFT's. Companies with SDK's to
@@ -62,7 +90,7 @@ function index() {
                                 Solution providing companies with SDK's to integrate blockchain technology and easily
                                 turn their assets into NFT's. */}
                             </p>
-                            {/* {isFollowing ? (
+                            {isFollowing ? (
                                 <button
                                     className={styles[`profile__button--slate`]}
                                     onClick={() => setIsFollowing(false)}
@@ -77,7 +105,7 @@ function index() {
                                 >
                                     + Follow
                                 </button>
-                            )} */}
+                            )}
                         </div>
                     </section>
                 </div>

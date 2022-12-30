@@ -9,7 +9,6 @@ const TagToken = () => {
 
     const handleChange = (tag: string, checked: boolean) => {
         const nextSelectedTags = checked ? selectedTags : tag;
-        console.log('You are interested in: ', nextSelectedTags);
         setSelectedTags(nextSelectedTags);
     };
     return (
@@ -20,8 +19,6 @@ const TagToken = () => {
                     checked={selectedTags.indexOf(tag) > -1}
                     onChange={(checked) => handleChange(tag, checked)}
                 >
-
-
                     {tag}
                 </CheckableTag>
             ))}

@@ -22,14 +22,17 @@
         flex-direction: column;
         gap: 12px;
         align-items: flex-start;
-        // border-radius: 50%;
         & p {
             font-size: 16px;
             font-weight: 500;
         }
         & > div {
             position: relative;
+            border-radius: 50%;
             &:hover label {
+                display: block;
+            }
+            & > img {
                 display: block;
             }
         }
@@ -69,12 +72,13 @@
                 font-size: 16px;
                 outline-offset: -1px;
                 margin-top: 8px;
+                resize: none;
             }
         }
     }
     &__button {
         width: 100%;
-        margin-top: 12px;
+        margin-top: 20px;
         display: flex;
         justify-content: flex-start;
         gap: 12px;

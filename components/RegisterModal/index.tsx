@@ -5,6 +5,7 @@ import password from '../../assets/icons/door-lock-line.svg';
 import user from '../../assets/icons/user-3-line.svg';
 import close from '../../assets/icons/CloseOutlined.svg';
 import axios from 'axios';
+import { registerRequest } from '../../apis/authApis';
 
 interface IProps {
     setIsShowRegisterModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -37,7 +38,6 @@ function LoginModal({ setIsShowRegisterModal, setIsShowLoginModal }: IProps) {
             return false;
         }
         if (!userInput.email.match(mailformat)) {
-            console.log('!!!');
             setErrorMessage('You have entered an invalid email address!');
 
             return false;
@@ -59,23 +59,12 @@ function LoginModal({ setIsShowRegisterModal, setIsShowLoginModal }: IProps) {
             if (!validateInput(userInput)) {
                 return;
             }
-
             setIsLoading(true);
-
-            const option = {
-                method: 'POST',
-                url: 'http://172.16.6.214:5000/api/v1/auth/register',
-                // url: 'http://localhost:5000/api/v1/auth/register',
-                data: userInput,
-            };
-            await axios(option);
+            await registerRequest(userInput);
             setIsLoading(false);
-            // alert('Register successfully');
             setIsShowRegisterModal(false);
             setIsShowLoginModal(true);
         } catch (err: any) {
-            console.log(err);
-
             setErrorMessage(err.response.data.message);
             setIsLoading(false);
         }
