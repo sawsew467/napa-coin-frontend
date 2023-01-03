@@ -43,11 +43,22 @@
                     gap: 10px;
                     align-items: center;
 
+                    & h1 {
+                        font-weight: 600;
+                    }
+
                     & h5 {
                         color: #9ba1bf;
                         font-size: 12px;
                         font-weight: normal;
                     }
+                }
+
+                .caret-icon-up {
+                    padding: 4px 8px;
+                    border-radius: 10px;
+                    background-color: #27f054;
+                    color: #fff;
                 }
 
                 .caret-icon {

@@ -22,7 +22,7 @@ interface IProps {
 
 const Header = ({ setIsShowLoginModal }: IProps) => {
     const currentUser: AppInterface['currentUser'] = useSelector((state: State) => state.currentUser);
-    console.log(currentUser);
+
     const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
     const [isShowModal, setIsShowModal] = useState<boolean>(false);
     const [isShowMenu, setIsShowMenu] = useState<boolean>(false);
@@ -36,7 +36,6 @@ const Header = ({ setIsShowLoginModal }: IProps) => {
     const toggleShowModal = () => {
         setIsShowModal(!isShowModal);
     };
-    console.log(currentUser);
 
     return (
         <>

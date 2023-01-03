@@ -20,7 +20,7 @@ const TopAccount = () => {
                 <div className={style.account__flex}>
                     <Swiper
                         slidesPerView={3}
-                        spaceBetween={96}
+                        spaceBetween={0}
                         autoplay={{
                             delay: 2500,
                             disableOnInteraction: false,
@@ -28,7 +28,6 @@ const TopAccount = () => {
                         pagination={{
                             clickable: true,
                         }}
-                        centeredSlides={true}
                         modules={[Autoplay, Pagination]}
                         className="mySwiper"
                     >
