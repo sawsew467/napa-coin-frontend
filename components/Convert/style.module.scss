@@ -1,9 +1,9 @@
 .convert {
-    width: 1500px;
     display: flex;
     align-items: center;
     gap: 10px;
     flex-basis: 50%;
+
     &::before {
         content: '';
         position: absolute;
