@@ -6,7 +6,8 @@ export const registerRequest = async (userInput: any) => {
         // url: 'http://localhost:5000/api/v1/auth/register',
         data: userInput,
     };
-    await axios(option);
+    const response = await axios(option);
+    return response;
 };
 export const loginRequest = async (userInput: any) => {
     const option = {

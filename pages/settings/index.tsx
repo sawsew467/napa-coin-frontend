@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useId, useRef, useState } from 'react';
 import Header from '../../components/Header/Header';
 import styles from './style.module.scss';
 import Image from 'next/image';
@@ -13,28 +13,59 @@ import { actionCreators, State } from '../../redux';
 import { bindActionCreators } from 'redux';
 import { useEffect } from 'react';
 import { AppInterface } from '../_app';
+import Router, { useRouter } from 'next/router';
+import axios from 'axios';
+import { changePassword, editProfile } from '../../apis/usersApis';
 
-interface FormElements extends HTMLCollection {
-    name: string;
+interface IState {
+    userInput: {
+        email: string;
+        avatar: string;
+        fullname: string;
+        bio: string;
+        oldPassword: string;
+        newPassword: string;
+    };
 }
 
 function index() {
     const currentUser: AppInterface['currentUser'] = useSelector((state: State) => state.currentUser);
+    const [userInput, setUserInput] = useState<IState['userInput']>({
+        email: '',
+        avatar: '',
+        fullname: '',
+        bio: '',
+        oldPassword: '',
+        newPassword: '',
+    });
+    const [token, setToken] = useState<string>('');
     const dispath = useDispatch();
     const { setCurrentUser } = bindActionCreators(actionCreators, dispath);
+    const router = useRouter();
+    const [isLoading, setIsLoading] = useState(false);
     useEffect(() => {
-        setCurrentUser(
-            JSON.parse(`${window.localStorage.getItem('currentUser')}`) ?? {
-                email: '',
-                avatar: '',
-                fullname: '',
-            },
-        );
+        const current: AppInterface['currentUser'] = JSON.parse(`${window.localStorage.getItem('currentUser')}`) ?? {
+            email: '',
+            avatar: '',
+            fullname: '',
+            bio: '',
+        };
+        setCurrentUser(current);
+        setUserInput({
+            ...current,
+            oldPassword: '',
+            newPassword: '',
+        });
+        setToken(window.localStorage.getItem('token') ?? '');
+        if (!JSON.parse(`${window.localStorage.getItem('currentUser')}`)) {
+            router.push('/home');
+        }
     }, []);
     const [isShowChangePasswordModal, setIsShowChangePasswordModal] = useState<boolean>(false);
     const [imageSrc, setImageSrc] = useState();
     const [uploadData, setUploadData] = useState();
     const inputRef = useRef<HTMLInputElement>(null);
+    const [errorMessage, setErrorMessage] = useState<string>('');
 
     const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const reader = new FileReader();
@@ -44,27 +75,71 @@ function index() {
         };
         e.target.files instanceof FileList && reader.readAsDataURL(e.target.files[0]);
     };
+    const uploadCloudinary = async (event: React.FormEvent<HTMLFormElement>) => {
+        if (inputRef.current?.files) {
+            const form = event.currentTarget;
+            const formData = new FormData();
+            formData.append('file', inputRef.current?.files[0]);
+            formData.append('upload_preset', 'napacoin');
+            const data = await fetch('https://api.cloudinary.com/v1_1/de41uvd76/image/upload', {
+                method: 'POST',
+                body: formData,
+            }).then((r) => r.json());
+            setUploadData(data);
+            return data.url;
+        }
+    };
     const handleOnSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        setIsLoading(true);
+        const imageUrl = await uploadCloudinary(event);
+        if (userInput.oldPassword || userInput.newPassword) {
+            const response = await changePassword(currentUser._id, token, userInput.oldPassword, userInput.newPassword);
 
-        console.log('submit');
-        console.log(imageSrc);
+            switch (response.data.status) {
+                case 'success':
+                    router.reload();
+                    break;
+                case 'error':
+                    // console.log(response.data.message);
+                    setErrorMessage(response.data.message);
+                    break;
+            }
+        } else {
+            setErrorMessage('');
+        }
+        if (userInput.fullname !== currentUser.fullname || userInput.bio !== currentUser.bio || imageUrl) {
+            const data = {
+                avatar: imageUrl,
+                fullname: userInput.fullname,
+                bio: userInput.bio,
+            };
+            const response = await editProfile(currentUser._id, token, data);
+            setCurrentUser({
+                ...currentUser,
+                fullname: response.fullname,
+                avatar: response.avatar,
+                bio: response.bio,
+            });
+            window.localStorage.setItem(
+                'currentUser',
+                JSON.stringify({
+                    ...currentUser,
+                    fullname: response.fullname,
+                    avatar: response.avatar,
+                    bio: response.bio,
+                }),
+            );
+            // setErrorMessage('');
+            console.log('reload');
 
-        const form = event.currentTarget;
-        // const fileInput = Array.from(form.elements).find(({ type }) => type === 'file');
-        // const formData = new FormData();
-        // for (const file of fileInput.files) {
-        //     formData.append('file', file);
-        // }
-        // formData.append('upload_preset', 'napacoin');
-        // const data = await fetch('https://api.cloudinary.com/v1_1/de41uvd76/image/upload', {
-        //     method: 'POST',
-        //     body: formData,
-        // }).then((r) => r.json());
-        // console.log(data);
-        // setImageSrc(data.url);
-        // setUploadData(data);
+            Router.reload();
+        } else {
+            // setErrorMessage('');
+        }
+        setIsLoading(false);
     };
+
     return (
         <>
             <Header setIsShowLoginModal={() => {}}></Header>
@@ -99,6 +174,8 @@ function index() {
                                         <input
                                             placeholder="Enter your name"
                                             defaultValue={currentUser.fullname}
+                                            value={userInput.fullname}
+                                            onChange={(e) => setUserInput({ ...userInput, fullname: e.target.value })}
                                         ></input>
                                     </div>
                                 </div>
@@ -110,6 +187,8 @@ function index() {
                                             placeholder="Your bio is empty"
                                             rows={4}
                                             defaultValue={currentUser.bio}
+                                            // value={userInput.bio}
+                                            onChange={(e) => setUserInput({ ...userInput, bio: e.target.value })}
                                         ></textarea>
                                     </div>
                                 </div>
@@ -117,18 +196,42 @@ function index() {
                                     <span>Old password</span>
                                     <div>
                                         <Image className="modal__close" src={password} alt=""></Image>
-                                        <input placeholder="******" type="password"></input>
+                                        <input
+                                            placeholder="******"
+                                            type="password"
+                                            value={userInput.oldPassword}
+                                            onChange={(e) =>
+                                                setUserInput({ ...userInput, oldPassword: e.target.value })
+                                            }
+                                            name="password"
+                                            autoComplete="on"
+                                        ></input>
                                     </div>
                                 </div>
                                 <div className={styles[`settings__input`]}>
                                     <span>New password</span>
                                     <div>
                                         <Image className="modal__close" src={password} alt=""></Image>
-                                        <input placeholder="******" type="password"></input>
+                                        <input
+                                            placeholder="******"
+                                            type="password"
+                                            value={userInput.newPassword}
+                                            onChange={(e) =>
+                                                setUserInput({ ...userInput, newPassword: e.target.value })
+                                            }
+                                            name="password"
+                                            autoComplete="on"
+                                        ></input>
                                     </div>
                                 </div>
+                                {errorMessage ? (
+                                    <p className={styles[`settings__error`]}>{errorMessage}</p>
+                                ) : (
+                                    <p className={styles[`settings__error`]}>&nbsp;</p>
+                                )}
                                 <div className={styles[`settings__button`]}>
-                                    <button>Save</button>
+                                    {isLoading ? <button>Loading...</button> : <button>Save</button>}
+                                    {/* <button>Save</button> */}
                                     {/* <button onClick={() => setIsShowChangePasswordModal(true)}>Change password</button> */}
                                 </div>
                             </form>

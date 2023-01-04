@@ -12,8 +12,9 @@ import { bindActionCreators } from 'redux';
 import { AppInterface } from '../_app';
 import Link from 'next/link';
 import axios from 'axios';
-import { useRouter } from 'next/router';
+import { Router, useRouter } from 'next/router';
 import { getInfo } from '../../apis/usersApis';
+import { followUser, unfollowUser } from '../../apis/followApis';
 
 interface IState {
     user: {
@@ -21,6 +22,8 @@ interface IState {
         email: string;
         bio: string;
         avatar: string;
+        following: string[];
+        follower: string[];
     };
 }
 
@@ -33,28 +36,85 @@ function index() {
         email: '',
         bio: '',
         avatar: '',
+        follower: [],
+        following: [],
     });
+    const [followers, setFollowers] = useState<number>(0);
+    const [token, setToken] = useState<string>('');
     const router = useRouter();
     const { uid } = router.query;
     useEffect(() => {
         if (uid) {
-            getInfo(uid).then((res) => {
-                setUser(res.results);
-            });
+            getInfo(uid, window.localStorage.getItem('token') ?? '')
+                .then((res) => {
+                    setUser(res.results);
+                    setFollowers(res.results.follower.length);
+                    console.log();
+                })
+                .catch((err) => {
+                    console.log(err);
+                    router.push('/home');
+                });
         }
     }, [uid]);
+    const [isFollowing, setIsFollowing] = useState<boolean>(false);
     useEffect(() => {
-        setCurrentUser(
-            JSON.parse(`${window.localStorage.getItem('currentUser')}`) ?? {
-                email: '',
-                avatar: '',
-                fullname: '',
-                bio: '',
-            },
+        if (!router.isReady) {
+            return;
+        }
+        const current = JSON.parse(`${window.localStorage.getItem('currentUser')}`) ?? {
+            email: '',
+            avatar: '',
+            fullname: '',
+            bio: '',
+        };
+        setCurrentUser(current);
+        setToken(window.localStorage.getItem('token') ?? '');
+        if (typeof uid === 'string') {
+            setIsFollowing(current.following?.includes(uid));
+        }
+    }, [router.isReady, router.query.uid]);
+    const [isLoading, setIsloading] = useState<boolean>(false);
+    const followHandler = async () => {
+        setIsloading(true);
+        followUser(currentUser._id, uid)
+            .then((res) => {
+                console.log('response: ' + res.status);
+                setIsloading(false);
+                setIsFollowing(true);
+                window.localStorage.setItem(
+                    'currentUser',
+                    JSON.stringify({
+                        ...currentUser,
+                        following: [...currentUser.following, uid],
+                    }),
+                );
+                setFollowers((pre) => pre + 1);
+            })
+            .catch((err) => {
+                setIsloading(false);
+            });
+    };
+    const unfollowHandler = async () => {
+        setIsloading(true);
+        unfollowUser(currentUser._id, uid)
+            .then((res) => {
+                console.log('response: ' + res.status);
+                setIsloading(false);
+                setIsFollowing(false);
+                setFollowers((pre) => pre - 1);
+            })
+            .catch((err) => {
+                setIsloading(false);
+            });
+        window.localStorage.setItem(
+            'currentUser',
+            JSON.stringify({
+                ...currentUser,
+                following: currentUser.following.filter((item) => item !== uid),
+            }),
         );
-    }, []);
-
-    const [isFollowing, setIsFollowing] = useState(false);
+    };
     return (
         <>
             <Header setIsShowLoginModal={() => {}}></Header>
@@ -67,11 +127,11 @@ function index() {
                             <p className={styles[`profile__email`]}>{user.email}</p>
                             <div className={styles[`profile__follow`]}>
                                 <p>
-                                    <span>0</span>
+                                    <span>{user.following.length}</span>
                                     &nbsp;following
                                 </p>
                                 <p>
-                                    <span>0</span>
+                                    <span>{followers}</span>
                                     &nbsp;followers
                                 </p>
                             </div>
@@ -91,18 +151,20 @@ function index() {
                                 turn their assets into NFT's. */}
                             </p>
                             {isFollowing ? (
-                                <button
-                                    className={styles[`profile__button--slate`]}
-                                    onClick={() => setIsFollowing(false)}
-                                >
-                                    <Image src={Check} alt=""></Image>
-                                    &nbsp;Following
+                                isLoading ? (
+                                    <button className={styles[`profile__button--slate`]}>Loading...</button>
+                                ) : (
+                                    <button className={styles[`profile__button--slate`]} onClick={unfollowHandler}>
+                                        <Image src={Check} alt=""></Image>
+                                        &nbsp;Following
+                                    </button>
+                                )
+                            ) : isLoading ? (
+                                <button className={styles[`profile__button--primary`]} onClick={followHandler}>
+                                    Loading...
                                 </button>
                             ) : (
-                                <button
-                                    className={styles[`profile__button--primary`]}
-                                    onClick={() => setIsFollowing(true)}
-                                >
+                                <button className={styles[`profile__button--primary`]} onClick={followHandler}>
                                     + Follow
                                 </button>
                             )}

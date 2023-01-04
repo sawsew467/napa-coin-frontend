@@ -16,11 +16,12 @@ function index({ setIsShowMenu }: IProps) {
     const handleLogOut = () => {
         setIsLogOut(true);
         setIsShowMenu(false);
-        Router.reload();
-        router.push('/');
+        // Router.reload();
+        router.push('/home');
     };
     useEffect(() => {
         isLogOut && window.localStorage.removeItem('currentUser');
+        isLogOut && window.localStorage.removeItem('token');
     }, [isLogOut]);
     return (
         <>

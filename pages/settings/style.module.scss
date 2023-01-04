@@ -43,6 +43,9 @@
             left: 0;
             opacity: 0.5;
             cursor: pointer;
+            & img {
+                display: block;
+            }
         }
     }
     &__input {
@@ -78,7 +81,7 @@
     }
     &__button {
         width: 100%;
-        margin-top: 20px;
+        // margin-top: 20px;
         display: flex;
         justify-content: flex-start;
         gap: 12px;
@@ -101,5 +104,12 @@
     }
     &__file {
         display: none;
+    }
+    &__error {
+        color: red;
+        text-align: center;
+        font-size: 14px;
+        margin-top: 4px;
+        margin-bottom: 4px;
     }
 }

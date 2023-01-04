@@ -70,6 +70,11 @@ function LoginModal({ setIsShowRegisterModal, setIsShowLoginModal }: IProps) {
             setIsLoading(false);
         }
     };
+    const handleEnterPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter') {
+            handleSubmit();
+        }
+    };
     return (
         <div className="overlay">
             <div className="modal box">
@@ -97,6 +102,7 @@ function LoginModal({ setIsShowRegisterModal, setIsShowLoginModal }: IProps) {
                                 password: e.target.value,
                             })
                         }
+                        onKeyDown={(e) => handleEnterPress(e)}
                     ></input>
                     <Image className="icon" src={password} alt=""></Image>
                 </div>

@@ -24,9 +24,9 @@ function LoginModal({ setIsShowRegisterModal, setIsShowLoginModal }: IProps) {
     const [errorMessage, setErrorMessage] = useState<string>('');
     const validateInput = (userInput: IState['userInput']) => {
         var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        var nameformat = /^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/;
         if (!userInput.fullname) {
             setErrorMessage('Please enter your name!');
-
             return false;
         }
         if (!userInput.email) {
@@ -39,7 +39,14 @@ function LoginModal({ setIsShowRegisterModal, setIsShowLoginModal }: IProps) {
         }
         if (!userInput.email.match(mailformat)) {
             setErrorMessage('You have entered an invalid email address!');
-
+            return false;
+        }
+        if (!userInput.fullname.match(nameformat)) {
+            setErrorMessage('You have entered an invalid name!');
+            return false;
+        }
+        if (userInput.password.length < 6) {
+            setErrorMessage('Password must be at least 6 characters');
             return false;
         }
         return true;
@@ -67,6 +74,11 @@ function LoginModal({ setIsShowRegisterModal, setIsShowLoginModal }: IProps) {
         } catch (err: any) {
             setErrorMessage(err.response.data.message);
             setIsLoading(false);
+        }
+    };
+    const handleEnterPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter') {
+            handleSubmit();
         }
     };
     return (
@@ -114,6 +126,7 @@ function LoginModal({ setIsShowRegisterModal, setIsShowLoginModal }: IProps) {
                                 password: e.target.value,
                             })
                         }
+                        onKeyDown={(e) => handleEnterPress(e)}
                     ></input>
                     <Image className="icon" src={password} alt=""></Image>
                 </div>
