@@ -66,8 +66,8 @@ const columns: ColumnsType<DataType> = [
                 </div>
             </Link>
         ),
-        dataIndex: ['name'],
-        width: '10%',
+        dataIndex: 'name',
+        width: '20%',
     },
     {
         title: 'Price',
@@ -181,6 +181,8 @@ const TableToken: React.FC = () => {
         const listData = async () => {
             const res = await axios.get(`http://localhost:5000/api/v1/coin/latest`);
             setResult(res.data.data);
+            console.log(res.data.data);
+
             setIsLoading(false);
             setActive(false);
         };

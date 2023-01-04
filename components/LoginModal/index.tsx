@@ -8,6 +8,8 @@ import { IState as AppState } from '../../pages/home';
 import { useDispatch } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { actionCreators } from '../../redux';
+import { loginRequest } from '../../apis/authApis';
+import Router, { useRouter } from 'next/router';
 
 interface IProps {
     setIsShowRegisterModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -34,7 +36,6 @@ function LoginModal({ setIsShowRegisterModal, setIsShowLoginModal }: IProps) {
             return false;
         }
         if (!userInput.email.match(mailformat)) {
-            console.log('!!!');
             setErrorMessage('You have entered an invalid email address!');
 
             return false;
@@ -58,22 +59,22 @@ function LoginModal({ setIsShowRegisterModal, setIsShowLoginModal }: IProps) {
                 return;
             }
             setIsLoading(true);
-            const option = {
-                method: 'POST',
-                url: 'http://172.16.6.214:5000/api/v1/auth/login',
-                // url: 'http://localhost:5000/api/v1/auth/login',
-                data: userInput,
-            };
-            const response = await axios(option);
+            const response = await loginRequest(userInput);
             const { token, user } = response.data.data;
             window.localStorage.setItem('token', token);
             window.localStorage.setItem('currentUser', JSON.stringify(user));
             setCurrentUser(user);
+            Router.reload();
             setIsShowLoginModal(false);
             setIsLoading(false);
         } catch (err) {
             setErrorMessage('Your email or password is incorrect!');
             setIsLoading(false);
+        }
+    };
+    const handleEnterPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter') {
+            handleSubmit();
         }
     };
     return (
@@ -103,6 +104,7 @@ function LoginModal({ setIsShowRegisterModal, setIsShowLoginModal }: IProps) {
                                 password: e.target.value,
                             })
                         }
+                        onKeyDown={(e) => handleEnterPress(e)}
                     ></input>
                     <Image className="icon" src={password} alt=""></Image>
                 </div>

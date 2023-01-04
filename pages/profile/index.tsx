@@ -11,12 +11,17 @@ import { actionCreators } from '../../redux';
 import { bindActionCreators } from 'redux';
 import { AppInterface } from '../_app';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 function index() {
     const currentUser: AppInterface['currentUser'] = useSelector((state: State) => state.currentUser);
     const dispath = useDispatch();
     const { setCurrentUser } = bindActionCreators(actionCreators, dispath);
+    const router = useRouter();
     useEffect(() => {
+        if (!JSON.parse(`${window.localStorage.getItem('currentUser')}`)) {
+            router.push('/home');
+        }
         setCurrentUser(
             JSON.parse(`${window.localStorage.getItem('currentUser')}`) ?? {
                 email: '',
@@ -26,20 +31,9 @@ function index() {
             },
         );
     }, []);
-
-    const [isFollowing, setIsFollowing] = useState(false);
     return (
         <>
-            <div
-                style={{
-                    position: 'fixed',
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                }}
-            >
-                <Header setIsShowLoginModal={() => {}}></Header>
-            </div>
+            <Header setIsShowLoginModal={() => {}}></Header>
             <div className="wrapper">
                 <div className="container">
                     <section className={styles[`profile`]}>
@@ -49,11 +43,11 @@ function index() {
                             <p className={styles[`profile__email`]}>{currentUser.email}</p>
                             <div className={styles[`profile__follow`]}>
                                 <p>
-                                    <span>0</span>
+                                    <span>{currentUser?.following?.length}</span>
                                     &nbsp;following
                                 </p>
                                 <p>
-                                    <span>0</span>
+                                    <span>{currentUser?.follower?.length}</span>
                                     &nbsp;followers
                                 </p>
                             </div>

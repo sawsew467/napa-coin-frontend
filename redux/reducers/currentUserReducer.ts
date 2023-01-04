@@ -3,10 +3,13 @@ import { ActionType } from '../action-types';
 import { Action } from '../actions';
 
 const inittialState = {
+    _id: '',
     email: '',
     avatar: '',
     fullname: '',
     bio: '',
+    following: [],
+    follower: [],
 };
 
 const reducer = (state = inittialState, action: Action) => {

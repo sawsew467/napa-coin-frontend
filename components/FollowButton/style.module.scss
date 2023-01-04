@@ -1,0 +1,38 @@
+.button {
+    &--primary {
+        font-size: 16px;
+        color: #fff;
+        background-color: #408cf6;
+        border-radius: 10px;
+        border: none;
+        width: 416px;
+        padding: 8px 0;
+        cursor: pointer;
+        transition: all 0.3s;
+        &:hover {
+            background-color: #73adff;
+        }
+    }
+    &--slate {
+        font-size: 16px;
+        color: #000;
+        background-color: #d9d9d9;
+        border-radius: 10px;
+        border: none;
+        width: 416px;
+        padding: 8px 0;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto;
+        transition: all 0.3s;
+        &:hover {
+            background-color: #abaaaa;
+        }
+        & img {
+            width: 20px;
+            height: 20px;
+        }
+    }
+}

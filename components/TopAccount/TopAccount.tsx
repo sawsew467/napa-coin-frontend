@@ -1,15 +1,35 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import style from './top-account.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, Autoplay } from 'swiper';
 import 'swiper/css';
 import 'swiper/css/pagination';
-
+import { AppInterface } from '../../pages/_app';
 import Account from './Account';
-import style from './top-account.module.scss';
+import { getAllUsers } from '../../apis/usersApis';
+import { useSelector } from 'react-redux';
+import { State } from '../../redux';
+
+export interface IState {
+    user: {
+        _id: string;
+        fullname: string;
+        email: string;
+        avatar: string;
+    };
+    userList: IState['user'][];
+}
 
 const TopAccount = () => {
+    const currentUser: AppInterface['currentUser'] = useSelector((state: State) => state.currentUser);
+    const [userList, setUserList] = useState<IState['userList']>([]);
+    useEffect(() => {
+        getAllUsers().then((res) => {
+            setUserList(res.data.users);
+        });
+    }, []);
     return (
         <div className={style.account__container}>
             <div className={style.account__title}>
@@ -31,21 +51,13 @@ const TopAccount = () => {
                         modules={[Autoplay, Pagination]}
                         className="mySwiper"
                     >
-                        <SwiperSlide>
-                            <Account></Account>
-                        </SwiperSlide>
-                        <SwiperSlide>
-                            <Account></Account>
-                        </SwiperSlide>
-                        <SwiperSlide>
-                            <Account></Account>
-                        </SwiperSlide>
-                        <SwiperSlide>
-                            <Account></Account>
-                        </SwiperSlide>
-                        <SwiperSlide>
-                            <Account></Account>
-                        </SwiperSlide>
+                        {userList
+                            .filter((user) => user._id !== currentUser._id)
+                            .map((user) => (
+                                <SwiperSlide key={user._id}>
+                                    <Account user={user}></Account>
+                                </SwiperSlide>
+                            ))}
                     </Swiper>
                 </div>
             </div>

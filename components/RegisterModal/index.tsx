@@ -5,6 +5,7 @@ import password from '../../assets/icons/door-lock-line.svg';
 import user from '../../assets/icons/user-3-line.svg';
 import close from '../../assets/icons/CloseOutlined.svg';
 import axios from 'axios';
+import { registerRequest } from '../../apis/authApis';
 
 interface IProps {
     setIsShowRegisterModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -23,9 +24,9 @@ function LoginModal({ setIsShowRegisterModal, setIsShowLoginModal }: IProps) {
     const [errorMessage, setErrorMessage] = useState<string>('');
     const validateInput = (userInput: IState['userInput']) => {
         var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        var nameformat = /^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/;
         if (!userInput.fullname) {
             setErrorMessage('Please enter your name!');
-
             return false;
         }
         if (!userInput.email) {
@@ -37,9 +38,15 @@ function LoginModal({ setIsShowRegisterModal, setIsShowLoginModal }: IProps) {
             return false;
         }
         if (!userInput.email.match(mailformat)) {
-            console.log('!!!');
             setErrorMessage('You have entered an invalid email address!');
-
+            return false;
+        }
+        if (!userInput.fullname.match(nameformat)) {
+            setErrorMessage('You have entered an invalid name!');
+            return false;
+        }
+        if (userInput.password.length < 6) {
+            setErrorMessage('Password must be at least 6 characters');
             return false;
         }
         return true;
@@ -59,25 +66,19 @@ function LoginModal({ setIsShowRegisterModal, setIsShowLoginModal }: IProps) {
             if (!validateInput(userInput)) {
                 return;
             }
-
             setIsLoading(true);
-
-            const option = {
-                method: 'POST',
-                url: 'http://172.16.6.214:5000/api/v1/auth/register',
-                // url: 'http://localhost:5000/api/v1/auth/register',
-                data: userInput,
-            };
-            await axios(option);
+            await registerRequest(userInput);
             setIsLoading(false);
-            // alert('Register successfully');
             setIsShowRegisterModal(false);
             setIsShowLoginModal(true);
         } catch (err: any) {
-            console.log(err);
-
             setErrorMessage(err.response.data.message);
             setIsLoading(false);
+        }
+    };
+    const handleEnterPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter') {
+            handleSubmit();
         }
     };
     return (
@@ -125,6 +126,7 @@ function LoginModal({ setIsShowRegisterModal, setIsShowLoginModal }: IProps) {
                                 password: e.target.value,
                             })
                         }
+                        onKeyDown={(e) => handleEnterPress(e)}
                     ></input>
                     <Image className="icon" src={password} alt=""></Image>
                 </div>

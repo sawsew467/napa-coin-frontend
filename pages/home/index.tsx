@@ -22,7 +22,6 @@ export interface IState {
 
 const HomePage = () => {
     const darkMode: AppInterface['darkmode'] = useSelector((state: State) => state.darkmode);
-    console.log('darkMode', darkMode);
     const [isShowLoginModal, setIsShowLoginModal] = useState(false);
     const [isShowRegisterModal, setIsShowRegisterModal] = useState(false);
     const dispath = useDispatch();

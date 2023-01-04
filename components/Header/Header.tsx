@@ -22,7 +22,6 @@ interface IProps {
 
 const Header = ({ setIsShowLoginModal }: IProps) => {
     const currentUser: AppInterface['currentUser'] = useSelector((state: State) => state.currentUser);
-
     const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
     const [isShowModal, setIsShowModal] = useState<boolean>(false);
     const [isShowMenu, setIsShowMenu] = useState<boolean>(false);
@@ -32,7 +31,6 @@ const Header = ({ setIsShowLoginModal }: IProps) => {
         isDarkMode ? setDarkmode('light') : setDarkmode('dark');
         setIsDarkMode(checked);
     };
-
     const toggleShowModal = () => {
         setIsShowModal(!isShowModal);
     };
@@ -63,7 +61,7 @@ const Header = ({ setIsShowLoginModal }: IProps) => {
                                 </button>
                             )}
                             <div className={!isShowMenu ? styles['header__menu'] : styles['header__menu-active']}>
-                                <Dropdown></Dropdown>
+                                <Dropdown setIsShowMenu={setIsShowMenu}></Dropdown>
                             </div>
                         </div>
                     </header>

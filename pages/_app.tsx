@@ -10,10 +10,13 @@ import { store } from '../redux';
 export interface AppInterface {
     darkmode: string;
     currentUser: {
+        _id: string;
         fullname: string;
         email: string;
         avatar: string;
         bio: string;
+        following: string[];
+        follower: string[];
     };
 }
 

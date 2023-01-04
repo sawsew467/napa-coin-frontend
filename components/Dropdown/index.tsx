@@ -5,17 +5,23 @@ import { AppInterface } from '../../pages/_app';
 import { State } from '../../redux';
 import styles from './style.module.scss';
 import Router, { useRouter } from 'next/router';
+interface IProps {
+    setIsShowMenu: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
-function index() {
+function index({ setIsShowMenu }: IProps) {
     const currentUser: AppInterface['currentUser'] = useSelector((state: State) => state.currentUser);
     const [isLogOut, setIsLogOut] = useState(false);
     const router = useRouter();
     const handleLogOut = () => {
         setIsLogOut(true);
-        router.push('/');
+        setIsShowMenu(false);
+        // Router.reload();
+        router.push('/home');
     };
     useEffect(() => {
         isLogOut && window.localStorage.removeItem('currentUser');
+        isLogOut && window.localStorage.removeItem('token');
     }, [isLogOut]);
     return (
         <>
@@ -29,18 +35,26 @@ function index() {
                 </div>
                 <div className={styles['dropdown__body']}>
                     <ul className={styles['dropdown__list']}>
-                        <li className={styles['dropdown__item']}>
-                            <Link href="/profile">Your profile</Link>
-                        </li>
-                        <li className={styles['dropdown__item']}>
-                            <Link href="/watch-list">Watch list</Link>
-                        </li>
-                        <li className={styles['dropdown__item']}>
-                            <Link href="/settings">Settings</Link>
-                        </li>
-                        <li className={styles['dropdown__item']} onClick={handleLogOut}>
-                            <Link href="/home">Log out</Link>
-                        </li>
+                        <Link href="/profile">
+                            <li className={styles['dropdown__item']} onClick={() => setIsShowMenu(false)}>
+                                Your profile
+                            </li>
+                        </Link>
+                        <Link href="/watchlist">
+                            <li className={styles['dropdown__item']} onClick={() => setIsShowMenu(false)}>
+                                Watch list
+                            </li>
+                        </Link>
+                        <Link href="/settings">
+                            <li className={styles['dropdown__item']} onClick={() => setIsShowMenu(false)}>
+                                Settings
+                            </li>
+                        </Link>
+                        <Link href="/">
+                            <li className={styles['dropdown__item']} onClick={handleLogOut}>
+                                Log out
+                            </li>
+                        </Link>
                     </ul>
                 </div>
             </div>
