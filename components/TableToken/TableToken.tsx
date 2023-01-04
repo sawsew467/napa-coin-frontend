@@ -1,19 +1,21 @@
+/* eslint-disable @next/next/no-img-element */
 import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretDown, faCaretUp, faStar } from '@fortawesome/free-solid-svg-icons';
 import type { ColumnsType } from 'antd/es/table';
-import { Table } from 'antd';
+import { Skeleton, Spin, Table } from 'antd';
 import Image from 'next/image';
+import Link from 'next/link';
+import axios from 'axios';
+import { DotChartOutlined } from '@ant-design/icons';
 
 import avtCoin from '../../assets/img/avt.png';
 import chartImg from '../../assets/img/Vector.png';
 import style from './table.module.scss';
 import TagToken from './TagToken';
-import Link from 'next/link';
-import axios from 'axios';
 
-interface DataType {
-    index: number;
+export interface DataType {
+    cmc_rank: number;
     id: number;
     name: string;
     quote: any;
@@ -26,10 +28,11 @@ interface DataType {
     volume: number;
     subVolume: number;
     circulating_supply: number;
+    slug: string;
 }
 
-const currencyFormat = (num: number) => {
-    return num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+export const currencyFormat = (num: number) => {
+    return '$' + num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
 };
 
 const columns: ColumnsType<DataType> = [
@@ -40,39 +43,40 @@ const columns: ColumnsType<DataType> = [
                 <FontAwesomeIcon icon={faStar} />
             </span>
         ),
-        width: '5%',
+        width: '1%',
     },
     {
         title: '#',
-        dataIndex: 'id',
-        width: '5%',
+        dataIndex: 'cmc_rank',
+        width: '1%',
     },
     {
         title: 'Name',
-        render: (name, id) => (
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <p> {name}</p>
-                <img
-                    src={`https://s2.coinmarketcap.com/static/img/coins/64x64/${id}.png`}
-                    alt="logo"
-                    height="22"
-                    width="22"
-                    style={{ borderRadius: '80px' }}
-                />
-                {/* {name} */}
-            </div>
+        render: (name, record) => (
+            <Link href={`token-detail/${record.slug}`}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}>
+                    <img
+                        src={`https://s2.coinmarketcap.com/static/img/coins/64x64/${record.id}.png`}
+                        alt="logo"
+                        height="22"
+                        width="22"
+                        style={{ borderRadius: '80px' }}
+                    />
+                    <span style={{ color: '#000', cursor: 'pointer' }}> {record.name}</span>
+                </div>
+            </Link>
         ),
-        dataIndex: ['name', 'id'],
+        dataIndex: 'name',
         width: '20%',
     },
     {
         title: 'Price',
         dataIndex: 'quote',
-        render: (quote) => <span>$ {currencyFormat(quote.USD.price)}</span>,
+        render: (quote) => <span>{currencyFormat(quote.USD.price)}</span>,
         sorter: {
             compare: (a, b) => a.quote.USD.price - b.quote.USD.price,
         },
-        width: '20%',
+        width: '15%',
     },
     {
         title: '1h',
@@ -91,7 +95,7 @@ const columns: ColumnsType<DataType> = [
         sorter: {
             compare: (a, b) => a.quote.USD.percent_change_1h - b.quote.USD.percent_change_1h,
         },
-        width: '10%',
+        width: '15%',
     },
     {
         title: '24h',
@@ -109,7 +113,7 @@ const columns: ColumnsType<DataType> = [
         sorter: {
             compare: (a, b) => a.quote.USD.percent_change_24h - b.quote.USD.percent_change_24h,
         },
-        width: '10%',
+        width: '15%',
     },
     {
         title: '7d',
@@ -127,48 +131,60 @@ const columns: ColumnsType<DataType> = [
         sorter: {
             compare: (a, b) => a.quote.USD.percent_change_7d - b.quote.USD.percent_change_7d,
         },
-        width: '10%',
+        width: '15%',
     },
     {
         title: 'MarketCap',
         dataIndex: 'quote',
-        render: (quote) => <span>$ {currencyFormat(quote.USD.market_cap)}</span>,
+        render: (quote) => <span>{currencyFormat(quote.USD.market_cap)}</span>,
         sorter: {
             compare: (a, b) => a.quote.USD.market_cap - b.quote.USD.market_cap,
         },
-        width: '10%',
     },
     {
         title: 'Volume (24h)',
         dataIndex: 'quote',
-        render: (quote) => <span>$ {currencyFormat(quote.USD.volume_24h)}</span>,
+        render: (quote) => <span>{currencyFormat(quote.USD.volume_24h)}</span>,
         sorter: {
             compare: (a, b) => a.quote.USD.volume_24h - b.quote.USD.volume_24h,
         },
-        width: '10%',
     },
     {
         title: 'Circulating Supply',
         dataIndex: 'circulating_supply',
-        render: (circulating) => <span>$ {currencyFormat(circulating)} </span>,
+        render: (circulating) => <span>{currencyFormat(circulating)} </span>,
         sorter: {
             compare: (a, b) => a.circulating_supply - b.circulating_supply,
         },
-        width: '10%',
     },
     {
         title: 'Last 7 days',
-        render: () => <Image src={chartImg} alt="chart image" />,
+        dataIndex: 'id',
+        render: (id) => (
+            <img
+                src={`https://s3.coinmarketcap.com/generated/sparklines/web/7d/2781/${id}.svg`}
+                alt="chart image"
+                width={100}
+            />
+        ),
+
+        width: '1%',
     },
 ];
 
 const TableToken: React.FC = () => {
     const [result, setResult] = useState<DataType[]>([]);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [active, setActive] = useState(true);
 
     useEffect(() => {
         const listData = async () => {
             const res = await axios.get(`http://localhost:5000/api/v1/coin/latest`);
             setResult(res.data.data);
+            console.log(res.data.data);
+
+            setIsLoading(false);
+            setActive(false);
         };
 
         listData();
@@ -186,15 +202,22 @@ const TableToken: React.FC = () => {
                     <TagToken></TagToken>
                 </div>
             </div>
-            <Table
-                columns={columns}
-                dataSource={result}
-                pagination={{
-                    defaultPageSize: 10,
-                    showSizeChanger: true,
-                    pageSizeOptions: ['10', '20', '30'],
-                }}
-            />
+            {isLoading ? (
+                <div className={style[`table-loading`]}>
+                    <Spin />
+                </div>
+            ) : (
+                <Table
+                    columns={columns}
+                    dataSource={result}
+                    rowKey="id"
+                    pagination={{
+                        defaultPageSize: 10,
+                        showSizeChanger: true,
+                        pageSizeOptions: ['10', '20', '30'],
+                    }}
+                />
+            )}
         </div>
     );
 };

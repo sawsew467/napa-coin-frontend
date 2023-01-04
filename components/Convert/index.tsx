@@ -1,11 +1,11 @@
 import React from 'react';
 import Image from 'next/image';
+import Input from 'antd/es/input/Input';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faRightLeft } from '@fortawesome/free-solid-svg-icons';
 
 import avtCoin from '../../assets/img/avt.png';
 import style from './style.module.scss';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faRightLeft } from '@fortawesome/free-solid-svg-icons';
-import Input from 'antd/es/input/Input';
 
 const Convert = () => {
     return (

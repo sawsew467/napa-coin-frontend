@@ -10,6 +10,7 @@ import { useSelector } from 'react-redux';
 import { State } from '../../redux';
 import Router, { useRouter } from 'next/router';
 import Check from '../../assets/icons/check-line.svg';
+import FollowButton from '../../components/FollowButton';
 
 interface IProps {
     user: {
@@ -22,38 +23,34 @@ interface IProps {
 
 const Account = ({ user }: IProps) => {
     const currentUser: AppInterface['currentUser'] = useSelector((state: State) => state.currentUser);
-    const router = useRouter();
+    // console.log(currentUser);
+
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isFollowing, setIsFollowing] = useState<boolean>(false);
     useEffect(() => {
+        console.log(currentUser);
+        console.log(user._id);
+
         setIsFollowing(currentUser.following?.includes(user._id));
-        console.log(user.fullname, currentUser.following?.includes(user._id));
     }, []);
     return (
         <div className={style.account}>
             <div className={style.account__flex}>
                 <div className={style.account__item}>
-                    {/* <Image src={avtAccount} alt="avt account" /> */}
                     <img src={user.avatar}></img>
                     <Link href={`/profile/${user._id}`}>
                         <p>{user.fullname}</p>
                     </Link>
                     <FontAwesomeIcon className="icon-color" icon={faCircleCheck} />
                     <small className={style.at}>{user.email}</small>
-                    {isFollowing ? (
-                        <Link href={`/profile/${user._id}`}>
-                            <button
-                                className={style[`account__button--slate`]}
-                                //  onClick={unfollowHandler}
-                            >
-                                <Image src={Check} alt=""></Image>
-                                &nbsp;Following
-                            </button>
-                        </Link>
-                    ) : (
-                        <Link href={`/profile/${user._id}`}>
-                            <button className={style[`account__button--primary`]}>+ Follow</button>
-                        </Link>
-                    )}
+                    <FollowButton
+                        isLoading={isLoading}
+                        setIsLoading={setIsLoading}
+                        isFollowing={isFollowing}
+                        setIsFollowing={setIsFollowing}
+                        setFollowers={() => {}}
+                        followedId={user._id}
+                    ></FollowButton>
                 </div>
             </div>
         </div>

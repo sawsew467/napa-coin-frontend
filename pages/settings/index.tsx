@@ -89,26 +89,38 @@ function index() {
             return data.url;
         }
     };
+    const validateInput = (name: string) => {
+        var nameformat = /^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/;
+        if (!name.match(nameformat)) {
+            setErrorMessage('You have entered an invalid name!');
+            return false;
+        }
+        return true;
+    };
     const handleOnSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         setIsLoading(true);
         const imageUrl = await uploadCloudinary(event);
         if (userInput.oldPassword || userInput.newPassword) {
             const response = await changePassword(currentUser._id, token, userInput.oldPassword, userInput.newPassword);
-
             switch (response.data.status) {
                 case 'success':
                     router.reload();
                     break;
                 case 'error':
-                    // console.log(response.data.message);
                     setErrorMessage(response.data.message);
+                    setIsLoading(false);
+                    return;
                     break;
             }
         } else {
             setErrorMessage('');
         }
         if (userInput.fullname !== currentUser.fullname || userInput.bio !== currentUser.bio || imageUrl) {
+            if (!validateInput(userInput.fullname)) {
+                setIsLoading(false);
+                return;
+            }
             const data = {
                 avatar: imageUrl,
                 fullname: userInput.fullname,
@@ -131,7 +143,6 @@ function index() {
                 }),
             );
             // setErrorMessage('');
-            console.log('reload');
 
             Router.reload();
         } else {

@@ -9,6 +9,7 @@ import { useDispatch } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { actionCreators } from '../../redux';
 import { loginRequest } from '../../apis/authApis';
+import Router, { useRouter } from 'next/router';
 
 interface IProps {
     setIsShowRegisterModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -63,6 +64,7 @@ function LoginModal({ setIsShowRegisterModal, setIsShowLoginModal }: IProps) {
             window.localStorage.setItem('token', token);
             window.localStorage.setItem('currentUser', JSON.stringify(user));
             setCurrentUser(user);
+            Router.reload();
             setIsShowLoginModal(false);
             setIsLoading(false);
         } catch (err) {
