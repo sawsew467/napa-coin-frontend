@@ -11,6 +11,9 @@ import Account from './Account';
 import { getAllUsers } from '../../apis/usersApis';
 import { useSelector } from 'react-redux';
 import { State } from '../../redux';
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 
 export interface IState {
     user: {
@@ -22,14 +25,31 @@ export interface IState {
     userList: IState['user'][];
 }
 
+const settings = {
+    infinite: true,
+    autoplay: true,
+    speed: 500,
+    slidesToShow: 3,
+    slidesToScroll: 3,
+    autoplaySpeed: 4000,
+    cssEase: 'linear',
+};
+
 const TopAccount = () => {
     const currentUser: AppInterface['currentUser'] = useSelector((state: State) => state.currentUser);
     const [userList, setUserList] = useState<IState['userList']>([]);
     useEffect(() => {
-        getAllUsers().then((res) => {
-            setUserList(res.data.users);
-        });
+        getAllUsers()
+            .then((res) => {
+                setUserList(res.data.users);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
     }, []);
+
+    console.log(userList);
+
     return (
         <div className={style.account__container}>
             <div className={style.account__title}>
@@ -37,8 +57,17 @@ const TopAccount = () => {
                     {' '}
                     <FontAwesomeIcon className={style.star} icon={faStar} /> Top Community Accounts
                 </h2>
-                <div className={style.account__flex}>
-                    <Swiper
+                <Slider {...settings}>
+                    {userList
+                        .filter((user) => user._id !== currentUser._id)
+                        .map((user) => (
+                            <div key={user._id}>
+                                <Account user={user}></Account>
+                            </div>
+                        ))}
+                </Slider>
+                {/* <div className={style.account__flex}>
+                    {/* <Swiper
                         slidesPerView={3}
                         spaceBetween={0}
                         autoplay={{
@@ -58,8 +87,8 @@ const TopAccount = () => {
                                     <Account user={user}></Account>
                                 </SwiperSlide>
                             ))}
-                    </Swiper>
-                </div>
+                    </Swiper> */}
+                {/* </div> */}
             </div>
         </div>
     );
