@@ -1,7 +1,6 @@
 import axios from 'axios';
 
 export const followUser = async (userId: string | string[], followedId: any) => {
-    console.log('followedId', followedId);
 
     const option = {
         method: 'post',
@@ -17,7 +16,6 @@ export const followUser = async (userId: string | string[], followedId: any) => 
     return response.data;
 };
 export const unfollowUser = async (userId: string | string[], followedId: any) => {
-    console.log('followedId', followedId);
 
     const option = {
         method: 'post',
