@@ -34,7 +34,7 @@ const DetailToken: React.FC<Token> = (props) => {
                                         <h1 style={{ fontWeight: '500' }}>{token.name}</h1>
                                         <span className={style[`name-symbol`]}>{token.symbol}</span>
                                     </div>
-                                    <span className={style[`rank`]}>Rank {token.cmc_rank}</span>
+                                    <span className={style[`rank`]}>Rank #{token.cmc_rank}</span>
                                     <div className={style[`tags-detail`]}>
                                         <p className={style[`tag-heading`]}>Tags:</p>
                                         {token.tags.slice(0, 10).map((tag, index) => (
@@ -49,31 +49,31 @@ const DetailToken: React.FC<Token> = (props) => {
                                         <h4>{token.name}</h4>
                                         <div className={style[`info-flex`]}>
                                             <h1>{currencyFormat(Math.abs(token.quote.USD.price))}</h1>
-                                            {token.quote.USD.percent_change_7d >= 0 ? (
+                                            {token.quote.USD.percent_change_24h >= 0 ? (
                                                 <span className={style[`caret-icon-up`]}>
                                                     <FontAwesomeIcon icon={faCaretUp} />{' '}
-                                                    {token.quote.USD.percent_change_7d.toFixed(2)} %
+                                                    {token.quote.USD.percent_change_24h.toFixed(2)} %
                                                 </span>
                                             ) : (
                                                 <span className={style[`caret-icon`]}>
                                                     <FontAwesomeIcon icon={faCaretDown} />{' '}
-                                                    {token.quote.USD.percent_change_7d.toFixed(2)} %
+                                                    {token.quote.USD.percent_change_24h.toFixed(2)} %
                                                 </span>
                                             )}
                                         </div>
                                         <div className={style[`info-flex`]}>
                                             <h5>
-                                                {token.quote.USD.percent_change_24h.toFixed(2)} {token.symbol}
+                                                {token.quote.USD.percent_change_7d.toFixed(2)} {token.symbol}
                                             </h5>{' '}
-                                            {token.quote.USD.percent_change_24h >= 0 ? (
+                                            {token.quote.USD.percent_change_7d >= 0 ? (
                                                 <span className={style[`caret`]}>
                                                     <FontAwesomeIcon icon={faCaretUp} />
-                                                    {Math.abs(token.quote.USD.percent_change_24h.toFixed(2))} %
+                                                    {Math.abs(token.quote.USD.percent_change_7d.toFixed(2))} %
                                                 </span>
                                             ) : (
                                                 <span className={style[`caret-down`]}>
                                                     <FontAwesomeIcon icon={faCaretDown} />
-                                                    {Math.abs(token.quote.USD.percent_change_24h.toFixed(2))} %
+                                                    {Math.abs(token.quote.USD.percent_change_7d.toFixed(2))} %
                                                 </span>
                                             )}
                                         </div>

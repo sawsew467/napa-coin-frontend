@@ -31,16 +31,18 @@ import Trending from '../../components/Trending';
 import style from './style.module.scss';
 import { DataType } from '../../components/TableToken/TableToken';
 import { faker } from '@faker-js/faker';
+import moment from 'moment';
 
 const TokenDetail = () => {
     const router = useRouter();
     const [results, setResult] = useState<DataType[]>([]);
+    const [chart, setChart] = useState([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const slug = router.query.slug;
 
     useEffect(() => {
         const listData = async () => {
-            const res = await axios.get(`http://localhost:5000/api/v1/coin/latest`);
+            const res = await axios.get(`http://172.16.6.215:5000/api/v1/coin/latest`);
             setResult(res.data.data);
             setIsLoading(false);
         };
@@ -48,8 +50,20 @@ const TokenDetail = () => {
         listData();
     }, []);
 
+    useEffect(() => {
+        const listDataChart = async () => {
+            const dataChart = await axios.get(
+                `https://api.coingecko.com/api/v3/coins/${slug}/market_chart?vs_currency=usd&days=30&interval=daily`,
+            );
+            setChart(dataChart.data.prices);
+        };
+        listDataChart();
+    }, [slug]);
+
+    console.log('chart', chart);
+
     const detailCoin = results.filter((token: any) => token.slug === slug);
-    const labels = results.map((token) => token.quote.USD.volume_24h);
+    const labels = chart.map((price) => moment.unix(price[0] / 1000).format('MM-DD'));
 
     return (
         <>
@@ -74,7 +88,7 @@ const TokenDetail = () => {
                                     datasets: [
                                         {
                                             label: 'Price',
-                                            data: results.map((data) => data.quote.USD.volume_change_24h),
+                                            data: chart.map((price) => price[1]),
                                             borderColor: 'rgb(255, 99, 132)',
                                             backgroundColor: 'rgba(255, 99, 132, 0.5)',
                                         },
