@@ -196,8 +196,8 @@ const TableToken: React.FC<Props> = (props) => {
 
     useEffect(() => {
         const listData = async () => {
-            const res = await axios.get(`http://localhost:5000/api/v1/coin/latest`);
-            const cate = await axios.get(`http://localhost:5000/api/v1/coin/categories`);
+            const res = await axios.get(`http://172.16.6.215:5000/api/v1/coin/latest`);
+            const cate = await axios.get(`http://172.16.6.215:5000/api/v1/coin/categories`);
 
             setResult(res.data.data);
             setCate(cate.data.data);

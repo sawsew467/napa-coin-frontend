@@ -2,7 +2,7 @@
     "name": "napacoins-frontend",
     "version": "0.1.0",
     "private": true,
-    "proxy": "http://localhost:5000",
+    "proxy": "http://172.16.6.215:5000",
     "scripts": {
         "dev": "next dev",
         "build": "next build",
@@ -25,6 +25,7 @@
         "dotenv-next": "^0.1.24",
         "eslint": "8.30.0",
         "eslint-config-next": "13.0.7",
+        "moment": "^2.29.4",
         "next": "13.0.7",
         "react": "18.2.0",
         "react-chartjs-2": "^5.1.0",
