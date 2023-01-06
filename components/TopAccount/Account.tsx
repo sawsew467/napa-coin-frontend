@@ -23,16 +23,14 @@ interface IProps {
 
 const Account = ({ user }: IProps) => {
     const currentUser: AppInterface['currentUser'] = useSelector((state: State) => state.currentUser);
-    // console.log(currentUser);
 
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isFollowing, setIsFollowing] = useState<boolean>(false);
-    useEffect(() => {
-        console.log(currentUser);
-        console.log(user._id);
 
+    useEffect(() => {
         setIsFollowing(currentUser.following?.includes(user._id));
     }, []);
+
     return (
         <div className={style.account}>
             <div className={style.account__flex}>

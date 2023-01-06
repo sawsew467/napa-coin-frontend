@@ -18,9 +18,15 @@ import { AppInterface } from '../../pages/_app';
 import Dropdown from '../Dropdown';
 interface IProps {
     setIsShowLoginModal: React.Dispatch<React.SetStateAction<boolean>>;
+    handleSearchDebound: (e: {
+        target: {
+            value: any;
+        };
+    }) => void;
+    searchDebound: string;
 }
 
-const Header = ({ setIsShowLoginModal }: IProps) => {
+const Header = ({ setIsShowLoginModal, handleSearchDebound, searchDebound }: IProps) => {
     const currentUser: AppInterface['currentUser'] = useSelector((state: State) => state.currentUser);
     const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
     const [isShowModal, setIsShowModal] = useState<boolean>(false);
@@ -46,7 +52,11 @@ const Header = ({ setIsShowLoginModal }: IProps) => {
                         <div className={styles.header__dropdown}>
                             <Image src={sun} alt=""></Image>
                             <div className={styles.header__search}>
-                                <input placeholder="Search"></input>
+                                <input
+                                    placeholder="Search"
+                                    value={searchDebound}
+                                    onChange={handleSearchDebound}
+                                ></input>
                                 <Image src={search} alt=""></Image>
                             </div>
                             {currentUser.avatar ? (

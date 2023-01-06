@@ -267,7 +267,7 @@ img {
 }
 
 .table-icon:hover {
-    color: rgb(164, 159, 6);
+    color: #f6b87e;
 }
 
 :where(.css-dev-only-do-not-override-acm2ia).ant-tag-checkable-checked {
@@ -284,4 +284,8 @@ img {
 
 .swiper-pagination.swiper-pagination-clickable.swiper-pagination-bullets.swiper-pagination-horizontal {
     top: 35px;
+}
+
+:where(.css-dev-only-do-not-override-9ntgx0).ant-table-wrapper .ant-table-tbody > tr > td {
+    text-align: end;
 }

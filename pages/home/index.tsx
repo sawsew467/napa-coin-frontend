@@ -1,8 +1,8 @@
 /* eslint-disable react/no-unescaped-entities */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Header from '../../components/Header/Header';
 import TopAccount from '../../components/TopAccount/TopAccount';
-import TableToken from '../../components/TableToken/TableToken';
+import TableToken, { DataType } from '../../components/TableToken/TableToken';
 import LoginModal from '../../components/LoginModal';
 import RegisterModal from '../../components/RegisterModal';
 import { AppInterface } from '../_app';
@@ -11,6 +11,7 @@ import { State } from '../../redux';
 import { useDispatch } from 'react-redux';
 import { actionCreators } from '../../redux';
 import { bindActionCreators } from 'redux';
+import axios from 'axios';
 
 export interface IState {
     currentUser: {
@@ -24,8 +25,14 @@ const HomePage = () => {
     const darkMode: AppInterface['darkmode'] = useSelector((state: State) => state.darkmode);
     const [isShowLoginModal, setIsShowLoginModal] = useState(false);
     const [isShowRegisterModal, setIsShowRegisterModal] = useState(false);
+    const [results, setResults] = useState<DataType[]>([]);
+    const [searchDebound, setSearchDebound] = useState<string>('');
+    const [searchResult, setSearchResult] = useState<DataType[]>([]);
+    const [isSearchResult, setIsSearchResult] = useState<boolean>(false);
     const dispath = useDispatch();
     const { setCurrentUser } = bindActionCreators(actionCreators, dispath);
+    const timingTimeoutRef = useRef<any>(null);
+
     useEffect(() => {
         setCurrentUser(
             JSON.parse(`${window.localStorage.getItem('currentUser')}`) ?? {
@@ -34,14 +41,45 @@ const HomePage = () => {
                 fullname: '',
             },
         );
+
+        const listData = async () => {
+            const res = await axios.get(`http://localhost:5000/api/v1/coin/latest`);
+            setResults(res.data.data);
+        };
+        listData();
     }, []);
+
+    const handleSearchDebound = (e: { target: { value: any } }) => {
+        const value = e.target.value;
+        setSearchDebound(value);
+
+        if (timingTimeoutRef.current) {
+            clearTimeout(timingTimeoutRef.current);
+        }
+
+        timingTimeoutRef.current = setTimeout(() => {
+            const filterResult = results?.filter((token) => {
+                return (
+                    token?.name?.toLowerCase()?.includes(value.toLowerCase()) ||
+                    token?.symbol?.toLowerCase()?.includes(value.toLowerCase())
+                );
+            });
+            setSearchResult(filterResult);
+            setIsSearchResult(true);
+        }, 500);
+    };
+
     return (
         <>
-            <Header setIsShowLoginModal={setIsShowLoginModal}></Header>
+            <Header
+                setIsShowLoginModal={setIsShowLoginModal}
+                handleSearchDebound={handleSearchDebound}
+                searchDebound={searchDebound}
+            ></Header>
             <div className="bg_home">
                 <TopAccount></TopAccount>
                 <h1 className="title-home">Today's Cryptocurrency Prices by NAPA Coins </h1>
-                <TableToken></TableToken>
+                <TableToken searchResult={searchResult} isSearchResult={isSearchResult}></TableToken>
             </div>
             {isShowLoginModal && (
                 <LoginModal
