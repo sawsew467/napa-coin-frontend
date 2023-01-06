@@ -19,9 +19,12 @@
         }
     }
 
-    .trending__rank--pos {
-        padding: 4px 8px;
-        background-color: #ccc;
-        border-radius: 10px;
+    .trending__rank {
+        min-width: 45px;
+        .trending__rank--pos {
+            padding: 4px 8px;
+            background-color: #ccc;
+            border-radius: 10px;
+        }
     }
 }

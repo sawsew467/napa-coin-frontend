@@ -6,9 +6,10 @@
 
     .detail__token--flex {
         display: flex;
-        gap: 150px;
+        justify-content: space-between;
 
         .token-col-left {
+            flex-basis: 50%;
             .token-col--img {
                 display: flex;
                 align-items: center;
@@ -35,6 +36,56 @@
             }
         }
 
+        .caret {
+            gap: 5px;
+            display: flex;
+            align-items: center;
+        }
+
+        .caret-icon-up {
+            padding: 4px 8px;
+            border-radius: 10px;
+            background-color: #27f054;
+            color: #fff;
+        }
+
+        .caret-icon {
+            padding: 4px 8px;
+            border-radius: 10px;
+            background-color: #cf1919;
+            color: #fff;
+            gap: 5px;
+            display: flex;
+            align-items: center;
+        }
+
+        .caret-down {
+            color: #cf1919;
+            gap: 5px;
+            display: flex;
+            align-items: center;
+        }
+
+        .tags-detail {
+            margin-top: 20px;
+        }
+
+        .tag-heading {
+            color: #58667e;
+            font-size: 11px;
+            line-height: 18px;
+            margin-bottom: 4px;
+        }
+
+        .tag {
+            background-color: #eff2f5;
+            color: #58667e;
+            border: none;
+            border-radius: 40px;
+            padding: 2px 8px;
+            font-weight: bold;
+        }
+
         .token-col-right {
             .token-col--info {
                 padding-bottom: 11px;
@@ -52,20 +103,6 @@
                         font-size: 12px;
                         font-weight: normal;
                     }
-                }
-
-                .caret-icon-up {
-                    padding: 4px 8px;
-                    border-radius: 10px;
-                    background-color: #27f054;
-                    color: #fff;
-                }
-
-                .caret-icon {
-                    padding: 4px 8px;
-                    border-radius: 10px;
-                    background-color: #cf1919;
-                    color: #fff;
                 }
             }
             .caret {
