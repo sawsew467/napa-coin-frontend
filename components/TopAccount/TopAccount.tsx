@@ -47,9 +47,6 @@ const TopAccount = () => {
                 console.log(err);
             });
     }, []);
-
-    console.log(userList);
-
     return (
         <div className={style.account__container}>
             <div className={style.account__title}>

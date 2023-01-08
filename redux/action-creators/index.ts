@@ -20,3 +20,12 @@ export const setCurrentUser = (user: AppInterface['currentUser']) => {
         });
     };
 };
+
+export const setIsShowLoginModal = (isShow: boolean) => {
+    return (dispath: Dispatch<Action>) => {
+        dispath({
+            type: ActionType.SET_LOGIN_MODAL,
+            payload: isShow,
+        });
+    };
+};

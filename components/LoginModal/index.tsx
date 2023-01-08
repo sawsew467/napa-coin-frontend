@@ -13,7 +13,7 @@ import Router, { useRouter } from 'next/router';
 
 interface IProps {
     setIsShowRegisterModal: React.Dispatch<React.SetStateAction<boolean>>;
-    setIsShowLoginModal: React.Dispatch<React.SetStateAction<boolean>>;
+    // setIsShowLoginModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 interface IState {
@@ -23,7 +23,9 @@ interface IState {
     };
 }
 
-function LoginModal({ setIsShowRegisterModal, setIsShowLoginModal }: IProps) {
+function LoginModal({ setIsShowRegisterModal }: IProps) {
+    const dispath = useDispatch();
+    const { setCurrentUser, setIsShowLoginModal } = bindActionCreators(actionCreators, dispath);
     const [errorMessage, setErrorMessage] = useState<string>('');
     const validateInput = (userInput: IState['userInput']) => {
         var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
@@ -50,8 +52,7 @@ function LoginModal({ setIsShowRegisterModal, setIsShowLoginModal }: IProps) {
         setIsShowRegisterModal(true);
         setIsShowLoginModal(false);
     };
-    const dispath = useDispatch();
-    const { setCurrentUser } = bindActionCreators(actionCreators, dispath);
+
     const [isLoading, setIsLoading] = useState(false);
     const handleSubmit = async () => {
         try {
