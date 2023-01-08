@@ -196,8 +196,8 @@ const TableToken: React.FC<Props> = (props) => {
 
     useEffect(() => {
         const listData = async () => {
-            const res = await axios.get(`http://172.16.6.215:5000/api/v1/coin/latest`);
-            const cate = await axios.get(`http://172.16.6.215:5000/api/v1/coin/categories`);
+            const res = await axios.get(`http://localhost:5000/api/v1/coin/latest`);
+            const cate = await axios.get(`http://localhost:5000/api/v1/coin/categories`);
 
             setResult(res.data.data);
             setCate(cate.data.data);
@@ -208,7 +208,7 @@ const TableToken: React.FC<Props> = (props) => {
         listData();
     }, []);
 
-    const tagsData = cate.slice(5, 10).map((tag) => tag.name);
+    const tagsData: string[] = cate?.slice(5, 10).map((tag) => tag.name);
     const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
     const filterByTags = isSearchResult
@@ -233,7 +233,7 @@ const TableToken: React.FC<Props> = (props) => {
                     </button>
                 </Link>
                 <div className={style[`tags`]}>
-                    {tagsData.map((tag) => (
+                    {tagsData?.map((tag) => (
                         <CheckableTag
                             key={tag}
                             checked={selectedTags.indexOf(tag) > -1}

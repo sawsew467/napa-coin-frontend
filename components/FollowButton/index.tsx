@@ -20,9 +20,15 @@ interface IProps {
 function index({ isLoading, setIsLoading, isFollowing, setIsFollowing, setFollowers, followedId }: IProps) {
     const currentUser: AppInterface['currentUser'] = useSelector((state: State) => state.currentUser);
     const dispath = useDispatch();
-    const { setCurrentUser } = bindActionCreators(actionCreators, dispath);
-
+    const { setIsShowLoginModal } = bindActionCreators(actionCreators, dispath);
+    const unAuthorizedJHandle = () => {
+        setIsShowLoginModal(true);
+    };
     const followHandler = async () => {
+        if (!currentUser.avatar) {
+            unAuthorizedJHandle();
+            return;
+        }
         setIsLoading(true);
         followUser(currentUser._id, followedId)
             .then((res) => {
@@ -60,7 +66,6 @@ function index({ isLoading, setIsLoading, isFollowing, setIsFollowing, setFollow
             }),
         );
     };
-    // console.log(followedId, ' ', isFollowing);
     return (
         <>
             {isFollowing ? (

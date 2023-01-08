@@ -6,10 +6,12 @@ import user from '../../assets/icons/user-3-line.svg';
 import close from '../../assets/icons/CloseOutlined.svg';
 import axios from 'axios';
 import { registerRequest } from '../../apis/authApis';
+import { useDispatch } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { actionCreators } from '../../redux';
 
 interface IProps {
     setIsShowRegisterModal: React.Dispatch<React.SetStateAction<boolean>>;
-    setIsShowLoginModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 interface IState {
@@ -20,7 +22,9 @@ interface IState {
     };
 }
 
-function LoginModal({ setIsShowRegisterModal, setIsShowLoginModal }: IProps) {
+function LoginModal({ setIsShowRegisterModal }: IProps) {
+    const dispath = useDispatch();
+    const { setIsShowLoginModal } = bindActionCreators(actionCreators, dispath);
     const [errorMessage, setErrorMessage] = useState<string>('');
     const validateInput = (userInput: IState['userInput']) => {
         var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
