@@ -42,7 +42,7 @@ const TokenDetail = () => {
 
     useEffect(() => {
         const listData = async () => {
-            const res = await axios.get(`http://172.16.6.215:5000/api/v1/coin/latest`);
+            const res = await axios.get(`http://localhost:5000/api/v1/coin/latest`);
             setResult(res.data.data);
             setIsLoading(false);
         };
@@ -59,8 +59,6 @@ const TokenDetail = () => {
         };
         listDataChart();
     }, [slug]);
-
-    console.log('chart', chart);
 
     const detailCoin = results.filter((token: any) => token.slug === slug);
     const labels = chart.map((price) => moment.unix(price[0] / 1000).format('MM-DD'));

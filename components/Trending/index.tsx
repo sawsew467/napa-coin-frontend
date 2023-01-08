@@ -19,7 +19,7 @@ const Trending = () => {
 
     useEffect(() => {
         const listData = async () => {
-            const res = await axios.get(`http://172.16.6.215:5000/api/v1/coin/latest`);
+            const res = await axios.get(`http://localhost:5000/api/v1/coin/latest`);
             setListTrend(res?.data?.data.slice(0, 7));
         };
         listData();

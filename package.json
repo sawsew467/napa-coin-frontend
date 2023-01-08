@@ -2,7 +2,7 @@
     "name": "napacoins-frontend",
     "version": "0.1.0",
     "private": true,
-    "proxy": "http://172.16.6.215:5000",
+    "proxy": "http://localhost:5000",
     "scripts": {
         "dev": "next dev",
         "build": "next build",

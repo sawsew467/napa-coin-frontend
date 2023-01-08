@@ -43,7 +43,7 @@ const HomePage = () => {
         );
 
         const listData = async () => {
-            const res = await axios.get(`http://172.16.6.215:5000/api/v1/coin/latest`);
+            const res = await axios.get(`http://localhost:5000/api/v1/coin/latest`);
             setResults(res.data.data);
         };
         listData();

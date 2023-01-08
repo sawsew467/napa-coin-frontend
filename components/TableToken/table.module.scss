@@ -29,11 +29,15 @@
             border: none;
             margin-right: 20px;
 
-            .watchlist-icon {
+            .table-icon-follow {
+                color: #f6b87e;
+            }
+
+            .table-icon {
                 color: #ccc;
             }
 
-            &:hover .watchlist-icon {
+            &:hover .table-icon {
                 color: #f6b87e;
             }
 
