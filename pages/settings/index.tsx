@@ -16,6 +16,7 @@ import { AppInterface } from '../_app';
 import Router, { useRouter } from 'next/router';
 import axios from 'axios';
 import { changePassword, editProfile } from '../../apis/usersApis';
+import { toLowerCaseNonAccentVietnamese } from '../../functions/nameValidation';
 
 interface IState {
     userInput: {
@@ -91,7 +92,7 @@ function index() {
     };
     const validateInput = (name: string) => {
         var nameformat = /^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/;
-        if (!name.match(nameformat)) {
+        if (!toLowerCaseNonAccentVietnamese(name).match(nameformat)) {
             setErrorMessage('You have entered an invalid name!');
             return false;
         }
@@ -153,7 +154,7 @@ function index() {
 
     return (
         <>
-            <Header setIsShowLoginModal={() => {}}></Header>
+            <Header handleSearchDebound={() => {}} searchDebound={''}></Header>
             <div className="wrapper">
                 <div className="container">
                     <section className={styles[`settings`]}>

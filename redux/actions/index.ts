@@ -9,5 +9,9 @@ interface SetCurrentUser {
     type: ActionType.SET_CURRENT_USER;
     payload: AppInterface['currentUser'];
 }
+interface setIsShowLoginModal {
+    type: ActionType.SET_LOGIN_MODAL;
+    payload: boolean;
+}
 
-export type Action = SetDarkmode | SetCurrentUser;
+export type Action = SetDarkmode | SetCurrentUser | setIsShowLoginModal;

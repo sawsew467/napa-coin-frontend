@@ -12,6 +12,7 @@ import { useDispatch } from 'react-redux';
 import { actionCreators } from '../../redux';
 import { bindActionCreators } from 'redux';
 import axios from 'axios';
+import { getTokenLastest } from '../../apis/tokenApis';
 
 export interface IState {
     currentUser: {
@@ -23,14 +24,17 @@ export interface IState {
 
 const HomePage = () => {
     const darkMode: AppInterface['darkmode'] = useSelector((state: State) => state.darkmode);
-    const [isShowLoginModal, setIsShowLoginModal] = useState(false);
+    const isShowLoginModal: boolean = useSelector((state: State) => state.loginModal);
+    // console.log(loginModal);
+
+    // const [isShowLoginModal, setIsShowLoginModal] = useState(false);
     const [isShowRegisterModal, setIsShowRegisterModal] = useState(false);
     const [results, setResults] = useState<DataType[]>([]);
     const [searchDebound, setSearchDebound] = useState<string>('');
     const [searchResult, setSearchResult] = useState<DataType[]>([]);
     const [isSearchResult, setIsSearchResult] = useState<boolean>(false);
     const dispath = useDispatch();
-    const { setCurrentUser } = bindActionCreators(actionCreators, dispath);
+    const { setCurrentUser, setIsShowLoginModal } = bindActionCreators(actionCreators, dispath);
     const timingTimeoutRef = useRef<any>(null);
 
     useEffect(() => {
@@ -43,7 +47,7 @@ const HomePage = () => {
         );
 
         const listData = async () => {
-            const res = await axios.get(`http://localhost:5000/api/v1/coin/latest`);
+            const res = await getTokenLastest();
             setResults(res.data.data);
         };
         listData();
@@ -72,7 +76,7 @@ const HomePage = () => {
     return (
         <>
             <Header
-                setIsShowLoginModal={setIsShowLoginModal}
+                // setIsShowLoginModal={setIsShowLoginModal}
                 handleSearchDebound={handleSearchDebound}
                 searchDebound={searchDebound}
             ></Header>
@@ -84,14 +88,14 @@ const HomePage = () => {
             {isShowLoginModal && (
                 <LoginModal
                     setIsShowRegisterModal={setIsShowRegisterModal}
-                    setIsShowLoginModal={setIsShowLoginModal}
+                    // setIsShowLoginModal={setIsShowLoginModal}
                     // setCurrentUser={setCurrentUser}
                 ></LoginModal>
             )}
             {isShowRegisterModal && (
                 <RegisterModal
                     setIsShowRegisterModal={setIsShowRegisterModal}
-                    setIsShowLoginModal={setIsShowLoginModal}
+                    // setIsShowLoginModal={setIsShowLoginModal}
                 ></RegisterModal>
             )}
         </>

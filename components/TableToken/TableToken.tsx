@@ -1,19 +1,19 @@
 /* eslint-disable @next/next/no-img-element */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretDown, faCaretUp, faStar } from '@fortawesome/free-solid-svg-icons';
 import type { ColumnsType } from 'antd/es/table';
-import { Skeleton, Spin, Table } from 'antd';
-import Image from 'next/image';
+import { Spin, Table, Tooltip } from 'antd';
 import Link from 'next/link';
-import axios from 'axios';
 import CheckableTag from 'antd/lib/tag/CheckableTag';
+import { useRouter } from 'next/router';
 
 import style from './table.module.scss';
 import { useSelector } from 'react-redux';
 import { AppInterface } from '../../pages/_app';
 import { State } from '../../redux';
-import { useRouter } from 'next/router';
+import { addToWatchList, getWatchlistToken, removeFromWatchList } from '../../apis/watchlistApis';
+import { getTokenCate, getTokenLastest } from '../../apis/tokenApis';
 
 export interface DataType {
     cmc_rank: number;
@@ -45,8 +45,6 @@ export interface CateType {
 interface Props {
     searchResult: DataType[];
     isSearchResult: boolean;
-    watchlist: DataType[];
-    setWatchlist: React.Dispatch<React.SetStateAction<DataType[]>>;
 }
 
 export const currencyFormat = (num: number) => {
@@ -54,8 +52,8 @@ export const currencyFormat = (num: number) => {
 };
 
 const TableToken: React.FC<Props> = (props) => {
+    const { searchResult, isSearchResult } = props;
     const currentUser: AppInterface['currentUser'] = useSelector((state: State) => state.currentUser);
-    const { searchResult, isSearchResult, watchlist, setWatchlist } = props;
 
     const router = useRouter();
     const [result, setResult] = useState<DataType[]>([]);
@@ -64,13 +62,14 @@ const TableToken: React.FC<Props> = (props) => {
     const [active, setActive] = useState(true);
     const [isCheck, setIsCheck] = useState<boolean>(false);
     const [isFollow, setIsFollow] = useState<boolean>(false);
+    const [watchlist, setWatchlist] = useState<DataType[]>([]);
 
     const slug = router.pathname;
 
     useEffect(() => {
         const listData = async () => {
-            const res = await axios.get(`http://localhost:5000/api/v1/coin/latest`);
-            const cate = await axios.get(`http://localhost:5000/api/v1/coin/categories`);
+            const res = await getTokenLastest();
+            const cate = await getTokenCate();
             setResult(res.data.data);
             setCate(cate.data.data);
             setIsLoading(false);
@@ -80,13 +79,34 @@ const TableToken: React.FC<Props> = (props) => {
         listData();
     }, []);
 
-    const dataWatchlist = async (id: number) => {
-        await axios.post(`http://localhost:5000/api/v1/watchlist`, {
-            type: 'follow',
-            tokenId: id,
-            userId: currentUser._id,
-        });
-        setIsFollow(true);
+    useEffect(() => {
+        const watchlistData = async () => {
+            if (slug === '/watchlist') {
+                const watchlistToken = await getWatchlistToken(currentUser._id);
+                setWatchlist(watchlistToken.data.results.data);
+                setIsFollow(true);
+            }
+        };
+        watchlistData();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [currentUser._id, isFollow]);
+
+    const handleAddToWatchlist = async (id: number) => {
+        try {
+            await addToWatchList(currentUser._id, id);
+            setIsFollow(true);
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+    const handleRemoveWatchlist = async (id: number) => {
+        try {
+            await removeFromWatchList(currentUser._id, id);
+            setIsFollow(false);
+        } catch (err) {
+            console.log(err);
+        }
     };
 
     const tagsData = cate?.slice(5, 10).map((tag) => tag.name);
@@ -109,21 +129,33 @@ const TableToken: React.FC<Props> = (props) => {
         {
             title: '',
             render: (id) => (
-                <span onClick={() => dataWatchlist(id)}>
+                <span>
                     {isFollow ? (
-                        <FontAwesomeIcon key={id} className={`table-icon-follow`} icon={faStar} />
+                        <Tooltip title="Add this token to watchlist">
+                            {' '}
+                            <FontAwesomeIcon
+                                className={'table-icon-follow'}
+                                icon={faStar}
+                                onClick={() => handleRemoveWatchlist(id)}
+                            />
+                        </Tooltip>
                     ) : (
-                        <FontAwesomeIcon key={id} className={'table-icon'} icon={faStar} />
+                        <Tooltip title="Add this token to watchlist">
+                            {' '}
+                            <FontAwesomeIcon
+                                className={'table-icon'}
+                                icon={faStar}
+                                onClick={() => handleAddToWatchlist(id)}
+                            />
+                        </Tooltip>
                     )}
                 </span>
             ),
-            width: '1%',
             dataIndex: 'id',
         },
         {
             title: '#',
             dataIndex: 'cmc_rank',
-            width: '1%',
         },
         {
             title: 'Name',
@@ -243,8 +275,6 @@ const TableToken: React.FC<Props> = (props) => {
                     width={100}
                 />
             ),
-
-            width: '1%',
         },
     ];
 
@@ -257,15 +287,17 @@ const TableToken: React.FC<Props> = (props) => {
                     </button>
                 </Link>
                 <div className={style[`tags`]}>
-                    {tagsData?.map((tag) => (
-                        <CheckableTag
-                            key={tag}
-                            checked={selectedTags.indexOf(tag) > -1}
-                            onChange={(checked) => handleChange(tag, checked)}
-                        >
-                            {tag}
-                        </CheckableTag>
-                    ))}
+                    {slug === '/watchlist'
+                        ? null
+                        : tagsData?.map((tag) => (
+                              <CheckableTag
+                                  key={tag}
+                                  checked={selectedTags.indexOf(tag) > -1}
+                                  onChange={(checked) => handleChange(tag, checked)}
+                              >
+                                  {tag}
+                              </CheckableTag>
+                          ))}
                 </div>
             </div>
             {isLoading ? (
@@ -276,7 +308,9 @@ const TableToken: React.FC<Props> = (props) => {
                 <Table
                     columns={columns}
                     dataSource={
-                        (slug === '/watchlist' && watchlist) || isCheck
+                        slug === '/watchlist'
+                            ? watchlist
+                            : isCheck
                             ? filterByTags
                             : isSearchResult
                             ? searchResult

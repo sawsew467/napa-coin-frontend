@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { faCircleCheck } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Image from 'next/image';
@@ -35,7 +36,7 @@ const Account = ({ user }: IProps) => {
         <div className={style.account}>
             <div className={style.account__flex}>
                 <div className={style.account__item}>
-                    <img src={user.avatar}></img>
+                    <img src={user.avatar} alt=""></img>
                     <Link href={`/profile/${user._id}`}>
                         <p>{user.fullname}</p>
                     </Link>

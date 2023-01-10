@@ -6,6 +6,7 @@ import Link from 'next/link';
 
 import style from './style.module.scss';
 import coiImg from '../../assets/img/avt.png';
+import { getTokenLastest } from '../../apis/tokenApis';
 
 interface Trending {
     id: number;
@@ -19,7 +20,7 @@ const Trending = () => {
 
     useEffect(() => {
         const listData = async () => {
-            const res = await axios.get(`http://localhost:5000/api/v1/coin/latest`);
+            const res = await getTokenLastest();
             setListTrend(res?.data?.data.slice(0, 7));
         };
         listData();

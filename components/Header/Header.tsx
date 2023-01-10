@@ -17,7 +17,6 @@ import { actionCreators, State } from '../../redux';
 import { AppInterface } from '../../pages/_app';
 import Dropdown from '../Dropdown';
 interface IProps {
-    setIsShowLoginModal: React.Dispatch<React.SetStateAction<boolean>>;
     handleSearchDebound: (e: {
         target: {
             value: any;
@@ -26,13 +25,13 @@ interface IProps {
     searchDebound: string;
 }
 
-const Header = ({ setIsShowLoginModal, handleSearchDebound, searchDebound }: IProps) => {
+const Header = ({ handleSearchDebound, searchDebound }: IProps) => {
     const currentUser: AppInterface['currentUser'] = useSelector((state: State) => state.currentUser);
     const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
     const [isShowModal, setIsShowModal] = useState<boolean>(false);
     const [isShowMenu, setIsShowMenu] = useState<boolean>(false);
     const dispath = useDispatch();
-    const { setDarkmode } = bindActionCreators(actionCreators, dispath);
+    const { setDarkmode, setIsShowLoginModal } = bindActionCreators(actionCreators, dispath);
     const toggleDarkMode = (checked: boolean) => {
         isDarkMode ? setDarkmode('light') : setDarkmode('dark');
         setIsDarkMode(checked);

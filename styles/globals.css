@@ -270,6 +270,11 @@ img {
     color: #f6b87e;
 }
 
+.table-icon-follow {
+    color: #f6b87e;
+    cursor: pointer;
+}
+
 :where(.css-dev-only-do-not-override-acm2ia).ant-tag-checkable-checked {
     background-color: #408cf6;
 }
