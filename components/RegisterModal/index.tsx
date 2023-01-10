@@ -9,6 +9,7 @@ import { registerRequest } from '../../apis/authApis';
 import { useDispatch } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { actionCreators } from '../../redux';
+import { toLowerCaseNonAccentVietnamese } from '../../functions/nameValidation';
 
 interface IProps {
     setIsShowRegisterModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -45,7 +46,7 @@ function LoginModal({ setIsShowRegisterModal }: IProps) {
             setErrorMessage('You have entered an invalid email address!');
             return false;
         }
-        if (!userInput.fullname.match(nameformat)) {
+        if (!toLowerCaseNonAccentVietnamese(userInput.fullname).match(nameformat)) {
             setErrorMessage('You have entered an invalid name!');
             return false;
         }
