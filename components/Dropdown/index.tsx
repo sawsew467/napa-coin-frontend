@@ -37,7 +37,7 @@ function index({ setIsShowMenu }: IProps) {
                     <ul className={styles['dropdown__list']}>
                         <Link href="/profile">
                             <li className={styles['dropdown__item']} onClick={() => setIsShowMenu(false)}>
-                                Your profile
+                                My profile
                             </li>
                         </Link>
                         <Link href="/watchlist">

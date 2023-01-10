@@ -32,6 +32,7 @@ import style from './style.module.scss';
 import { DataType } from '../../components/TableToken/TableToken';
 import { faker } from '@faker-js/faker';
 import moment from 'moment';
+import { getTokenLastest } from '../../apis/tokenApis';
 
 const TokenDetail = () => {
     const router = useRouter();
@@ -42,7 +43,7 @@ const TokenDetail = () => {
 
     useEffect(() => {
         const listData = async () => {
-            const res = await axios.get(`http://172.16.6.215:5000/api/v1/coin/latest`);
+            const res = await getTokenLastest();
             setResult(res.data.data);
             setIsLoading(false);
         };

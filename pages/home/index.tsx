@@ -12,6 +12,7 @@ import { useDispatch } from 'react-redux';
 import { actionCreators } from '../../redux';
 import { bindActionCreators } from 'redux';
 import axios from 'axios';
+import { getTokenLastest } from '../../apis/tokenApis';
 
 export interface IState {
     currentUser: {
@@ -46,7 +47,7 @@ const HomePage = () => {
         );
 
         const listData = async () => {
-            const res = await axios.get(`http://localhost:5000/api/v1/coin/latest`);
+            const res = await getTokenLastest();
             setResults(res.data.data);
         };
         listData();

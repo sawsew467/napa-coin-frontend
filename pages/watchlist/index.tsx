@@ -1,6 +1,10 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from '../../components/Header/Header';
-import TableToken from '../../components/TableToken/TableToken';
+import TableToken, { DataType } from '../../components/TableToken/TableToken';
+import axios from 'axios';
+import { AppInterface } from '../_app';
+import { useSelector } from 'react-redux';
+import { State } from '../../redux';
 
 const Watchlist = () => {
     return (
@@ -12,7 +16,7 @@ const Watchlist = () => {
             ></Header>
             <div className="bg_home">
                 <h1 className="title-watchlist">My Watchlist </h1>
-                <TableToken></TableToken>
+                <TableToken searchResult={[]} isSearchResult={false}></TableToken>
             </div>
         </>
     );

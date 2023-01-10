@@ -4,15 +4,6 @@
     gap: 10px;
     flex-basis: 50%;
 
-    &::before {
-        content: '';
-        position: absolute;
-        width: 3px;
-        height: 88px;
-        background-color: #ccc;
-        left: 28%;
-    }
-
     .symbol-image {
         height: 32px;
         width: 32px;
