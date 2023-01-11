@@ -49,7 +49,13 @@ const Header = ({ handleSearchDebound, searchDebound }: IProps) => {
                             <Image className={styles.header__logo} src={logoLight} alt=""></Image>
                         </Link>
                         <div className={styles.header__dropdown}>
-                            <Image src={sun} alt=""></Image>
+                            {/* <Image src={sun} alt=""></Image> */}
+                            <DarkModeSwitch
+                                // style={{ marginBottom: '2rem' }}
+                                checked={isDarkMode}
+                                onChange={toggleDarkMode}
+                                size={25}
+                            />
                             <div className={styles.header__search}>
                                 <input
                                     placeholder="Search"

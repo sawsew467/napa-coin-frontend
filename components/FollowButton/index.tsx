@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Check from '../../assets/icons/check-line.svg';
 import styles from './style.module.scss';
@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { actionCreators, State } from '../../redux';
 import { AppInterface } from '../../pages/_app';
+import { io } from 'socket.io-client';
 
 interface IProps {
     isLoading: boolean;
@@ -17,7 +18,35 @@ interface IProps {
     followedId: string | string[] | undefined;
 }
 
+interface ServerToClientEvents {
+    noArg: () => void;
+    basicEmit: (a: number, b: string, c: Buffer) => void;
+    withAck: (d: string, callback: (e: number) => void) => void;
+}
+
+interface ClientToServerEvents {
+    hello: () => void;
+}
+
+interface InterServerEvents {
+    ping: () => void;
+}
+
+interface SocketData {
+    name: string;
+    age: number;
+}
+
 function index({ isLoading, setIsLoading, isFollowing, setIsFollowing, setFollowers, followedId }: IProps) {
+    const socket = io('http://localhost:9000', {
+        withCredentials: true,
+        extraHeaders: {
+            'my-custom-header': 'abcd',
+        },
+    });
+    useEffect(() => {
+        socket.emit('connection', 'hello');
+    }, []);
     const currentUser: AppInterface['currentUser'] = useSelector((state: State) => state.currentUser);
     const dispath = useDispatch();
     const { setIsShowLoginModal } = bindActionCreators(actionCreators, dispath);
@@ -25,6 +54,9 @@ function index({ isLoading, setIsLoading, isFollowing, setIsFollowing, setFollow
         setIsShowLoginModal(true);
     };
     const followHandler = async () => {
+        socket.emit('follow', {
+            message: 'follow',
+        });
         if (!currentUser.avatar) {
             unAuthorizedJHandle();
             return;
