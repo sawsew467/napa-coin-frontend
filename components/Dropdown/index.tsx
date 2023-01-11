@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -27,7 +28,7 @@ function index({ setIsShowMenu }: IProps) {
         <>
             <div className={styles['dropdown']}>
                 <div className={styles['dropdown__head']}>
-                    <img className={styles['dropdown__avatar']} src={currentUser.avatar}></img>
+                    <img className={styles['dropdown__avatar']} src={currentUser.avatar} alt=''></img>
                     <div className={styles['dropdown__title']}>
                         <p className={styles['dropdown__name']}>{currentUser.fullname}</p>
                         <p className={styles['dropdown__email']}>{currentUser.email}</p>

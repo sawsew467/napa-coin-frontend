@@ -36,6 +36,11 @@ export interface DataType {
     tags: string[];
 }
 
+export interface WatchlistType {
+    id: number;
+    isStar: boolean;
+}
+
 export interface CateType {
     id: string;
     name: string;
@@ -63,6 +68,11 @@ const TableToken: React.FC<Props> = (props) => {
     const [isCheck, setIsCheck] = useState<boolean>(false);
     const [isFollow, setIsFollow] = useState<boolean>(false);
     const [watchlist, setWatchlist] = useState<DataType[]>([]);
+    const [starList, setStarList] = useState<WatchlistType[]>(
+        Array(result.length).fill({ id: result.map((token) => token.id), isStar: false }),
+    );
+
+    console.log('starList', starList);
 
     const slug = router.pathname;
 
@@ -89,12 +99,13 @@ const TableToken: React.FC<Props> = (props) => {
         };
         watchlistData();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [currentUser._id, isFollow]);
+    }, [currentUser._id, starList]);
 
     const handleAddToWatchlist = async (id: number) => {
         try {
             await addToWatchList(currentUser._id, id);
-            setIsFollow(true);
+            setStarList((p) => [...p, { id: id, isStar: true }]);
+            // setIsFollow(true);
         } catch (err) {
             console.log(err);
         }
@@ -103,7 +114,8 @@ const TableToken: React.FC<Props> = (props) => {
     const handleRemoveWatchlist = async (id: number) => {
         try {
             await removeFromWatchList(currentUser._id, id);
-            setIsFollow(false);
+            // setIsFollow(false);
+            setStarList((p) => [...p, { id: id, isStar: false }]);
         } catch (err) {
             console.log(err);
         }

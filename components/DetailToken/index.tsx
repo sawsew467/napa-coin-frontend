@@ -17,6 +17,10 @@ interface Token {
 const DetailToken: React.FC<Token> = (props) => {
     const { detailCoin, isLoading } = props;
 
+    const formatTag = (tag: string) => {
+        return tag.replaceAll('-', ' ').replace(/(?:^|\s)\S/g, (a) => a.toUpperCase());
+    };
+
     return (
         <>
             <div className={style[`detail__token`]}>
@@ -39,7 +43,7 @@ const DetailToken: React.FC<Token> = (props) => {
                                         <p className={style[`tag-heading`]}>Tags:</p>
                                         {token.tags.slice(0, 10).map((tag, index) => (
                                             <Tag className={style[`tag`]} key={index}>
-                                                {tag}
+                                                {formatTag(tag)}
                                             </Tag>
                                         ))}
                                     </div>
