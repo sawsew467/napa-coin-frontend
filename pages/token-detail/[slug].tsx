@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 import {
@@ -39,6 +39,10 @@ const TokenDetail = () => {
     const [results, setResult] = useState<DataType[]>([]);
     const [chart, setChart] = useState([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [searchDebound, setSearchDebound] = useState<string>('');
+    const [searchResult, setSearchResult] = useState<DataType[]>([]);
+    const [isSearchResult, setIsSearchResult] = useState<boolean>(false);
+    const timingTimeoutRef = useRef<any>(null);
     const slug = router.query.slug;
 
     useEffect(() => {
@@ -60,12 +64,40 @@ const TokenDetail = () => {
         };
         listDataChart();
     }, [slug]);
+
+    const handleSearchDebound = (e: { target: { value: any } }) => {
+        const value = e.target.value;
+        setSearchDebound(value);
+
+        if (timingTimeoutRef.current) {
+            clearTimeout(timingTimeoutRef.current);
+        }
+
+        timingTimeoutRef.current = setTimeout(() => {
+            const filterResult = results?.filter((token) => {
+                return (
+                    token?.name?.toLowerCase()?.includes(value.toLowerCase()) ||
+                    token?.symbol?.toLowerCase()?.includes(value.toLowerCase())
+                );
+            });
+            setSearchResult(filterResult);
+            setIsSearchResult(true);
+        }, 500);
+    };
+
     const detailCoin = results.filter((token: any) => token.slug === slug);
     const labels = chart.map((price) => moment.unix(price[0] / 1000).format('MM-DD'));
 
     return (
         <>
-            <Header setIsShowLoginModal={() => {}}></Header>
+            <Header
+                setIsShowLoginModal={() => {}}
+                handleSearchDebound={handleSearchDebound}
+                searchDebound={searchDebound}
+                searchResult={searchResult}
+                isSearchResult={isSearchResult}
+                setSearchDebound={setSearchDebound}
+            ></Header>
             <div className="bg_home">
                 <DetailToken detailCoin={detailCoin} isLoading={isLoading}></DetailToken>
                 {detailCoin.map((token) => (
