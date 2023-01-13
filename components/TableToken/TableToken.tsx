@@ -59,6 +59,7 @@ export const currencyFormat = (num: number) => {
 const TableToken: React.FC<Props> = (props) => {
     const { searchResult, isSearchResult } = props;
     const currentUser: AppInterface['currentUser'] = useSelector((state: State) => state.currentUser);
+    // console.log('!!!', currentUser);
 
     const router = useRouter();
     const [result, setResult] = useState<DataType[]>([]);
@@ -68,57 +69,114 @@ const TableToken: React.FC<Props> = (props) => {
     const [isCheck, setIsCheck] = useState<boolean>(false);
     const [isFollow, setIsFollow] = useState<boolean>(false);
     const [watchlist, setWatchlist] = useState<DataType[]>([]);
-    const [starList, setStarList] = useState<WatchlistType[]>(
-        Array(result.length).fill({ id: result.map((token) => token.id), isStar: false }),
-    );
-
-    console.log('starList', starList);
+    const [starList, setStarList] = useState<WatchlistType[]>([]);
 
     const slug = router.pathname;
 
     useEffect(() => {
+        if (currentUser._id === '') {
+            return;
+        }
         const listData = async () => {
             const res = await getTokenLastest();
             const cate = await getTokenCate();
+            const watchlistToken = await getWatchlistToken(currentUser._id);
+            setWatchlist(watchlistToken.data.results.data);
             setResult(res.data.data);
             setCate(cate.data.data);
             setIsLoading(false);
             setActive(false);
+            setStarList(
+                res.data.data.map((item: any) => {
+                    const x = watchlistToken.data.results.data.filter((token: any) => item.id === token.id);
+                    if (x.length > 0) {
+                        return {
+                            id: item.id,
+                            isStar: true,
+                        };
+                    } else {
+                        return {
+                            id: item.id,
+                            isStar: false,
+                        };
+                    }
+                }),
+            );
         };
 
         listData();
-    }, []);
+    }, [currentUser._id]);
 
-    useEffect(() => {
-        const watchlistData = async () => {
-            if (slug === '/watchlist') {
-                const watchlistToken = await getWatchlistToken(currentUser._id);
-                setWatchlist(watchlistToken.data.results.data);
-                setIsFollow(true);
-            }
-        };
-        watchlistData();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [currentUser._id, starList]);
+    // useEffect(() => {
+    //     setStarList(Array(1).fill(result.map((token) => ({ id: token.id, isStar: false }))));
+    // }, [result]);
+    console.log('starList', starList);
+
+    // useEffect(() => {
+    //     const watchlistData = async () => {
+    //         const watchlistToken = await getWatchlistToken(currentUser._id);
+    //         setWatchlist(watchlistToken.data.results.data);
+    //         setIsFollow(true);
+    //         // console.log(watchlistToken);
+    //     };
+    //     watchlistData();
+    //     // eslint-disable-next-line react-hooks/exhaustive-deps
+    // }, [currentUser._id]);
 
     const handleAddToWatchlist = async (id: number) => {
+        console.log('click');
+
         try {
             await addToWatchList(currentUser._id, id);
-            setStarList((p) => [...p, { id: id, isStar: true }]);
+            // setStarList(
+            //     ,
+            // );
+            setStarList(
+                starList.map((item, index) => {
+                    if (item.id === id) {
+                        return {
+                            ...item,
+                            isStar: !item.isStar,
+                        };
+                    } else {
+                        return {
+                            ...item,
+                        };
+                    }
+                }),
+            );
+
+            // setStarList((prev) => [...prev, { id: id, isStar: true }]);
+
             // setIsFollow(true);
+            // console.log(starList);
         } catch (err) {
             console.log(err);
         }
     };
 
     const handleRemoveWatchlist = async (id: number) => {
-        try {
-            await removeFromWatchList(currentUser._id, id);
-            // setIsFollow(false);
-            setStarList((p) => [...p, { id: id, isStar: false }]);
-        } catch (err) {
-            console.log(err);
-        }
+        // try {
+        await removeFromWatchList(currentUser._id, id);
+        //     // setIsFollow(false);
+        setStarList(
+            starList.map((item, index) => {
+                if (item.id === id) {
+                    return {
+                        ...item,
+                        isStar: !item.isStar,
+                    };
+                } else {
+                    return {
+                        ...item,
+                    };
+                }
+            }),
+        );
+        //     setStarList((p) => [...p, { id: id, isStar: false }]);
+        // } catch (err) {
+        //     console.log(err);
+        // }
     };
 
     const tagsData = cate?.slice(5, 10).map((tag) => tag.name);
@@ -142,7 +200,7 @@ const TableToken: React.FC<Props> = (props) => {
             title: '',
             render: (id) => (
                 <span>
-                    {isFollow ? (
+                    {starList.filter((item) => item.id === id)[0].isStar ? (
                         <Tooltip title="Add this token to watchlist">
                             {' '}
                             <FontAwesomeIcon

@@ -33,14 +33,9 @@ interface IProps {
     setSearchDebound: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const Header = ({
-    handleSearchDebound,
-    searchDebound,
-    isSearchResult,
-    searchResult,
-    setSearchDebound,
-}: IProps) => {
+const Header = ({ handleSearchDebound, searchDebound, isSearchResult, searchResult, setSearchDebound }: IProps) => {
     const currentUser: AppInterface['currentUser'] = useSelector((state: State) => state.currentUser);
+    const search: AppInterface['search'] = useSelector((state: State) => state.search);
     const dispath = useDispatch();
     const { setDarkmode, setIsShowLoginModal } = bindActionCreators(actionCreators, dispath);
     const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
@@ -51,6 +46,7 @@ const Header = ({
         isDarkMode ? setDarkmode('light') : setDarkmode('dark');
         setIsDarkMode(checked);
     };
+
     const toggleShowModal = () => {
         setIsShowModal(!isShowModal);
     };
@@ -71,35 +67,44 @@ const Header = ({
                                     value={searchDebound}
                                     onChange={handleSearchDebound}
                                 ></input>
-                                <Image src={search} alt=""></Image>
+                                <Link href="/">
+                                    <Image src={search} alt=""></Image>
+                                </Link>
                             </div>
                             {isSearchResult && searchDebound !== '' ? (
                                 <>
                                     <div className={styles['search-result__dropdown']}>
-                                        {searchResult.map((token) => (
-                                            <React.Fragment key={token.id}>
-                                                <div className={styles['search-result__item']}>
-                                                    <Link
-                                                        href={`/token-detail/${token.slug}`}
-                                                        onClick={() => setSearchDebound('')}
-                                                    >
-                                                        <div className={styles['token-info']}>
-                                                            <img
-                                                                src={`https://s2.coinmarketcap.com/static/img/coins/64x64/${token.id}.png`}
-                                                                alt=""
-                                                                width={20}
-                                                                height={20}
-                                                            />
-                                                            <p>{token.name}</p>
-                                                            <small className={styles['token-symbol']}>
-                                                                {token.symbol}
-                                                            </small>
-                                                        </div>
-                                                    </Link>
-                                                    <div className="token-rank">#{token.cmc_rank}</div>
-                                                </div>
-                                            </React.Fragment>
-                                        ))}
+                                        {!!searchResult.length ? (
+                                            searchResult.map((token) => (
+                                                <React.Fragment key={token.id}>
+                                                    <div className={styles['search-result__item']}>
+                                                        <Link
+                                                            href={`/token-detail/${token.slug}`}
+                                                            onClick={() => setSearchDebound('')}
+                                                        >
+                                                            <div className={styles['token-info']}>
+                                                                <img
+                                                                    src={`https://s2.coinmarketcap.com/static/img/coins/64x64/${token.id}.png`}
+                                                                    alt=""
+                                                                    width={20}
+                                                                    height={20}
+                                                                />
+                                                                <p>{token.name}</p>
+                                                                <small className={styles['token-symbol']}>
+                                                                    {token.symbol}
+                                                                </small>
+                                                            </div>
+                                                        </Link>
+                                                        <div className="token-rank">#{token.cmc_rank}</div>
+                                                    </div>
+                                                </React.Fragment>
+                                            ))
+                                        ) : (
+                                            <p>
+                                                We couldn&apos;t find anything matching your search. <br />
+                                                Try again with a different term.
+                                            </p>
+                                        )}
                                     </div>
                                 </>
                             ) : null}

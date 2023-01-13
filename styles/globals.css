@@ -294,3 +294,11 @@ img {
 :where(.css-dev-only-do-not-override-9ntgx0).ant-table-wrapper .ant-table-tbody > tr > td {
     text-align: end;
 }
+
+.slick-slider {
+    min-height: 73px;
+}
+
+ul.slick-dots {
+    bottom: 0;
+}

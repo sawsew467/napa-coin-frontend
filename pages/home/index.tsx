@@ -24,17 +24,15 @@ export interface IState {
 
 const HomePage = () => {
     const darkMode: AppInterface['darkmode'] = useSelector((state: State) => state.darkmode);
+    const search: AppInterface['darkmode'] = useSelector((state: State) => state.search);
     const isShowLoginModal: boolean = useSelector((state: State) => state.loginModal);
-    // console.log(loginModal);
-
-    // const [isShowLoginModal, setIsShowLoginModal] = useState(false);
+    const dispatch = useDispatch();
     const [isShowRegisterModal, setIsShowRegisterModal] = useState(false);
     const [results, setResults] = useState<DataType[]>([]);
-    const [searchDebound, setSearchDebound] = useState<string>('');
+    const [searchDebound, setSearchDebound] = useState<string>(search);
     const [searchResult, setSearchResult] = useState<DataType[]>([]);
     const [isSearchResult, setIsSearchResult] = useState<boolean>(false);
-    const dispath = useDispatch();
-    const { setCurrentUser, setIsShowLoginModal } = bindActionCreators(actionCreators, dispath);
+    const { setCurrentUser, setIsShowLoginModal, setSearch } = bindActionCreators(actionCreators, dispatch);
     const timingTimeoutRef = useRef<any>(null);
 
     useEffect(() => {
@@ -56,6 +54,7 @@ const HomePage = () => {
     const handleSearchDebound = (e: { target: { value: any } }) => {
         const value = e.target.value;
         setSearchDebound(value);
+        setSearch(value);
 
         if (timingTimeoutRef.current) {
             clearTimeout(timingTimeoutRef.current);
@@ -79,6 +78,11 @@ const HomePage = () => {
                 // setIsShowLoginModal={setIsShowLoginModal}
                 handleSearchDebound={handleSearchDebound}
                 searchDebound={searchDebound}
+                isSearchResult={false}
+                searchResult={[]}
+                setSearchDebound={function (value: React.SetStateAction<string>): void {
+                    throw new Error('Function not implemented.');
+                }}
             ></Header>
             <div className="bg_home">
                 <TopAccount></TopAccount>

@@ -18,6 +18,7 @@ export interface AppInterface {
         following: string[];
         follower: string[];
     };
+    search: string;
 }
 
 export default function App({ Component, pageProps }: AppProps) {
