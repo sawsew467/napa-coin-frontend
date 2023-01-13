@@ -24,14 +24,15 @@ export interface IState {
 
 const HomePage = () => {
     const darkMode: AppInterface['darkmode'] = useSelector((state: State) => state.darkmode);
+    const search: AppInterface['darkmode'] = useSelector((state: State) => state.search);
     const isShowLoginModal: boolean = useSelector((state: State) => state.loginModal);
+    const dispatch = useDispatch();
     const [isShowRegisterModal, setIsShowRegisterModal] = useState(false);
     const [results, setResults] = useState<DataType[]>([]);
-    const [searchDebound, setSearchDebound] = useState<string>('');
+    const [searchDebound, setSearchDebound] = useState<string>(search);
     const [searchResult, setSearchResult] = useState<DataType[]>([]);
     const [isSearchResult, setIsSearchResult] = useState<boolean>(false);
-    const dispath = useDispatch();
-    const { setCurrentUser, setIsShowLoginModal } = bindActionCreators(actionCreators, dispath);
+    const { setCurrentUser, setIsShowLoginModal, setSearch } = bindActionCreators(actionCreators, dispatch);
     const timingTimeoutRef = useRef<any>(null);
     useEffect(() => {
         setCurrentUser(
@@ -67,9 +68,24 @@ const HomePage = () => {
     };
     return (
         <>
-            <div className={darkMode}>
-                <Header
-                    // setIsShowLoginModal={setIsShowLoginModal}
+            <Header
+                // setIsShowLoginModal={setIsShowLoginModal}
+                handleSearchDebound={handleSearchDebound}
+                searchDebound={searchDebound}
+                isSearchResult={false}
+                searchResult={[]}
+                setSearchDebound={function (value: React.SetStateAction<string>): void {
+                    throw new Error('Function not implemented.');
+                }}
+            ></Header>
+            <div className="bg_home">
+                <TopAccount></TopAccount>
+                <h1 className="title-home">Today's Cryptocurrency Prices by NAPA Coins </h1>
+                <TableToken searchResult={searchResult} isSearchResult={isSearchResult}></TableToken>
+            </div>
+            {isShowLoginModal && (
+                <LoginModal
+                    setIsShowRegisterModal={setIsShowRegisterModal}
                     handleSearchDebound={handleSearchDebound}
                     searchDebound={searchDebound}
                 ></Header>

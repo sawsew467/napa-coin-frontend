@@ -13,5 +13,9 @@ interface setIsShowLoginModal {
     type: ActionType.SET_LOGIN_MODAL;
     payload: boolean;
 }
+interface setSearch {
+    type: ActionType.SET_SEARCH;
+    payload: AppInterface['search'];
+}
 
-export type Action = SetDarkmode | SetCurrentUser | setIsShowLoginModal;
+export type Action = SetDarkmode | SetCurrentUser | setIsShowLoginModal | setSearch;

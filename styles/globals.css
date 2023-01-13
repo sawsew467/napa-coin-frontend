@@ -297,6 +297,14 @@ img {
     text-align: end;
 }
 
+
+.slick-slider {
+    min-height: 73px;
+}
+
+ul.slick-dots {
+    bottom: 0;
+
 .dark .header__wrapper,
 .dark .box {
     background-color: #282a2f !important;
@@ -396,4 +404,5 @@ img {
     border: 1px solid #4f4e4e;
     transition: all 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
     color: #fff;
+
 }

@@ -21,6 +21,16 @@
         .tags {
             font-size: 12px;
             font-weight: bold;
+            position: relative;
+            &::before {
+                content: '';
+                position: absolute;
+                background: #000;
+                height: 25px;
+                width: 2px;
+                left: 0;
+                // bottom: 10px;
+            }
         }
 
         .btn--watchlist {
@@ -35,16 +45,6 @@
 
             &:hover .table-icon {
                 color: #f6b87e;
-            }
-
-            &::after {
-                content: '';
-                position: absolute;
-                background: #000;
-                height: 25px;
-                width: 2px;
-                left: 110px;
-                top: 5px;
             }
         }
     }

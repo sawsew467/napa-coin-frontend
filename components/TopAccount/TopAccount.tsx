@@ -27,6 +27,7 @@ export interface IState {
 }
 
 const settings = {
+    dots: true,
     infinite: true,
     autoplay: true,
     speed: 500,

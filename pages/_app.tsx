@@ -20,6 +20,7 @@ export interface AppInterface {
         following: string[];
         follower: string[];
     };
+    search: string;
 }
 
 export const socket = io('http://localhost:5000');

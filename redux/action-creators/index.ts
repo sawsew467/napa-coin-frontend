@@ -29,3 +29,12 @@ export const setIsShowLoginModal = (isShow: boolean) => {
         });
     };
 };
+
+export const setSearch = (search: AppInterface['search']) => {
+    return (dispath: Dispatch<Action>) => {
+        dispath({
+            type: ActionType.SET_SEARCH,
+            payload: search,
+        });
+    };
+};
