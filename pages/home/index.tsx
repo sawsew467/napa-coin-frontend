@@ -34,7 +34,6 @@ const HomePage = () => {
     const [isSearchResult, setIsSearchResult] = useState<boolean>(false);
     const { setCurrentUser, setIsShowLoginModal, setSearch } = bindActionCreators(actionCreators, dispatch);
     const timingTimeoutRef = useRef<any>(null);
-
     useEffect(() => {
         setCurrentUser(
             JSON.parse(`${window.localStorage.getItem('currentUser')}`) ?? {
@@ -43,7 +42,6 @@ const HomePage = () => {
                 fullname: '',
             },
         );
-
         const listData = async () => {
             const res = await getTokenLastest();
             setResults(res.data.data);
@@ -54,12 +52,9 @@ const HomePage = () => {
     const handleSearchDebound = (e: { target: { value: any } }) => {
         const value = e.target.value;
         setSearchDebound(value);
-        setSearch(value);
-
         if (timingTimeoutRef.current) {
             clearTimeout(timingTimeoutRef.current);
         }
-
         timingTimeoutRef.current = setTimeout(() => {
             const filterResult = results?.filter((token) => {
                 return (
@@ -71,7 +66,6 @@ const HomePage = () => {
             setIsSearchResult(true);
         }, 500);
     };
-
     return (
         <>
             <Header
@@ -92,16 +86,28 @@ const HomePage = () => {
             {isShowLoginModal && (
                 <LoginModal
                     setIsShowRegisterModal={setIsShowRegisterModal}
-                    // setIsShowLoginModal={setIsShowLoginModal}
-                    // setCurrentUser={setCurrentUser}
-                ></LoginModal>
-            )}
-            {isShowRegisterModal && (
-                <RegisterModal
-                    setIsShowRegisterModal={setIsShowRegisterModal}
-                    // setIsShowLoginModal={setIsShowLoginModal}
-                ></RegisterModal>
-            )}
+                    handleSearchDebound={handleSearchDebound}
+                    searchDebound={searchDebound}
+                ></Header>
+                <div className="bg_home page-wrapper">
+                    <TopAccount></TopAccount>
+                    <h1 className="title-home page-title">Today's Cryptocurrency Prices by NAPA Coins </h1>
+                    <TableToken searchResult={searchResult} isSearchResult={isSearchResult}></TableToken>
+                </div>
+                {isShowLoginModal && (
+                    <LoginModal
+                        setIsShowRegisterModal={setIsShowRegisterModal}
+                        // setIsShowLoginModal={setIsShowLoginModal}
+                        // setCurrentUser={setCurrentUser}
+                    ></LoginModal>
+                )}
+                {isShowRegisterModal && (
+                    <RegisterModal
+                        setIsShowRegisterModal={setIsShowRegisterModal}
+                        // setIsShowLoginModal={setIsShowLoginModal}
+                    ></RegisterModal>
+                )}
+            </div>
         </>
     );
 };

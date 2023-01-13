@@ -7,6 +7,8 @@ import { useSelector } from 'react-redux';
 import { State } from '../../redux';
 
 const Watchlist = () => {
+    const darkMode: AppInterface['darkmode'] = useSelector((state: State) => state.darkmode);
+
     return (
         <>
             <Header
@@ -23,6 +25,7 @@ const Watchlist = () => {
             <div className="bg_home">
                 <h1 className="title-watchlist">My Watchlist </h1>
                 <TableToken searchResult={[]} isSearchResult={false}></TableToken>
+
             </div>
         </>
     );

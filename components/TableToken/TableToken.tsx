@@ -7,13 +7,13 @@ import { Spin, Table, Tooltip } from 'antd';
 import Link from 'next/link';
 import CheckableTag from 'antd/lib/tag/CheckableTag';
 import { useRouter } from 'next/router';
-
 import style from './table.module.scss';
 import { useSelector } from 'react-redux';
 import { AppInterface } from '../../pages/_app';
 import { State } from '../../redux';
 import { addToWatchList, getWatchlistToken, removeFromWatchList } from '../../apis/watchlistApis';
 import { getTokenCate, getTokenLastest } from '../../apis/tokenApis';
+import clsx from 'clsx';
 
 export interface DataType {
     cmc_rank: number;
@@ -107,30 +107,12 @@ const TableToken: React.FC<Props> = (props) => {
         listData();
     }, [currentUser._id]);
 
-    // useEffect(() => {
-    //     setStarList(Array(1).fill(result.map((token) => ({ id: token.id, isStar: false }))));
-    // }, [result]);
-    console.log('starList', starList);
-
-    // useEffect(() => {
-    //     const watchlistData = async () => {
-    //         const watchlistToken = await getWatchlistToken(currentUser._id);
-    //         setWatchlist(watchlistToken.data.results.data);
-    //         setIsFollow(true);
-    //         // console.log(watchlistToken);
-    //     };
-    //     watchlistData();
-    //     // eslint-disable-next-line react-hooks/exhaustive-deps
-    // }, [currentUser._id]);
 
     const handleAddToWatchlist = async (id: number) => {
         console.log('click');
 
         try {
             await addToWatchList(currentUser._id, id);
-            // setStarList(
-            //     ,
-            // );
             setStarList(
                 starList.map((item, index) => {
                     if (item.id === id) {
@@ -145,20 +127,14 @@ const TableToken: React.FC<Props> = (props) => {
                     }
                 }),
             );
-
-            // setStarList((prev) => [...prev, { id: id, isStar: true }]);
-
-            // setIsFollow(true);
-            // console.log(starList);
         } catch (err) {
             console.log(err);
         }
     };
 
     const handleRemoveWatchlist = async (id: number) => {
-        // try {
+        try {
         await removeFromWatchList(currentUser._id, id);
-        //     // setIsFollow(false);
         setStarList(
             starList.map((item, index) => {
                 if (item.id === id) {
@@ -173,10 +149,9 @@ const TableToken: React.FC<Props> = (props) => {
                 }
             }),
         );
-        //     setStarList((p) => [...p, { id: id, isStar: false }]);
-        // } catch (err) {
-        //     console.log(err);
-        // }
+        } catch (err) {
+             console.log(err);
+         }
     };
 
     const tagsData = cate?.slice(5, 10).map((tag) => tag.name);
@@ -239,7 +214,10 @@ const TableToken: React.FC<Props> = (props) => {
                             width="22"
                             style={{ borderRadius: '80px' }}
                         />
-                        <span style={{ color: '#000', cursor: 'pointer' }}> {record.name}</span>
+                        <span style={{ color: '#000', cursor: 'pointer' }} className="token-name">
+                            {' '}
+                            {record.name}
+                        </span>
                         <span style={{ color: '#8c96a7', cursor: 'pointer' }}> {record.symbol}</span>
                     </div>
                 </Link>
@@ -349,10 +327,10 @@ const TableToken: React.FC<Props> = (props) => {
     ];
 
     return (
-        <div id={style.table}>
+        <div id={style.table} className="box">
             <div className={style[`table__tag-row`]}>
                 <Link href="/watchlist">
-                    <button className={style[`btn--watchlist`]}>
+                    <button className={clsx(style[`btn--watchlist`], 'button--slate')}>
                         <FontAwesomeIcon icon={faStar} className={style[`watchlist-icon`]} /> Watchlist
                     </button>
                 </Link>
@@ -364,6 +342,7 @@ const TableToken: React.FC<Props> = (props) => {
                                   key={tag}
                                   checked={selectedTags.indexOf(tag) > -1}
                                   onChange={(checked) => handleChange(tag, checked)}
+                                  className="tag"
                               >
                                   {tag}
                               </CheckableTag>

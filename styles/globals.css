@@ -244,6 +244,7 @@ img {
     background-color: #e8e9f0;
     padding-bottom: 50px;
     min-height: 100vh;
+    transition: all 0.3s;
 }
 
 .title-home,
@@ -251,6 +252,7 @@ img {
     margin-left: 80px;
     font-size: 24px;
     margin-top: 32px;
+    transition: all 0.3s;
 }
 
 .title-watchlist {
@@ -295,10 +297,112 @@ img {
     text-align: end;
 }
 
+
 .slick-slider {
     min-height: 73px;
 }
 
 ul.slick-dots {
     bottom: 0;
+
+.dark .header__wrapper,
+.dark .box {
+    background-color: #282a2f !important;
+    box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.25);
+    color: #fff;
+}
+
+.dark .header__search {
+    background-color: #000 !important;
+    color: #fff;
+}
+
+.dark .page-wrapper {
+    background-color: #000;
+}
+
+.dark .page-title,
+.dark .text {
+    color: #fff;
+    transition: all 0.3s;
+}
+
+.dark .button--slate {
+    background-color: #393b44;
+    color: #fff;
+}
+
+.dark .dropdown__item,
+.dark .token-name {
+    color: #fff !important;
+}
+.dark .dropdown__item:hover {
+    background-color: #000;
+}
+.dark .input input,
+.dark .input textarea {
+    background-color: #000;
+    color: #fff;
+}
+.dark span.ant-tag.ant-tag-checkable.css-dev-only-do-not-override-9ntgx0.tag {
+    color: #fff !important;
+}
+.dark th.ant-table-cell,
+.dark thead td.ant-table-cell {
+    background-color: #393b44 !important;
+    color: #fff !important;
+}
+.dark tbody td.ant-table-cell {
+    background-color: #000 !important;
+    color: #fff !important;
+}
+.dark thead td.ant-table-cell::before,
+.dark :where(.css-dev-only-do-not-override-9ntgx0).ant-table-wrapper .ant-table-column-sorter,
+.dark :where(.css-dev-only-do-not-override-9ntgx0).ant-pagination .ant-pagination-item a {
+    color: #ccc !important;
+}
+.dark :where(.css-dev-only-do-not-override-9ntgx0).ant-table-wrapper .ant-table-tbody > tr > td {
+    border-top: 1px solid #ccc;
+    border-top-width: 1px;
+    border-top-style: solid;
+    border-top-color: rgb(41, 41, 41);
+    transition: all 0.3s;
+}
+.dark :where(.css-dev-only-do-not-override-9ntgx0).ant-pagination .ant-pagination-item-active a {
+    color: #408cf6 !important;
+    background-color: #272a2f;
+}
+.dark :where(.css-dev-only-do-not-override-9ntgx0).ant-pagination .ant-pagination-prev button,
+:where(.css-dev-only-do-not-override-9ntgx0).ant-pagination .ant-pagination-next button,
+.dark :where(.css-dev-only-do-not-override-9ntgx0).ant-pagination .ant-pagination-prev button:hover,
+:where(.css-dev-only-do-not-override-9ntgx0).ant-pagination .ant-pagination-next button:hover,
+.dark :where(.css-dev-only-do-not-override-9ntgx0).ant-pagination .ant-pagination-disabled .ant-pagination-item-link {
+    color: rgba(255, 255, 255, 0.88);
+    cursor: pointer;
+    user-select: none;
+}
+
+.dark
+    :where(.css-dev-only-do-not-override-9ntgx0).ant-pagination
+    .ant-pagination-jump-next
+    .ant-pagination-item-container
+    .ant-pagination-item-ellipsis,
+.dark
+    :where(.css-dev-only-do-not-override-9ntgx0).ant-pagination
+    .ant-pagination-jump-prev
+    .ant-pagination-item-container
+    .ant-pagination-item-ellipsis {
+    color: #fff;
+}
+.dark
+    :where(.css-dev-only-do-not-override-9ntgx0).ant-select:not(
+        :where(.css-dev-only-do-not-override-9ntgx0).ant-select-customize-input
+    )
+    .ant-select-selector {
+    position: relative;
+    background-color: #383b44;
+    border: 1px solid #4f4e4e;
+    transition: all 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+    color: #fff;
+
 }

@@ -6,10 +6,11 @@ import { State } from '../../redux';
 import { useDispatch } from 'react-redux';
 import { actionCreators } from '../../redux';
 import { bindActionCreators } from 'redux';
-import { AppInterface } from '../_app';
+import { AppInterface, socket } from '../_app';
 import { useRouter } from 'next/router';
 import { getInfo } from '../../apis/usersApis';
 import FollowButton from '../../components/FollowButton';
+import clsx from 'clsx';
 
 interface IState {
     user: {
@@ -23,7 +24,11 @@ interface IState {
 }
 
 function index() {
+    const router = useRouter();
+    const { uid } = router.query;
+
     const currentUser: AppInterface['currentUser'] = useSelector((state: State) => state.currentUser);
+    const darkMode: AppInterface['darkmode'] = useSelector((state: State) => state.darkmode);
     const dispath = useDispatch();
     const { setCurrentUser } = bindActionCreators(actionCreators, dispath);
     const [user, setUser] = useState<IState['user']>({
@@ -36,8 +41,25 @@ function index() {
     });
     const [followers, setFollowers] = useState<number>(0);
     const [token, setToken] = useState<string>('');
-    const router = useRouter();
-    const { uid } = router.query;
+    socket.on('follow', (socket: any) => {
+        if (uid) {
+            getInfo(uid, window.localStorage.getItem('token') ?? '')
+                .then((res) => {
+                    setUser(res.results);
+                    setFollowers(res.results.follower.length);
+                    const current = JSON.parse(`${window.localStorage.getItem('currentUser')}`) ?? {
+                        email: '',
+                        avatar: '',
+                        fullname: '',
+                        bio: '',
+                    };
+                    setIsFollowing(current.following?.includes(uid));
+                })
+                .catch((err) => {
+                    router.push('/home');
+                });
+        }
+    });
     useEffect(() => {
         if (uid === currentUser._id) {
             router.push('/profile');
@@ -73,35 +95,47 @@ function index() {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     return (
         <>
-            <Header setIsShowLoginModal={() => {}}></Header>
-            <div className="wrapper">
-                <div className="container">
-                    <section className={styles[`profile`]}>
-                        <img src={user.avatar} alt="" className={styles[`profile__image`]}></img>
-                        <div className="box">
-                            <p className={styles[`profile__name`]}>{user.fullname}</p>
-                            <p className={styles[`profile__email`]}>{user.email}</p>
-                            <div className={styles[`profile__follow`]}>
-                                <p>
-                                    <span>{user?.following?.length}</span>
-                                    &nbsp;following
-                                </p>
-                                <p>
-                                    <span>{followers}</span>
-                                    &nbsp;followers
-                                </p>
+            <div className={darkMode}>
+                <Header
+                    handleSearchDebound={function (e: { target: { value: any } }): void {
+                        throw new Error('Function not implemented.');
+                    }}
+                    searchDebound={''}
+                    isSearchResult={false}
+                    searchResult={[]}
+                    setSearchDebound={function (value: React.SetStateAction<string>): void {
+                        throw new Error('Function not implemented.');
+                    }}
+                ></Header>
+                <div className="wrapper page-wrapper">
+                    <div className="container">
+                        <section className={styles[`profile`]}>
+                            <img src={user.avatar} alt="" className={styles[`profile__image`]}></img>
+                            <div className="box">
+                                <p className={styles[`profile__name`]}>{user.fullname}</p>
+                                <p className={styles[`profile__email`]}>{user.email}</p>
+                                <div className={styles[`profile__follow`]}>
+                                    <p>
+                                        <span>{user?.following?.length}</span>
+                                        &nbsp;following
+                                    </p>
+                                    <p>
+                                        <span>{followers}</span>
+                                        &nbsp;followers
+                                    </p>
+                                </div>
+                                <p className={styles[`profile__bio`]}>{user.bio}</p>
+                                <FollowButton
+                                    isLoading={isLoading}
+                                    setIsLoading={setIsLoading}
+                                    isFollowing={isFollowing}
+                                    setIsFollowing={setIsFollowing}
+                                    setFollowers={setFollowers}
+                                    followedId={uid}
+                                ></FollowButton>
                             </div>
-                            <p className={styles[`profile__bio`]}>{user.bio}</p>
-                            <FollowButton
-                                isLoading={isLoading}
-                                setIsLoading={setIsLoading}
-                                isFollowing={isFollowing}
-                                setIsFollowing={setIsFollowing}
-                                setFollowers={setFollowers}
-                                followedId={uid}
-                            ></FollowButton>
-                        </div>
-                    </section>
+                        </section>
+                    </div>
                 </div>
             </div>
         </>

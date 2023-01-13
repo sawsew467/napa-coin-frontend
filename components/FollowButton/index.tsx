@@ -1,12 +1,16 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Check from '../../assets/icons/check-line.svg';
+import CheckDark from '../../assets/icons/check-dark.svg';
 import styles from './style.module.scss';
 import { followUser, unfollowUser } from '../../apis/followApis';
 import { useDispatch, useSelector } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { actionCreators, State } from '../../redux';
-import { AppInterface } from '../../pages/_app';
+import { AppInterface, socket } from '../../pages/_app';
+import { io } from 'socket.io-client';
+import clsx from 'clsx';
+import { getInfo } from '../../apis/usersApis';
 
 interface IProps {
     isLoading: boolean;
@@ -18,7 +22,23 @@ interface IProps {
 }
 
 function index({ isLoading, setIsLoading, isFollowing, setIsFollowing, setFollowers, followedId }: IProps) {
+    // const socket = io('http://localhost:9000', {
+    //     withCredentials: true,
+    //     extraHeaders: {
+    //         'my-custom-header': 'abcd',
+    //     },
+    // });
+    socket.on('follow', (socket: any) => {
+        getInfo(currentUser._id, window.localStorage.getItem('token') ?? '')
+            .then((res) => {
+                setIsFollowing(res.results.following.includes(followedId));
+            })
+            .catch((err) => {
+                // router.push('/home');
+            });
+    });
     const currentUser: AppInterface['currentUser'] = useSelector((state: State) => state.currentUser);
+    const darkmode: AppInterface['darkmode'] = useSelector((state: State) => state.darkmode);
     const dispath = useDispatch();
     const { setIsShowLoginModal } = bindActionCreators(actionCreators, dispath);
     const unAuthorizedJHandle = () => {
@@ -42,6 +62,9 @@ function index({ isLoading, setIsLoading, isFollowing, setIsFollowing, setFollow
                     }),
                 );
                 setFollowers((pre) => pre + 1);
+                socket.emit('follow', {
+                    message: 'follow',
+                });
             })
             .catch((err) => {
                 setIsLoading(false);
@@ -54,6 +77,9 @@ function index({ isLoading, setIsLoading, isFollowing, setIsFollowing, setFollow
                 setIsLoading(false);
                 setIsFollowing(false);
                 setFollowers((pre) => pre - 1);
+                socket.emit('follow', {
+                    message: 'follow',
+                });
             })
             .catch((err) => {
                 setIsLoading(false);
@@ -70,19 +96,23 @@ function index({ isLoading, setIsLoading, isFollowing, setIsFollowing, setFollow
         <>
             {isFollowing ? (
                 isLoading ? (
-                    <button className={styles[`button--slate`]}>Loading...</button>
+                    <button className={clsx(styles[`button--slate`], 'button--slate')}>Loading...</button>
                 ) : (
-                    <button className={styles[`button--slate`]} onClick={unfollowHandler}>
-                        <Image src={Check} alt=""></Image>
+                    <button className={clsx(styles[`button--slate`], 'button--slate')} onClick={unfollowHandler}>
+                        {darkmode === 'dark' ? (
+                            <Image src={CheckDark} alt=""></Image>
+                        ) : (
+                            <Image src={Check} alt=""></Image>
+                        )}
                         &nbsp;Following
                     </button>
                 )
             ) : isLoading ? (
-                <button className={styles[`button--primary`]} onClick={followHandler}>
+                <button className={clsx(styles[`button--primary`], 'button--primary')} onClick={followHandler}>
                     Loading...
                 </button>
             ) : (
-                <button className={styles[`button--primary`]} onClick={followHandler}>
+                <button className={clsx(styles[`button--primary`], 'button--primary')} onClick={followHandler}>
                     + Follow
                 </button>
             )}
