@@ -12,6 +12,7 @@ import { State } from '../../redux';
 import Router, { useRouter } from 'next/router';
 import Check from '../../assets/icons/check-line.svg';
 import FollowButton from '../../components/FollowButton';
+import clsx from 'clsx';
 
 interface IProps {
     user: {
@@ -38,7 +39,7 @@ const Account = ({ user }: IProps) => {
                 <div className={style.account__item}>
                     <img src={user.avatar} alt=""></img>
                     <Link href={`/profile/${user._id}`}>
-                        <p>{user.fullname}</p>
+                        <p className="text">{user.fullname}</p>
                     </Link>
                     <FontAwesomeIcon className="icon-color" icon={faCircleCheck} />
                     <small className={style.at}>{user.email}</small>

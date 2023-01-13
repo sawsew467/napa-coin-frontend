@@ -4,8 +4,10 @@ import '@fortawesome/fontawesome-svg-core/styles.css';
 config.autoAddCss = false;
 
 import '../styles/globals.css';
-import { Provider } from 'react-redux';
-import { store } from '../redux';
+import { Provider, useSelector } from 'react-redux';
+import { State, store } from '../redux';
+import { io } from 'socket.io-client';
+import { useEffect } from 'react';
 
 export interface AppInterface {
     darkmode: string;
@@ -19,6 +21,8 @@ export interface AppInterface {
         follower: string[];
     };
 }
+
+export const socket = io('http://localhost:5000');
 
 export default function App({ Component, pageProps }: AppProps) {
     return (

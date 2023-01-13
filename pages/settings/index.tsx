@@ -4,9 +4,12 @@ import styles from './style.module.scss';
 import Image from 'next/image';
 import Avatar from '../../assets/img/avatar.jpeg';
 import camera from '../../assets/img/camera.svg';
-import password from '../../assets/icons/door-lock-line.svg';
-import User from '../../assets/icons/user-3-line.svg';
-import Bio from '../../assets/icons/bill-line.svg';
+import PasswordLight from '../../assets/icons/door-lock-line.svg';
+import UserLight from '../../assets/icons/user-3-line.svg';
+import BioLight from '../../assets/icons/bill-line.svg';
+import PasswordDark from '../../assets/icons/password-dark.svg';
+import UserDark from '../../assets/icons/user-dark.svg';
+import BioDark from '../../assets/icons/bio-dark.svg';
 import ChangePasswordModal from '../../components/ChangePasswordModal';
 import { useDispatch, useSelector } from 'react-redux';
 import { actionCreators, State } from '../../redux';
@@ -17,6 +20,7 @@ import Router, { useRouter } from 'next/router';
 import axios from 'axios';
 import { changePassword, editProfile } from '../../apis/usersApis';
 import { toLowerCaseNonAccentVietnamese } from '../../functions/nameValidation';
+import clsx from 'clsx';
 
 interface IState {
     userInput: {
@@ -31,6 +35,7 @@ interface IState {
 
 function index() {
     const currentUser: AppInterface['currentUser'] = useSelector((state: State) => state.currentUser);
+    const darkMode: AppInterface['darkmode'] = useSelector((state: State) => state.darkmode);
     const [userInput, setUserInput] = useState<IState['userInput']>({
         email: '',
         avatar: '',
@@ -154,106 +159,132 @@ function index() {
 
     return (
         <>
-            <Header handleSearchDebound={() => {}} searchDebound={''}></Header>
-            <div className="wrapper">
-                <div className="container">
-                    <section className={styles[`settings`]}>
-                        <div className="box">
-                            <form method="post" onSubmit={(e) => handleOnSubmit(e)}>
-                                <div className={styles[`settings__title`]}>Edit profile</div>
-                                <div className={styles[`settings__avatar`]}>
-                                    <p>Your avatar</p>
-                                    <div>
-                                        <img src={imageSrc ?? currentUser.avatar} alt="" width={80} height={80}></img>
+            <div className={darkMode}>
+                <Header handleSearchDebound={() => {}} searchDebound={''}></Header>
+                <div className="wrapper page-wrapper">
+                    <div className="container">
+                        <section className={styles[`settings`]}>
+                            <div className="box">
+                                <form method="post" onSubmit={(e) => handleOnSubmit(e)}>
+                                    <div className={styles[`settings__title`]}>Edit profile</div>
+                                    <div className={styles[`settings__avatar`]}>
+                                        <p>Your avatar</p>
+                                        <div>
+                                            <img
+                                                src={imageSrc ?? currentUser.avatar}
+                                                alt=""
+                                                width={80}
+                                                height={80}
+                                            ></img>
 
-                                        <label htmlFor="file">
-                                            <Image src={camera} alt=""></Image>
-                                        </label>
-                                    </div>
+                                            <label htmlFor="file">
+                                                <Image src={camera} alt=""></Image>
+                                            </label>
+                                        </div>
 
-                                    <input
-                                        className={styles[`settings__file`]}
-                                        type="file"
-                                        id="file"
-                                        ref={inputRef}
-                                        onChange={(e) => handleOnChange(e)}
-                                    ></input>
-                                </div>
-                                <div className={styles[`settings__input`]}>
-                                    <span>Full name</span>
-                                    <div>
-                                        <Image className="modal__close" src={User} alt=""></Image>
                                         <input
-                                            placeholder="Enter your name"
-                                            defaultValue={currentUser.fullname}
-                                            value={userInput.fullname}
-                                            onChange={(e) => setUserInput({ ...userInput, fullname: e.target.value })}
+                                            className={styles[`settings__file`]}
+                                            type="file"
+                                            id="file"
+                                            ref={inputRef}
+                                            onChange={(e) => handleOnChange(e)}
                                         ></input>
                                     </div>
-                                </div>
-                                <div className={styles[`settings__input`]}>
-                                    <span>Bio</span>
-                                    <div>
-                                        <Image className="modal__close" src={Bio} alt=""></Image>
-                                        <textarea
-                                            placeholder="Your bio is empty"
-                                            rows={4}
-                                            defaultValue={currentUser.bio}
-                                            // value={userInput.bio}
-                                            onChange={(e) => setUserInput({ ...userInput, bio: e.target.value })}
-                                        ></textarea>
+                                    <div className={clsx(styles[`settings__input`], 'input')}>
+                                        <span>Full name</span>
+                                        <div>
+                                            {darkMode === 'dark' ? (
+                                                <Image className="modal__close" src={UserDark} alt=""></Image>
+                                            ) : (
+                                                <Image className="modal__close" src={UserLight} alt=""></Image>
+                                            )}
+                                            <input
+                                                placeholder="Enter your name"
+                                                defaultValue={currentUser.fullname}
+                                                value={userInput.fullname}
+                                                onChange={(e) =>
+                                                    setUserInput({ ...userInput, fullname: e.target.value })
+                                                }
+                                            ></input>
+                                        </div>
                                     </div>
-                                </div>
-                                <div className={styles[`settings__input`]}>
-                                    <span>Old password</span>
-                                    <div>
-                                        <Image className="modal__close" src={password} alt=""></Image>
-                                        <input
-                                            placeholder="******"
-                                            type="password"
-                                            value={userInput.oldPassword}
-                                            onChange={(e) =>
-                                                setUserInput({ ...userInput, oldPassword: e.target.value })
-                                            }
-                                            name="password"
-                                            autoComplete="on"
-                                        ></input>
+                                    <div className={clsx(styles[`settings__input`], 'input')}>
+                                        <span>Bio</span>
+                                        <div>
+                                            {darkMode === 'dark' ? (
+                                                <Image className="modal__close" src={BioDark} alt=""></Image>
+                                            ) : (
+                                                <Image className="modal__close" src={BioLight} alt=""></Image>
+                                            )}
+                                            <textarea
+                                                placeholder="Your bio is empty"
+                                                rows={4}
+                                                defaultValue={currentUser.bio}
+                                                onChange={(e) => setUserInput({ ...userInput, bio: e.target.value })}
+                                            ></textarea>
+                                        </div>
                                     </div>
-                                </div>
-                                <div className={styles[`settings__input`]}>
-                                    <span>New password</span>
-                                    <div>
-                                        <Image className="modal__close" src={password} alt=""></Image>
-                                        <input
-                                            placeholder="******"
-                                            type="password"
-                                            value={userInput.newPassword}
-                                            onChange={(e) =>
-                                                setUserInput({ ...userInput, newPassword: e.target.value })
-                                            }
-                                            name="password"
-                                            autoComplete="on"
-                                        ></input>
+                                    <div className={clsx(styles[`settings__input`], 'input')}>
+                                        <span>Old password</span>
+                                        <div>
+                                            {darkMode === 'dark' ? (
+                                                <Image className="modal__close" src={PasswordDark} alt=""></Image>
+                                            ) : (
+                                                <Image className="modal__close" src={PasswordLight} alt=""></Image>
+                                            )}
+                                            <input
+                                                placeholder="******"
+                                                type="password"
+                                                value={userInput.oldPassword}
+                                                onChange={(e) =>
+                                                    setUserInput({ ...userInput, oldPassword: e.target.value })
+                                                }
+                                                name="password"
+                                                autoComplete="on"
+                                            ></input>
+                                        </div>
                                     </div>
-                                </div>
-                                {errorMessage ? (
-                                    <p className={styles[`settings__error`]}>{errorMessage}</p>
-                                ) : (
-                                    <p className={styles[`settings__error`]}>&nbsp;</p>
-                                )}
-                                <div className={styles[`settings__button`]}>
-                                    {isLoading ? <button>Loading...</button> : <button>Save</button>}
-                                    {/* <button>Save</button> */}
-                                    {/* <button onClick={() => setIsShowChangePasswordModal(true)}>Change password</button> */}
-                                </div>
-                            </form>
-                        </div>
-                    </section>
+                                    <div className={clsx(styles[`settings__input`], 'input')}>
+                                        <span>New password</span>
+                                        <div>
+                                            {darkMode === 'dark' ? (
+                                                <Image className="modal__close" src={PasswordDark} alt=""></Image>
+                                            ) : (
+                                                <Image className="modal__close" src={PasswordLight} alt=""></Image>
+                                            )}
+                                            <input
+                                                placeholder="******"
+                                                type="password"
+                                                value={userInput.newPassword}
+                                                onChange={(e) =>
+                                                    setUserInput({ ...userInput, newPassword: e.target.value })
+                                                }
+                                                name="password"
+                                                autoComplete="on"
+                                            ></input>
+                                        </div>
+                                    </div>
+                                    {errorMessage ? (
+                                        <p className={styles[`settings__error`]}>{errorMessage}</p>
+                                    ) : (
+                                        <p className={styles[`settings__error`]}>&nbsp;</p>
+                                    )}
+                                    <div className={styles[`settings__button`]}>
+                                        {isLoading ? <button>Loading...</button> : <button>Save</button>}
+                                        {/* <button>Save</button> */}
+                                        {/* <button onClick={() => setIsShowChangePasswordModal(true)}>Change password</button> */}
+                                    </div>
+                                </form>
+                            </div>
+                        </section>
+                    </div>
                 </div>
+                {isShowChangePasswordModal && (
+                    <ChangePasswordModal
+                        setIsShowChangePasswordModal={setIsShowChangePasswordModal}
+                    ></ChangePasswordModal>
+                )}
             </div>
-            {isShowChangePasswordModal && (
-                <ChangePasswordModal setIsShowChangePasswordModal={setIsShowChangePasswordModal}></ChangePasswordModal>
-            )}
         </>
     );
 }

@@ -14,6 +14,7 @@ import { State } from '../../redux';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import clsx from 'clsx';
 
 export interface IState {
     user: {
@@ -48,7 +49,7 @@ const TopAccount = () => {
             });
     }, []);
     return (
-        <div className={style.account__container}>
+        <div className={clsx(style.account__container, 'box')}>
             <div className={style.account__title}>
                 <h2>
                     {' '}

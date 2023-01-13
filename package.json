@@ -22,6 +22,7 @@
         "axios": "^1.2.1",
         "chart.js": "^4.1.1",
         "cloudinary": "^1.33.0",
+        "clsx": "^1.2.1",
         "dotenv-next": "^0.1.24",
         "eslint": "8.30.0",
         "eslint-config-next": "13.0.7",

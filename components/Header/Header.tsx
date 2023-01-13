@@ -12,15 +12,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import sun from '../../assets/icons/sun.svg';
 import styles from './header.module.scss';
 import logoLight from '../../assets/img/logo-light.svg';
-import logoDark from '../../assets/img/logo-dark.png';
+import logoDark from '../../assets/img/logo-dark.svg';
 import avatar from '../../assets/img/avt.png';
-import search from '../../assets/icons/search.svg';
+import searchLight from '../../assets/icons/search.svg';
+import searchDark from '../../assets/icons/search-dark.svg';
 import { IState as AppState } from '../../pages/home';
 import { bindActionCreators } from 'redux';
 import { actionCreators, State } from '../../redux';
 import { AppInterface } from '../../pages/_app';
 import Dropdown from '../Dropdown';
 import { DataType } from '../TableToken/TableToken';
+import clsx from 'clsx';
+
 interface IProps {
     handleSearchDebound: (e: {
         target: {
@@ -33,17 +36,12 @@ interface IProps {
     setSearchDebound: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const Header = ({
-    handleSearchDebound,
-    searchDebound,
-    isSearchResult,
-    searchResult,
-    setSearchDebound,
-}: IProps) => {
+const Header = ({ handleSearchDebound, searchDebound, isSearchResult, searchResult, setSearchDebound }: IProps) => {
     const currentUser: AppInterface['currentUser'] = useSelector((state: State) => state.currentUser);
+    const darkMode: AppInterface['darkmode'] = useSelector((state: State) => state.darkmode);
     const dispath = useDispatch();
     const { setDarkmode, setIsShowLoginModal } = bindActionCreators(actionCreators, dispath);
-    const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
+    const [isDarkMode, setIsDarkMode] = useState<boolean>(darkMode === 'dark');
     const [isShowModal, setIsShowModal] = useState<boolean>(false);
     const [isShowMenu, setIsShowMenu] = useState<boolean>(false);
 
@@ -57,11 +55,15 @@ const Header = ({
 
     return (
         <>
-            <div className={styles.wrapper}>
+            <div className={clsx(styles.wrapper, 'header__wrapper')}>
                 <div className={styles.container}>
                     <header className={styles.header}>
                         <Link href={'/'}>
-                            <Image className={styles.header__logo} src={logoLight} alt=""></Image>
+                            {darkMode === 'dark' ? (
+                                <Image className={styles.header__logo} src={logoDark} alt=""></Image>
+                            ) : (
+                                <Image className={styles.header__logo} src={logoLight} alt=""></Image>
+                            )}
                         </Link>
                         <div className={styles.header__dropdown}>
                             {/* <Image src={sun} alt=""></Image> */}
@@ -76,8 +78,13 @@ const Header = ({
                                     placeholder="Search"
                                     value={searchDebound}
                                     onChange={handleSearchDebound}
+                                    className={clsx('header__search')}
                                 ></input>
-                                <Image src={search} alt=""></Image>
+                                {darkMode === 'dark' ? (
+                                    <Image src={searchDark} alt=""></Image>
+                                ) : (
+                                    <Image src={searchLight} alt=""></Image>
+                                )}
                             </div>
                             {isSearchResult && searchDebound !== '' ? (
                                 <>
