@@ -25,9 +25,6 @@ export interface IState {
 const HomePage = () => {
     const darkMode: AppInterface['darkmode'] = useSelector((state: State) => state.darkmode);
     const isShowLoginModal: boolean = useSelector((state: State) => state.loginModal);
-    // console.log(loginModal);
-
-    // const [isShowLoginModal, setIsShowLoginModal] = useState(false);
     const [isShowRegisterModal, setIsShowRegisterModal] = useState(false);
     const [results, setResults] = useState<DataType[]>([]);
     const [searchDebound, setSearchDebound] = useState<string>('');
@@ -36,7 +33,6 @@ const HomePage = () => {
     const dispath = useDispatch();
     const { setCurrentUser, setIsShowLoginModal } = bindActionCreators(actionCreators, dispath);
     const timingTimeoutRef = useRef<any>(null);
-
     useEffect(() => {
         setCurrentUser(
             JSON.parse(`${window.localStorage.getItem('currentUser')}`) ?? {
@@ -45,7 +41,6 @@ const HomePage = () => {
                 fullname: '',
             },
         );
-
         const listData = async () => {
             const res = await getTokenLastest();
             setResults(res.data.data);
@@ -56,11 +51,9 @@ const HomePage = () => {
     const handleSearchDebound = (e: { target: { value: any } }) => {
         const value = e.target.value;
         setSearchDebound(value);
-
         if (timingTimeoutRef.current) {
             clearTimeout(timingTimeoutRef.current);
         }
-
         timingTimeoutRef.current = setTimeout(() => {
             const filterResult = results?.filter((token) => {
                 return (
@@ -72,32 +65,33 @@ const HomePage = () => {
             setIsSearchResult(true);
         }, 500);
     };
-
     return (
         <>
-            <Header
-                // setIsShowLoginModal={setIsShowLoginModal}
-                handleSearchDebound={handleSearchDebound}
-                searchDebound={searchDebound}
-            ></Header>
-            <div className="bg_home">
-                <TopAccount></TopAccount>
-                <h1 className="title-home">Today's Cryptocurrency Prices by NAPA Coins </h1>
-                <TableToken searchResult={searchResult} isSearchResult={isSearchResult}></TableToken>
+            <div className={darkMode}>
+                <Header
+                    // setIsShowLoginModal={setIsShowLoginModal}
+                    handleSearchDebound={handleSearchDebound}
+                    searchDebound={searchDebound}
+                ></Header>
+                <div className="bg_home page-wrapper">
+                    <TopAccount></TopAccount>
+                    <h1 className="title-home page-title">Today's Cryptocurrency Prices by NAPA Coins </h1>
+                    <TableToken searchResult={searchResult} isSearchResult={isSearchResult}></TableToken>
+                </div>
+                {isShowLoginModal && (
+                    <LoginModal
+                        setIsShowRegisterModal={setIsShowRegisterModal}
+                        // setIsShowLoginModal={setIsShowLoginModal}
+                        // setCurrentUser={setCurrentUser}
+                    ></LoginModal>
+                )}
+                {isShowRegisterModal && (
+                    <RegisterModal
+                        setIsShowRegisterModal={setIsShowRegisterModal}
+                        // setIsShowLoginModal={setIsShowLoginModal}
+                    ></RegisterModal>
+                )}
             </div>
-            {isShowLoginModal && (
-                <LoginModal
-                    setIsShowRegisterModal={setIsShowRegisterModal}
-                    // setIsShowLoginModal={setIsShowLoginModal}
-                    // setCurrentUser={setCurrentUser}
-                ></LoginModal>
-            )}
-            {isShowRegisterModal && (
-                <RegisterModal
-                    setIsShowRegisterModal={setIsShowRegisterModal}
-                    // setIsShowLoginModal={setIsShowLoginModal}
-                ></RegisterModal>
-            )}
         </>
     );
 };

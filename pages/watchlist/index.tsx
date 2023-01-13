@@ -7,16 +7,20 @@ import { useSelector } from 'react-redux';
 import { State } from '../../redux';
 
 const Watchlist = () => {
+    const darkMode: AppInterface['darkmode'] = useSelector((state: State) => state.darkmode);
+
     return (
         <>
-            <Header
-                setIsShowLoginModal={function (value: React.SetStateAction<boolean>): void {
-                    throw new Error('Function not implemented.');
-                }}
-            ></Header>
-            <div className="bg_home">
-                <h1 className="title-watchlist">My Watchlist </h1>
-                <TableToken searchResult={[]} isSearchResult={false}></TableToken>
+            <div className={darkMode}>
+                <Header
+                    setIsShowLoginModal={function (value: React.SetStateAction<boolean>): void {
+                        throw new Error('Function not implemented.');
+                    }}
+                ></Header>
+                <div className="bg_home page-wrapper">
+                    <h1 className="title-watchlist">My Watchlist </h1>
+                    <TableToken searchResult={[]} isSearchResult={false}></TableToken>
+                </div>
             </div>
         </>
     );

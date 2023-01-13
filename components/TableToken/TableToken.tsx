@@ -7,13 +7,13 @@ import { Spin, Table, Tooltip } from 'antd';
 import Link from 'next/link';
 import CheckableTag from 'antd/lib/tag/CheckableTag';
 import { useRouter } from 'next/router';
-
 import style from './table.module.scss';
 import { useSelector } from 'react-redux';
 import { AppInterface } from '../../pages/_app';
 import { State } from '../../redux';
 import { addToWatchList, getWatchlistToken, removeFromWatchList } from '../../apis/watchlistApis';
 import { getTokenCate, getTokenLastest } from '../../apis/tokenApis';
+import clsx from 'clsx';
 
 export interface DataType {
     cmc_rank: number;
@@ -71,9 +71,6 @@ const TableToken: React.FC<Props> = (props) => {
     const [starList, setStarList] = useState<WatchlistType[]>(
         Array(result.length).fill({ id: result.map((token) => token.id), isStar: false }),
     );
-
-    console.log('starList', starList);
-
     const slug = router.pathname;
 
     useEffect(() => {
@@ -181,7 +178,10 @@ const TableToken: React.FC<Props> = (props) => {
                             width="22"
                             style={{ borderRadius: '80px' }}
                         />
-                        <span style={{ color: '#000', cursor: 'pointer' }}> {record.name}</span>
+                        <span style={{ color: '#000', cursor: 'pointer' }} className="token-name">
+                            {' '}
+                            {record.name}
+                        </span>
                         <span style={{ color: '#8c96a7', cursor: 'pointer' }}> {record.symbol}</span>
                     </div>
                 </Link>
@@ -291,10 +291,10 @@ const TableToken: React.FC<Props> = (props) => {
     ];
 
     return (
-        <div id={style.table}>
+        <div id={style.table} className="box">
             <div className={style[`table__tag-row`]}>
                 <Link href="/watchlist">
-                    <button className={style[`btn--watchlist`]}>
+                    <button className={clsx(style[`btn--watchlist`], 'button--slate')}>
                         <FontAwesomeIcon icon={faStar} className={style[`watchlist-icon`]} /> Watchlist
                     </button>
                 </Link>
@@ -306,6 +306,7 @@ const TableToken: React.FC<Props> = (props) => {
                                   key={tag}
                                   checked={selectedTags.indexOf(tag) > -1}
                                   onChange={(checked) => handleChange(tag, checked)}
+                                  className="tag"
                               >
                                   {tag}
                               </CheckableTag>
