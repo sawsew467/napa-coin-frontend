@@ -4,8 +4,8 @@ import Image from 'next/image';
 import Input from 'antd/lib/input/Input';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRightLeft } from '@fortawesome/free-solid-svg-icons';
-
-import avtCoin from '../../assets/img/avt.png';
+import clsx from 'clsx';
+import ConvertLight from '../../assets/icons/convert.svg';
 import USD from '../../assets/img/USD.svg';
 import style from './style.module.scss';
 import { DataType, currencyFormat } from '../TableToken/TableToken';
@@ -66,16 +66,17 @@ const Convert: React.FC<Props> = (props) => {
                                     setValueInput(+e.target.value);
                                 }}
                                 style={{ border: 'none' }}
-                                type={'number'}
-                                min={1}
+                                // type={'number'}
+                                // min={1}
                             />
                         </div>
                     </div>
-                    <div className={style[`transfer`]}>
+                    <Image src={ConvertLight} alt=""></Image>
+                    {/* <div className={style[`transfer`]}>
                         <p>
-                            <FontAwesomeIcon icon={faRightLeft} />
+                        <Image src={ConvertLight} alt=""></Image>
                         </p>
-                    </div>
+                    </div> */}
                     <div className={style[`convert__token`]}>
                         <div className={style[`convert_token--symbol`]}>
                             <Image src={USD} alt="token image" className={style[`symbol-image`]} />

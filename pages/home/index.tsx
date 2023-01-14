@@ -30,10 +30,14 @@ const HomePage = () => {
     const [results, setResults] = useState<DataType[]>([]);
     const [searchResult, setSearchResult] = useState<DataType[]>([]);
     const [isSearchResult, setIsSearchResult] = useState<boolean>(false);
-    const { setCurrentUser, setIsShowLoginModal, setSearch } = bindActionCreators(actionCreators, dispatch);
+    const { setCurrentUser, setIsShowLoginModal, setSearch, setDarkmode } = bindActionCreators(
+        actionCreators,
+        dispatch,
+    );
     const timingTimeoutRef = useRef<any>(null);
 
     useEffect(() => {
+        setDarkmode(localStorage.getItem('darkmode') ?? 'light');
         setCurrentUser(
             JSON.parse(`${window.localStorage.getItem('currentUser')}`) ?? {
                 email: '',

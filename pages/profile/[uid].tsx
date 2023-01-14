@@ -10,7 +10,6 @@ import { AppInterface, socket } from '../_app';
 import { useRouter } from 'next/router';
 import { getInfo } from '../../apis/usersApis';
 import FollowButton from '../../components/FollowButton';
-import clsx from 'clsx';
 
 interface IState {
     user: {

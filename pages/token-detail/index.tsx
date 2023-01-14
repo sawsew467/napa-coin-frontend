@@ -15,7 +15,13 @@ const TokenDetail = () => {
     return (
         <>
             <Header
-                setIsShowLoginModal={function (value: React.SetStateAction<boolean>): void {
+                handleSearchDebound={function (e: { target: { value: any } }): void {
+                    throw new Error('Function not implemented.');
+                }}
+                searchDebound={''}
+                isSearchResult={false}
+                searchResult={[]}
+                setSearchDebound={function (value: React.SetStateAction<string>): void {
                     throw new Error('Function not implemented.');
                 }}
             ></Header>

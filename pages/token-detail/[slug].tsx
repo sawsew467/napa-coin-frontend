@@ -12,6 +12,7 @@ import {
     Legend,
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
+import clsx from 'clsx';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
@@ -103,7 +104,7 @@ const TokenDetail = () => {
                     isSearchResult={isSearchResult}
                     handleSearchDebound={handleSearchDebound}
                 ></Header>
-                <div className="bg_home">
+                <div className="bg_home page-wrapper">
                     <DetailToken detailCoin={detailCoin} isLoading={isLoading}></DetailToken>
                     {detailCoin.map((token) => (
                         <h1 className="title-home" key={token.id}>
@@ -112,7 +113,7 @@ const TokenDetail = () => {
                     ))}
                     <div className={style[`convert-section`]}>
                         <div className={style[`chart-col`]}>
-                            <div className={style[`convert-coin`]}>
+                            <div className={clsx(style[`convert-coin`], 'box')}>
                                 <Convert detailCoin={detailCoin}></Convert>
                             </div>
                             <div className={style[`live__chart`]}>
@@ -134,7 +135,7 @@ const TokenDetail = () => {
                                 />
                             </div>
                         </div>
-                        <div className={style[`trending-token`]}>
+                        <div className={clsx(style[`trending-token`], 'box')}>
                             <h2>Trending Coins and Tokens 🔥</h2>
                             <div className={style[`trending-item`]}>
                                 <Trending></Trending>
