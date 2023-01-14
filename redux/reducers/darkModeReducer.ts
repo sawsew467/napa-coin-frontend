@@ -7,6 +7,7 @@ const inittialState = 'light';
 const reducer = (state = inittialState, action: Action) => {
     switch (action.type) {
         case ActionType.SET_DARKMODE:
+            window.localStorage.setItem('darkmode', action.payload);
             return action.payload;
 
         default:

@@ -309,7 +309,7 @@ ul.slick-dots {
 .dark .box {
     background-color: #282a2f !important;
     box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.25);
-    color: #fff;
+    color: #fff !important;
 }
 
 .dark .header__search {
@@ -328,8 +328,21 @@ ul.slick-dots {
 }
 
 .dark .button--slate {
-    background-color: #393b44;
-    color: #fff;
+    background-color: #393b44 !important;
+    color: #fff !important;
+}
+
+.dark .modal {
+    background-color: #343444 !important;
+}
+
+.dark .modal__button---secondary {
+    background-color: #343444 !important;
+    color: #408cf6 !important;
+}
+.dark .modal__button---secondary:hover {
+    background-color: #3b3b4d !important;
+    color: #408cf6 !important;
 }
 
 .dark .dropdown__item,
@@ -413,4 +426,11 @@ ul.slick-dots {
     border: 1px solid #4f4e4e;
     transition: all 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
     color: #fff;
+}
+.dark :where(.css-dev-only-do-not-override-9ntgx0).ant-input {
+    background-color: #000;
+    color: #fff;
+}
+.dark .slick-dots li button:before {
+    color: #fff !important;
 }

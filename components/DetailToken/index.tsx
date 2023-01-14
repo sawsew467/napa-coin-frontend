@@ -8,6 +8,7 @@ import avtCoin from '../../assets/img/avt.png';
 import style from './style.module.scss';
 import { DataType, currencyFormat } from '../TableToken/TableToken';
 import { Spin, Tag } from 'antd';
+import clsx from 'clsx';
 
 interface Token {
     detailCoin: DataType[];
@@ -23,7 +24,7 @@ const DetailToken: React.FC<Token> = (props) => {
 
     return (
         <>
-            <div className={style[`detail__token`]}>
+            <div className={clsx(style[`detail__token`], 'box')}>
                 {!isLoading ? (
                     <div className={style[`detail__token--flex`]}>
                         {detailCoin.map((token) => (
@@ -36,13 +37,15 @@ const DetailToken: React.FC<Token> = (props) => {
                                             className={style[`image-symbol`]}
                                         />
                                         <h1 style={{ fontWeight: '500' }}>{token.name}</h1>
-                                        <span className={style[`name-symbol`]}>{token.symbol}</span>
+                                        <span className={clsx(style[`name-symbol`], 'button--slate')}>
+                                            {token.symbol}
+                                        </span>
                                     </div>
-                                    <span className={style[`rank`]}>Rank #{token.cmc_rank}</span>
+                                    <span className={clsx(style[`rank`], 'button--slate')}>Rank #{token.cmc_rank}</span>
                                     <div className={style[`tags-detail`]}>
                                         <p className={style[`tag-heading`]}>Tags:</p>
                                         {token.tags.slice(0, 10).map((tag, index) => (
-                                            <Tag className={style[`tag`]} key={index}>
+                                            <Tag className={clsx(style[`tag`], 'button--slate')} key={index}>
                                                 {formatTag(tag)}
                                             </Tag>
                                         ))}

@@ -72,7 +72,7 @@ const Header = ({ handleSearchDebound, searchDebound, isSearchResult, searchResu
                             {/* <Image src={sun} alt=""></Image> */}
                             <DarkModeSwitch
                                 // style={{ marginBottom: '2rem' }}
-                                checked={isDarkMode}
+                                checked={darkMode === 'dark'}
                                 onChange={toggleDarkMode}
                                 size={25}
                             />

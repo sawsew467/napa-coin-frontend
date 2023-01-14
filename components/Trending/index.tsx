@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import axios from 'axios';
 import Link from 'next/link';
-
+import clsx from 'clsx';
 import style from './style.module.scss';
 import coiImg from '../../assets/img/avt.png';
 import { getTokenLastest } from '../../apis/tokenApis';
@@ -38,10 +38,10 @@ const Trending = () => {
                                     alt=""
                                     className={style[`symbol-image`]}
                                 />
-                                <h1 className={style[`symbol-name`]}>{name}</h1>
+                                <h1 className={clsx(style[`symbol-name`], 'token-name')}>{name}</h1>
                             </div>
                             <div className={style[`trending__rank`]}>
-                                <p className={style[`trending__rank--pos`]}> # {cmc_rank}</p>
+                                <p className={clsx(style[`trending__rank--pos`], 'button--slate')}> # {cmc_rank}</p>
                             </div>
                         </div>
                     </Link>

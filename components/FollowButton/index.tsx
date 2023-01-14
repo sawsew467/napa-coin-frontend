@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Check from '../../assets/icons/check-line.svg';
 import CheckDark from '../../assets/icons/check-dark.svg';
@@ -22,14 +22,9 @@ interface IProps {
 }
 
 function index({ isLoading, setIsLoading, isFollowing, setIsFollowing, setFollowers, followedId }: IProps) {
-    // const socket = io('http://localhost:9000', {
-    //     withCredentials: true,
-    //     extraHeaders: {
-    //         'my-custom-header': 'abcd',
-    //     },
-    // });
+    const [token, setToken] = useState<string>('');
     socket.on('follow', (socket: any) => {
-        getInfo(currentUser._id, window.localStorage.getItem('token') ?? '')
+        getInfo(currentUser._id, token)
             .then((res) => {
                 setIsFollowing(res.results.following.includes(followedId));
             })
@@ -37,6 +32,9 @@ function index({ isLoading, setIsLoading, isFollowing, setIsFollowing, setFollow
                 // router.push('/home');
             });
     });
+    useEffect(() => {
+        setToken(window.localStorage.getItem('token') ?? '');
+    }, []);
     const currentUser: AppInterface['currentUser'] = useSelector((state: State) => state.currentUser);
     const darkmode: AppInterface['darkmode'] = useSelector((state: State) => state.darkmode);
     const dispath = useDispatch();
