@@ -68,24 +68,9 @@ const HomePage = () => {
     };
     return (
         <>
-            <Header
-                // setIsShowLoginModal={setIsShowLoginModal}
-                handleSearchDebound={handleSearchDebound}
-                searchDebound={searchDebound}
-                isSearchResult={false}
-                searchResult={[]}
-                setSearchDebound={function (value: React.SetStateAction<string>): void {
-                    throw new Error('Function not implemented.');
-                }}
-            ></Header>
-            <div className="bg_home">
-                <TopAccount></TopAccount>
-                <h1 className="title-home">Today's Cryptocurrency Prices by NAPA Coins </h1>
-                <TableToken searchResult={searchResult} isSearchResult={isSearchResult}></TableToken>
-            </div>
-            {isShowLoginModal && (
-                <LoginModal
-                    setIsShowRegisterModal={setIsShowRegisterModal}
+            <div className={darkMode}>
+                <Header
+                    // setIsShowLoginModal={setIsShowLoginModal}
                     handleSearchDebound={handleSearchDebound}
                     searchDebound={searchDebound}
                 ></Header>

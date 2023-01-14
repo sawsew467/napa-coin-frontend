@@ -297,13 +297,13 @@ img {
     text-align: end;
 }
 
-
 .slick-slider {
     min-height: 73px;
 }
 
 ul.slick-dots {
     bottom: 0;
+}
 
 .dark .header__wrapper,
 .dark .box {
@@ -336,31 +336,38 @@ ul.slick-dots {
 .dark .token-name {
     color: #fff !important;
 }
+
 .dark .dropdown__item:hover {
     background-color: #000;
 }
+
 .dark .input input,
 .dark .input textarea {
     background-color: #000;
     color: #fff;
 }
+
 .dark span.ant-tag.ant-tag-checkable.css-dev-only-do-not-override-9ntgx0.tag {
     color: #fff !important;
 }
+
 .dark th.ant-table-cell,
 .dark thead td.ant-table-cell {
     background-color: #393b44 !important;
     color: #fff !important;
 }
+
 .dark tbody td.ant-table-cell {
     background-color: #000 !important;
     color: #fff !important;
 }
+
 .dark thead td.ant-table-cell::before,
 .dark :where(.css-dev-only-do-not-override-9ntgx0).ant-table-wrapper .ant-table-column-sorter,
 .dark :where(.css-dev-only-do-not-override-9ntgx0).ant-pagination .ant-pagination-item a {
     color: #ccc !important;
 }
+
 .dark :where(.css-dev-only-do-not-override-9ntgx0).ant-table-wrapper .ant-table-tbody > tr > td {
     border-top: 1px solid #ccc;
     border-top-width: 1px;
@@ -368,10 +375,12 @@ ul.slick-dots {
     border-top-color: rgb(41, 41, 41);
     transition: all 0.3s;
 }
+
 .dark :where(.css-dev-only-do-not-override-9ntgx0).ant-pagination .ant-pagination-item-active a {
     color: #408cf6 !important;
     background-color: #272a2f;
 }
+
 .dark :where(.css-dev-only-do-not-override-9ntgx0).ant-pagination .ant-pagination-prev button,
 :where(.css-dev-only-do-not-override-9ntgx0).ant-pagination .ant-pagination-next button,
 .dark :where(.css-dev-only-do-not-override-9ntgx0).ant-pagination .ant-pagination-prev button:hover,
@@ -404,5 +413,4 @@ ul.slick-dots {
     border: 1px solid #4f4e4e;
     transition: all 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
     color: #fff;
-
 }
