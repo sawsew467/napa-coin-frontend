@@ -35,16 +35,19 @@ import { faker } from '@faker-js/faker';
 import moment from 'moment';
 import { getTokenLastest } from '../../apis/tokenApis';
 import { AppInterface } from '../_app';
-import { useSelector } from 'react-redux';
-import { State } from '../../redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { State, actionCreators } from '../../redux';
+import { bindActionCreators } from 'redux';
 
 const TokenDetail = () => {
+    const dispatch = useDispatch();
     const darkMode: AppInterface['darkmode'] = useSelector((state: State) => state.darkmode);
+    const search: AppInterface['darkmode'] = useSelector((state: State) => state.search);
+    const { setSearch } = bindActionCreators(actionCreators, dispatch);
     const router = useRouter();
     const [results, setResult] = useState<DataType[]>([]);
     const [chart, setChart] = useState([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
-    const [searchDebound, setSearchDebound] = useState<string>('');
     const [searchResult, setSearchResult] = useState<DataType[]>([]);
     const [isSearchResult, setIsSearchResult] = useState<boolean>(false);
     const timingTimeoutRef = useRef<any>(null);
@@ -72,7 +75,7 @@ const TokenDetail = () => {
 
     const handleSearchDebound = (e: { target: { value: any } }) => {
         const value = e.target.value;
-        setSearchDebound(value);
+        setSearch(value);
 
         if (timingTimeoutRef.current) {
             clearTimeout(timingTimeoutRef.current);
@@ -97,12 +100,9 @@ const TokenDetail = () => {
         <>
             <div className={darkMode}>
                 <Header
-                    setIsShowLoginModal={() => {}}
-                    handleSearchDebound={handleSearchDebound}
-                    searchDebound={searchDebound}
                     searchResult={searchResult}
                     isSearchResult={isSearchResult}
-                    setSearchDebound={setSearchDebound}
+                    handleSearchDebound={handleSearchDebound}
                 ></Header>
                 <div className="bg_home page-wrapper">
                     <DetailToken detailCoin={detailCoin} isLoading={isLoading}></DetailToken>
