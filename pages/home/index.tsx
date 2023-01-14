@@ -1,17 +1,16 @@
 /* eslint-disable react/no-unescaped-entities */
 import React, { useEffect, useRef, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+
 import Header from '../../components/Header/Header';
 import TopAccount from '../../components/TopAccount/TopAccount';
 import TableToken, { DataType } from '../../components/TableToken/TableToken';
+import { AppInterface } from '../_app';
 import LoginModal from '../../components/LoginModal';
 import RegisterModal from '../../components/RegisterModal';
-import { AppInterface } from '../_app';
-import { useSelector } from 'react-redux';
 import { State } from '../../redux';
-import { useDispatch } from 'react-redux';
 import { actionCreators } from '../../redux';
 import { bindActionCreators } from 'redux';
-import axios from 'axios';
 import { getTokenLastest } from '../../apis/tokenApis';
 
 export interface IState {
@@ -29,11 +28,11 @@ const HomePage = () => {
     const dispatch = useDispatch();
     const [isShowRegisterModal, setIsShowRegisterModal] = useState(false);
     const [results, setResults] = useState<DataType[]>([]);
-    const [searchDebound, setSearchDebound] = useState<string>(search);
     const [searchResult, setSearchResult] = useState<DataType[]>([]);
     const [isSearchResult, setIsSearchResult] = useState<boolean>(false);
     const { setCurrentUser, setIsShowLoginModal, setSearch } = bindActionCreators(actionCreators, dispatch);
     const timingTimeoutRef = useRef<any>(null);
+
     useEffect(() => {
         setCurrentUser(
             JSON.parse(`${window.localStorage.getItem('currentUser')}`) ?? {
@@ -47,14 +46,17 @@ const HomePage = () => {
             setResults(res.data.data);
         };
         listData();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const handleSearchDebound = (e: { target: { value: any } }) => {
         const value = e.target.value;
-        setSearchDebound(value);
+        setSearch(value);
+
         if (timingTimeoutRef.current) {
             clearTimeout(timingTimeoutRef.current);
         }
+
         timingTimeoutRef.current = setTimeout(() => {
             const filterResult = results?.filter((token) => {
                 return (
@@ -66,13 +68,15 @@ const HomePage = () => {
             setIsSearchResult(true);
         }, 500);
     };
+
     return (
         <>
             <div className={darkMode}>
                 <Header
                     // setIsShowLoginModal={setIsShowLoginModal}
                     handleSearchDebound={handleSearchDebound}
-                    searchDebound={searchDebound}
+                    isSearchResult={false}
+                    searchResult={[]}
                 ></Header>
                 <div className="bg_home page-wrapper">
                     <TopAccount></TopAccount>

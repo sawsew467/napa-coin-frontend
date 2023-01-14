@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { DarkModeSwitch } from 'react-toggle-dark-mode';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -23,6 +23,8 @@ import { AppInterface } from '../../pages/_app';
 import Dropdown from '../Dropdown';
 import { DataType } from '../TableToken/TableToken';
 import clsx from 'clsx';
+import { setSearch } from '../../redux/action-creators';
+import { useRouter } from 'next/router';
 
 interface IProps {
     handleSearchDebound: (e: {
@@ -30,22 +32,21 @@ interface IProps {
             value: any;
         };
     }) => void;
-    searchDebound: string;
     isSearchResult: boolean;
     searchResult: DataType[];
-    setSearchDebound: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const Header = ({ handleSearchDebound, searchDebound, isSearchResult, searchResult, setSearchDebound }: IProps) => {
+const Header = ({ handleSearchDebound, isSearchResult, searchResult }: IProps) => {
+    const dispath = useDispatch();
+    const router = useRouter();
     const currentUser: AppInterface['currentUser'] = useSelector((state: State) => state.currentUser);
     const search: AppInterface['search'] = useSelector((state: State) => state.search);
     const darkMode: AppInterface['darkmode'] = useSelector((state: State) => state.darkmode);
-
-    const dispath = useDispatch();
     const { setDarkmode, setIsShowLoginModal } = bindActionCreators(actionCreators, dispath);
     const [isDarkMode, setIsDarkMode] = useState<boolean>(darkMode === 'dark');
     const [isShowModal, setIsShowModal] = useState<boolean>(false);
     const [isShowMenu, setIsShowMenu] = useState<boolean>(false);
+    const searchRef = useRef<any>(null);
 
     const toggleDarkMode = (checked: boolean) => {
         isDarkMode ? setDarkmode('light') : setDarkmode('dark');
@@ -54,6 +55,13 @@ const Header = ({ handleSearchDebound, searchDebound, isSearchResult, searchResu
 
     const toggleShowModal = () => {
         setIsShowModal(!isShowModal);
+    };
+
+    const handleClickSearchIcon = () => {
+        setSearch('');
+
+        console.log(search);
+        router.push('/');
     };
 
     return (
@@ -79,17 +87,27 @@ const Header = ({ handleSearchDebound, searchDebound, isSearchResult, searchResu
                             <div className={styles.header__search}>
                                 <input
                                     placeholder="Search"
-                                    value={searchDebound}
+                                    value={search}
                                     onChange={handleSearchDebound}
                                     className={clsx('header__search')}
                                 ></input>
                                 {darkMode === 'dark' ? (
-                                    <Image src={searchDark} alt=""></Image>
+                                    <Image
+                                        onClick={handleClickSearchIcon}
+                                        ref={searchRef}
+                                        src={searchDark}
+                                        alt=""
+                                    ></Image>
                                 ) : (
-                                    <Image src={searchLight} alt=""></Image>
+                                    <Image
+                                        onClick={handleClickSearchIcon}
+                                        ref={searchRef}
+                                        src={searchLight}
+                                        alt=""
+                                    ></Image>
                                 )}
                             </div>
-                            {isSearchResult && searchDebound !== '' ? (
+                            {isSearchResult && search !== '' ? (
                                 <>
                                     <div className={styles['search-result__dropdown']}>
                                         {!!searchResult.length ? (
@@ -98,7 +116,7 @@ const Header = ({ handleSearchDebound, searchDebound, isSearchResult, searchResu
                                                     <div className={styles['search-result__item']}>
                                                         <Link
                                                             href={`/token-detail/${token.slug}`}
-                                                            onClick={() => setSearchDebound('')}
+                                                            onClick={() => setSearch('')}
                                                         >
                                                             <div className={styles['token-info']}>
                                                                 <img
