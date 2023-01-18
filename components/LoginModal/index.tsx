@@ -5,6 +5,7 @@ import emailDark from '../../assets/icons/email-dark.svg';
 import password from '../../assets/icons/door-lock-line.svg';
 import passwordDark from '../../assets/icons/password-dark.svg';
 import close from '../../assets/icons/CloseOutlined.svg';
+import closeDark from '../../assets/icons/CloseOutlined-dark.svg';
 import { useDispatch, useSelector } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { actionCreators, State } from '../../redux';
@@ -82,7 +83,21 @@ function LoginModal({ setIsShowRegisterModal }: IProps) {
     return (
         <div className="overlay">
             <div className="modal box">
-                <Image className="modal__close" src={close} alt="" onClick={() => setIsShowLoginModal(false)}></Image>
+                {darkMode === 'dark' ? (
+                    <Image
+                        className="modal__close"
+                        src={closeDark}
+                        alt=""
+                        onClick={() => setIsShowLoginModal(false)}
+                    ></Image>
+                ) : (
+                    <Image
+                        className="modal__close"
+                        src={close}
+                        alt=""
+                        onClick={() => setIsShowLoginModal(false)}
+                    ></Image>
+                )}
                 <div className="modal__title">Sign in</div>
                 <div className="modal__input input">
                     <input

@@ -23,18 +23,22 @@ function index() {
     const router = useRouter();
     const [following, setFollowing] = useState<number>(0);
     const [follower, setFollower] = useState<number>(0);
-    // socket.on('follow', (socket: any) => {
-    //     if (currentUser._id) {
-    //         getInfo(currentUser._id, window.localStorage.getItem('token') ?? '')
-    //             .then((res) => {
-    //                 setFollower(res.results.follower.length);
-    //                 setFollowing(res.results.following.length);
-    //             })
-    //             .catch((err) => {
-    //                 router.push('/home');
-    //             });
-    //     }
-    // });
+
+    socket.on('followed', (socket: any) => {
+        console.log('');
+        if (currentUser._id) {
+            getInfo(currentUser._id, window.localStorage.getItem('token') ?? '')
+                .then((res) => {
+                    setFollower(res.results.follower.length);
+                    setFollowing(res.results.following.length);
+                })
+                .catch((err) => {
+                    console.log(err);
+                    router.push('/home');
+                });
+        }
+    });
+
     useEffect(() => {
         if (!JSON.parse(`${window.localStorage.getItem('currentUser')}`)) {
             router.push('/home');

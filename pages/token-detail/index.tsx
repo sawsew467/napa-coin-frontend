@@ -27,7 +27,7 @@ const TokenDetail = () => {
             ></Header>
             <div className="bg_home">
                 <DetailToken detailCoin={[]} isLoading></DetailToken>
-                <h1 className="title-home">BTT to USD Converter </h1>
+                <h1 className="title-home ">BTT to USD Converter </h1>
                 <div className={style[`convert-section`]}>
                     <div className={style[`chart-col`]}>
                         <div className={style[`convert-coin`]}>

@@ -48,9 +48,14 @@ const Header = ({ handleSearchDebound, isSearchResult, searchResult }: IProps) =
     const [isShowMenu, setIsShowMenu] = useState<boolean>(false);
     const searchRef = useRef<any>(null);
 
+    useEffect(() => {
+        setDarkmode(window.localStorage.getItem('darkmode'));
+    });
+
     const toggleDarkMode = (checked: boolean) => {
-        isDarkMode ? setDarkmode('light') : setDarkmode('dark');
-        setIsDarkMode(checked);
+        // isDarkMode === "dark" ? setDarkmode('light') : setDarkmode('dark');
+        // setIsDarkMode(checked);
+        checked ? setDarkmode('dark') : setDarkmode('light');
     };
 
     const toggleShowModal = () => {
