@@ -107,7 +107,7 @@ const TokenDetail = () => {
                 <div className="bg_home page-wrapper">
                     <DetailToken detailCoin={detailCoin} isLoading={isLoading}></DetailToken>
                     {detailCoin.map((token) => (
-                        <h1 className="title-home" key={token.id}>
+                        <h1 className="title-home section-title" key={token.id}>
                             {`${token.name} to USD Converter`}{' '}
                         </h1>
                     ))}

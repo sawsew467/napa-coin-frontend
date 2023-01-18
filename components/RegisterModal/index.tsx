@@ -7,6 +7,7 @@ import password from '../../assets/icons/door-lock-line.svg';
 import user from '../../assets/icons/user-3-line.svg';
 import userDark from '../../assets/icons/user-dark.svg';
 import close from '../../assets/icons/CloseOutlined.svg';
+import closeDark from '../../assets/icons/CloseOutlined-dark.svg';
 import axios from 'axios';
 import { registerRequest } from '../../apis/authApis';
 import { useDispatch, useSelector } from 'react-redux';
@@ -94,13 +95,27 @@ function LoginModal({ setIsShowRegisterModal }: IProps) {
     return (
         <div className="overlay">
             <div className="modal box">
-                <Image
+                {/* <Image
                     className="modal__close"
                     src={close}
                     alt=""
                     onClick={() => setIsShowRegisterModal(false)}
-                ></Image>
-
+                ></Image> */}
+                {darkMode === 'dark' ? (
+                    <Image
+                        className="modal__close"
+                        src={closeDark}
+                        alt=""
+                        onClick={() => setIsShowRegisterModal(false)}
+                    ></Image>
+                ) : (
+                    <Image
+                        className="modal__close"
+                        src={close}
+                        alt=""
+                        onClick={() => setIsShowRegisterModal(false)}
+                    ></Image>
+                )}
                 <div className="modal__title">Sign up</div>
                 <div className="modal__input input">
                     <input

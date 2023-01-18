@@ -23,13 +23,13 @@ interface IProps {
 
 function index({ isLoading, setIsLoading, isFollowing, setIsFollowing, setFollowers, followedId }: IProps) {
     const [token, setToken] = useState<string>('');
-    socket.on('follow', (socket: any) => {
+    socket.on('followed', (socket: any) => {
         getInfo(currentUser._id, token)
             .then((res) => {
                 setIsFollowing(res.results.following.includes(followedId));
             })
             .catch((err) => {
-                // router.push('/home');
+                console.log(err);
             });
     });
     useEffect(() => {

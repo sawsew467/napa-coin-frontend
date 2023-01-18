@@ -40,7 +40,7 @@ function index() {
     });
     const [followers, setFollowers] = useState<number>(0);
     const [token, setToken] = useState<string>('');
-    socket.on('follow', (socket: any) => {
+    socket.on('followed', (socket: any) => {
         if (uid) {
             getInfo(uid, window.localStorage.getItem('token') ?? '')
                 .then((res) => {
@@ -70,6 +70,8 @@ function index() {
                     setFollowers(res.results.follower.length);
                 })
                 .catch((err) => {
+                    console.log(err);
+
                     router.push('/home');
                 });
         }
