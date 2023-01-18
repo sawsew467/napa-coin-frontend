@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Header from '../../components/Header/Header';
 import styles from './style.module.scss';
 import { useSelector } from 'react-redux';
@@ -10,6 +10,8 @@ import { AppInterface, socket } from '../_app';
 import { useRouter } from 'next/router';
 import { getInfo } from '../../apis/usersApis';
 import FollowButton from '../../components/FollowButton';
+import { DataType } from '../../components/TableToken/TableToken';
+import { getTokenLastest } from '../../apis/tokenApis';
 
 interface IState {
     user: {
@@ -24,12 +26,17 @@ interface IState {
 
 function index() {
     const router = useRouter();
+    const dispatch = useDispatch();
     const { uid } = router.query;
 
     const currentUser: AppInterface['currentUser'] = useSelector((state: State) => state.currentUser);
     const darkMode: AppInterface['darkmode'] = useSelector((state: State) => state.darkmode);
+    const search: AppInterface['darkmode'] = useSelector((state: State) => state.search);
+    const { setSearch } = bindActionCreators(actionCreators, dispatch);
     const dispath = useDispatch();
     const { setCurrentUser } = bindActionCreators(actionCreators, dispath);
+    const [searchResult, setSearchResult] = useState<DataType[]>([]);
+    const [isSearchResult, setIsSearchResult] = useState<boolean>(false);
     const [user, setUser] = useState<IState['user']>({
         fullname: '',
         email: '',
@@ -40,6 +47,8 @@ function index() {
     });
     const [followers, setFollowers] = useState<number>(0);
     const [token, setToken] = useState<string>('');
+    const [results, setResult] = useState<DataType[]>([]);
+
     // socket.on('follow', (socket: any) => {
     //     if (uid) {
     //         getInfo(uid, window.localStorage.getItem('token') ?? '')
@@ -59,6 +68,7 @@ function index() {
     //             });
     //     }
     // });
+
     useEffect(() => {
         if (uid === currentUser._id) {
             router.push('/profile');
@@ -92,19 +102,44 @@ function index() {
         }
     }, [router.isReady, router.query.uid]);
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const timingTimeoutRef = useRef<any>(null);
+
+    useEffect(() => {
+        const listData = async () => {
+            const res = await getTokenLastest();
+            setResult(res.data.data);
+            setIsLoading(false);
+        };
+
+        listData();
+    }, []);
+
+    const handleSearchDebound = (e: { target: { value: any } }) => {
+        const value = e.target.value;
+        setSearch(value);
+
+        if (timingTimeoutRef.current) {
+            clearTimeout(timingTimeoutRef.current);
+        }
+
+        timingTimeoutRef.current = setTimeout(() => {
+            const filterResult = results?.filter((token) => {
+                return (
+                    token?.name?.toLowerCase()?.includes(value.toLowerCase()) ||
+                    token?.symbol?.toLowerCase()?.includes(value.toLowerCase())
+                );
+            });
+            setSearchResult(filterResult);
+            setIsSearchResult(true);
+        }, 500);
+    };
     return (
         <>
             <div className={darkMode}>
                 <Header
-                    handleSearchDebound={function (e: { target: { value: any } }): void {
-                        throw new Error('Function not implemented.');
-                    }}
-                    searchDebound={''}
-                    isSearchResult={false}
-                    searchResult={[]}
-                    setSearchDebound={function (value: React.SetStateAction<string>): void {
-                        throw new Error('Function not implemented.');
-                    }}
+                    searchResult={searchResult}
+                    isSearchResult={isSearchResult}
+                    handleSearchDebound={handleSearchDebound}
                 ></Header>
                 <div className="wrapper page-wrapper">
                     <div className="container">
