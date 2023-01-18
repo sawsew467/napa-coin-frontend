@@ -1,16 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
-import Check from '../../assets/icons/check-line.svg';
-import CheckDark from '../../assets/icons/check-dark.svg';
+import Check from '../../../assets/icons/check-line.svg';
+import CheckDark from '../../../assets/icons/check-dark.svg';
 import styles from './style.module.scss';
-import { followUser, unfollowUser } from '../../apis/followApis';
 import { useDispatch, useSelector } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { actionCreators, State } from '../../redux';
-import { AppInterface, socket } from '../../pages/_app';
 import { io } from 'socket.io-client';
 import clsx from 'clsx';
-import { getInfo } from '../../apis/usersApis';
+import { AppInterface, socket } from '../../../pages/_app';
+import { getInfo } from '../../../apis/usersApis';
+import { actionCreators, State } from '../../../redux';
+import { followUser, unfollowUser } from '../../../apis/followApis';
 
 interface IProps {
     isLoading: boolean;
@@ -23,16 +23,20 @@ interface IProps {
 
 function index({ isLoading, setIsLoading, isFollowing, setIsFollowing, setFollowers, followedId }: IProps) {
     const [token, setToken] = useState<string>('');
-
-    // socket.on('followed', (socket: any) => {
-    //     getInfo(currentUser._id, token)
-    //         .then((res) => {
-    //             setIsFollowing(res.results.following.includes(followedId));
-    //         })
-    //         .catch((err) => {
-    //             console.log(err);
-    //         });
-    // });
+    // if (followedId === '63b4f3917babe40711f4c011') {
+    //     console.log('button');
+    //     console.log(isFollowing);
+    //     // console.log(user.follower.includes(currentUser._id));
+    // }
+    socket.on('followed', (socket: any) => {
+        getInfo(currentUser._id, token)
+            .then((res) => {
+                setIsFollowing(res.results.following.includes(followedId));
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    });
 
     useEffect(() => {
         setToken(window.localStorage.getItem('token') ?? '');
@@ -99,12 +103,13 @@ function index({ isLoading, setIsLoading, isFollowing, setIsFollowing, setFollow
                     <button className={clsx(styles[`button--slate`], 'button--slate')}>Loading...</button>
                 ) : (
                     <button className={clsx(styles[`button--slate`], 'button--slate')} onClick={unfollowHandler}>
-                        {darkmode === 'dark' ? (
+                        {/* {darkmode === 'dark' ? (
                             <Image src={CheckDark} alt=""></Image>
                         ) : (
                             <Image src={Check} alt=""></Image>
-                        )}
-                        &nbsp;Following
+                        )} */}
+                        {/* &nbsp; */}
+                        Following
                     </button>
                 )
             ) : isLoading ? (

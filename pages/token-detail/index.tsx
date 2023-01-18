@@ -1,15 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
 import Image from 'next/image';
-import axios from 'axios';
-
 import Header from '../../components/Header/Header';
 import DetailToken from '../../components/DetailToken';
 import Convert from '../../components/Convert';
 import Trending from '../../components/Trending';
 import style from './style.module.scss';
 import liveChart from '../../assets/img/live-chart.png';
-import { DataType } from '../../components/TableToken/TableToken';
 
 const TokenDetail = () => {
     return (

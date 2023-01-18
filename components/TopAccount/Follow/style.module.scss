@@ -1,13 +1,13 @@
 .button {
     &--primary {
-        width: 416px;
-        font-size: 16px;
+        width: 70px;
+        font-size: 12px;
         color: #fff;
         background-color: #408cf6;
         border-radius: 10px;
         border: none;
-        min-width: 126px;
-        padding: 8px 0;
+        // min-width: 126px;
+        padding: 4px 8px;
         cursor: pointer;
         transition: all 0.3s;
         &:hover {
@@ -15,18 +15,19 @@
         }
     }
     &--slate {
-        font-size: 16px;
+        width: 70px;
+        font-size: 12px;
         color: #000;
         background-color: #d9d9d9;
         border-radius: 10px;
         border: none;
-        width: 416px;
-        padding: 8px 0;
+        // width: 416px;
+        padding: 4px 8px;
         cursor: pointer;
         display: flex;
         align-items: center;
         justify-content: center;
-        margin: 0 auto;
+        // margin: 0 auto;
         transition: all 0.3s;
         &:hover {
             background-color: #abaaaa;

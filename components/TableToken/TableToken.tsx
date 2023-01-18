@@ -369,6 +369,7 @@ const TableToken: React.FC<Props> = (props) => {
             ),
         },
     ];
+    console.log('!!!', watchlist);
 
     return (
         <div id={style.table} className="box">
@@ -411,12 +412,12 @@ const TableToken: React.FC<Props> = (props) => {
                     }
                     rowKey="id"
                     pagination={
-                        result.length > 10
+                        watchlist.length > 10
                             ? {
-                                defaultPageSize: 10,
-                                showSizeChanger: true,
-                                pageSizeOptions: ['10', '20', '30'],
-                            }
+                                  defaultPageSize: 10,
+                                  showSizeChanger: true,
+                                  pageSizeOptions: ['10', '20', '30'],
+                              }
                             : false
                     }
                 />
