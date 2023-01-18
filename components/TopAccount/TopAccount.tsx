@@ -6,7 +6,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, Autoplay } from 'swiper';
 import 'swiper/css';
 import 'swiper/css/pagination';
-import { AppInterface } from '../../pages/_app';
+import { AppInterface, socket } from '../../pages/_app';
 import Account from './Account';
 import { getAllUsers } from '../../apis/usersApis';
 import { useSelector } from 'react-redux';
@@ -22,6 +22,8 @@ export interface IState {
         fullname: string;
         email: string;
         avatar: string;
+        follower: string[];
+        following: string[];
     };
     userList: IState['user'][];
 }
@@ -29,7 +31,7 @@ export interface IState {
 const settings = {
     dots: true,
     infinite: true,
-    autoplay: true,
+    // autoplay: true,
     speed: 500,
     slidesToShow: 3,
     slidesToScroll: 3,
@@ -40,6 +42,16 @@ const settings = {
 const TopAccount = () => {
     const currentUser: AppInterface['currentUser'] = useSelector((state: State) => state.currentUser);
     const [userList, setUserList] = useState<IState['userList']>([]);
+    socket.on('followed', (socket: any) => {
+        console.log('socket', socket);
+        getAllUsers()
+            .then((res) => {
+                setUserList(res.data.users);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    });
     useEffect(() => {
         getAllUsers()
             .then((res) => {
@@ -49,6 +61,8 @@ const TopAccount = () => {
                 console.log(err);
             });
     }, []);
+    // console.log(userList);
+
     return (
         <div className={clsx(style.account__container, 'box')}>
             <div className={style.account__title}>
@@ -59,11 +73,16 @@ const TopAccount = () => {
                 <Slider {...settings}>
                     {userList
                         .filter((user) => user._id !== currentUser._id)
-                        .map((user) => (
-                            <div key={user._id}>
-                                <Account user={user}></Account>
-                            </div>
-                        ))}
+                        .map((user) => {
+                            const isFollowing = user.follower.includes(currentUser._id);
+                            // console.log('!!!', user.email, isFollowing);
+
+                            return (
+                                <div key={user._id}>
+                                    <Account user={user} following={isFollowing}></Account>
+                                </div>
+                            );
+                        })}
                 </Slider>
                 {/* <div className={style.account__flex}>
                     {/* <Swiper

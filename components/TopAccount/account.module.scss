@@ -3,7 +3,7 @@
     gap: 4px;
     align-items: center;
     margin-right: 40px;
-
+    width: 362px;
     & a {
         text-decoration: none;
         color: #000;
@@ -20,13 +20,22 @@
     }
 
     p {
+        max-width: 116px;
         font-size: 12px;
         font-weight: bold;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        color: #000;
     }
 
     small {
         font-size: 11px;
         font-weight: normal;
+        max-width: 113px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 
     .btn__follow {
