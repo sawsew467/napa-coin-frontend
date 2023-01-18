@@ -13,14 +13,18 @@ const Watchlist = () => {
         <>
             <div className={darkMode}>
                 <Header
-                    isSearchResult={false}
-                    searchResult={[]}
                     handleSearchDebound={function (e: { target: { value: any } }): void {
                         throw new Error('Function not implemented.');
                     }}
+                    searchDebound={''}
+                    isSearchResult={false}
+                    searchResult={[]}
+                    setSearchDebound={function (value: React.SetStateAction<string>): void {
+                        throw new Error('Function not implemented.');
+                    }}
                 ></Header>
-                <div className="bg_home">
-                    <h1 className="title-watchlist">My Watchlist </h1>
+                <div className="bg_home page-wrapper">
+                    <h1 className="title-watchlist section-title">My Watchlist </h1>
                     <TableToken searchResult={[]} isSearchResult={false}></TableToken>
                 </div>
             </div>

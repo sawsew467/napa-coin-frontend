@@ -23,7 +23,8 @@ function index() {
     const router = useRouter();
     const [following, setFollowing] = useState<number>(0);
     const [follower, setFollower] = useState<number>(0);
-    socket.on('follow', (socket: any) => {
+    socket.on('followed', (socket: any) => {
+        console.log('');
         if (currentUser._id) {
             getInfo(currentUser._id, window.localStorage.getItem('token') ?? '')
                 .then((res) => {
@@ -31,6 +32,7 @@ function index() {
                     setFollowing(res.results.following.length);
                 })
                 .catch((err) => {
+                    console.log(err);
                     router.push('/home');
                 });
         }
