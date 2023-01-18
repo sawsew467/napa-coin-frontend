@@ -5,9 +5,20 @@ import axios from 'axios';
 import { AppInterface } from '../_app';
 import { useSelector } from 'react-redux';
 import { State } from '../../redux';
+import { Router, useRouter } from 'next/router';
 
 const Watchlist = () => {
+    const router = useRouter();
     const darkMode: AppInterface['darkmode'] = useSelector((state: State) => state.darkmode);
+    const currentUser: AppInterface['currentUser'] = useSelector((state: State) => state.currentUser);
+
+    useEffect(() => {
+        if (!JSON.parse(`${window.localStorage.getItem('currentUser')}`)) {
+            router.push('/home');
+        }
+    }, []);
+
+    console.log(currentUser);
 
     return (
         <>
@@ -19,7 +30,7 @@ const Watchlist = () => {
                         throw new Error('Function not implemented.');
                     }}
                 ></Header>
-                <div className="bg_home">
+                <div className="bg_home page-wrapper">
                     <h1 className="title-watchlist">My Watchlist </h1>
                     <TableToken searchResult={[]} isSearchResult={false}></TableToken>
                 </div>

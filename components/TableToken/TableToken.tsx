@@ -9,11 +9,13 @@ import CheckableTag from 'antd/lib/tag/CheckableTag';
 import { useRouter } from 'next/router';
 import style from './table.module.scss';
 import { useSelector } from 'react-redux';
-import { AppInterface } from '../../pages/_app';
+import { AppInterface, socket } from '../../pages/_app';
 import { State } from '../../redux';
 import { addToWatchList, getWatchlistToken, removeFromWatchList } from '../../apis/watchlistApis';
 import { getTokenCate, getTokenLastest } from '../../apis/tokenApis';
 import clsx from 'clsx';
+import LoginModal from '../LoginModal';
+import { setCurrentUser } from '../../redux/action-creators';
 
 export interface DataType {
     cmc_rank: number;
@@ -59,7 +61,6 @@ export const currencyFormat = (num: number) => {
 const TableToken: React.FC<Props> = (props) => {
     const { searchResult, isSearchResult } = props;
     const currentUser: AppInterface['currentUser'] = useSelector((state: State) => state.currentUser);
-    // console.log('!!!', currentUser);
 
     const router = useRouter();
     const [result, setResult] = useState<DataType[]>([]);
@@ -73,60 +74,91 @@ const TableToken: React.FC<Props> = (props) => {
 
     const slug = router.pathname;
 
+    socket.on('watchlist', (socket: any) => {
+        console.log('heheh');
+        // listData();
+    });
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+
     useEffect(() => {
         if (currentUser._id === '') {
-            return;
-        }
-        const listData = async () => {
-            const res = await getTokenLastest();
-            const cate = await getTokenCate();
-            const watchlistToken = await getWatchlistToken(currentUser._id);
-            setWatchlist(watchlistToken.data.results.data);
-            setResult(res.data.data);
-            setCate(cate.data.data);
-            setIsLoading(false);
-            setActive(false);
-            setStarList(
-                res.data.data.map((item: any) => {
-                    const x = watchlistToken.data.results.data.filter((token: any) => item.id === token.id);
-                    if (x.length > 0) {
-                        return {
-                            id: item.id,
-                            isStar: true,
-                        };
-                    } else {
-                        return {
-                            id: item.id,
-                            isStar: false,
-                        };
-                    }
-                }),
-            );
-        };
+            const listData = async () => {
+                const res = await getTokenLastest();
+                const cate = await getTokenCate();
+                setResult(res.data.data);
+                setCate(cate.data.data);
+                setIsLoading(false);
+                setActive(false);
+            };
+            listData();
+        } else {
+            const listData = async () => {
+                console.log('sas', currentUser._id);
 
-        listData();
+                const res = await getTokenLastest();
+                const cate = await getTokenCate();
+                if (currentUser._id !== undefined) {
+                    const watchlistToken = await getWatchlistToken(currentUser._id);
+                    setWatchlist(watchlistToken.data.results.data);
+                    setStarList(
+                        res.data.data.map((item: any) => {
+                            const x = watchlistToken.data.results.data.filter((token: any) => item.id === token.id);
+                            if (x.length > 0) {
+                                return {
+                                    id: item.id,
+                                    isStar: true,
+                                };
+                            } else {
+                                return {
+                                    id: item.id,
+                                    isStar: false,
+                                };
+                            }
+                        }),
+                    );
+                }
+
+                setResult(res.data.data);
+                setCate(cate.data.data);
+                setIsLoading(false);
+                setActive(false);
+            };
+            listData();
+        }
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentUser._id]);
 
-
     const handleAddToWatchlist = async (id: number) => {
-        console.log('click');
-
         try {
-            await addToWatchList(currentUser._id, id);
-            setStarList(
-                starList.map((item, index) => {
-                    if (item.id === id) {
-                        return {
-                            ...item,
-                            isStar: !item.isStar,
-                        };
-                    } else {
-                        return {
-                            ...item,
-                        };
-                    }
-                }),
-            );
+            if (currentUser._id) {
+                await addToWatchList(currentUser._id, id);
+                setStarList(
+                    starList.map((item, index) => {
+                        if (item.id === id) {
+                            return {
+                                ...item,
+                                isStar: !item.isStar,
+                            };
+                        } else {
+                            return {
+                                ...item,
+                            };
+                        }
+                    }),
+                );
+            } else {
+                <LoginModal
+                    setIsShowRegisterModal={function (value: React.SetStateAction<boolean>): void {
+                        throw new Error('Function not implemented.');
+                    }}
+                ></LoginModal>;
+            }
+
+            socket.emit('watchlist', {
+                message: 'my watchlist',
+            });
         } catch (err) {
             console.log(err);
         }
@@ -134,24 +166,35 @@ const TableToken: React.FC<Props> = (props) => {
 
     const handleRemoveWatchlist = async (id: number) => {
         try {
-        await removeFromWatchList(currentUser._id, id);
-        setStarList(
-            starList.map((item, index) => {
-                if (item.id === id) {
-                    return {
-                        ...item,
-                        isStar: !item.isStar,
-                    };
-                } else {
-                    return {
-                        ...item,
-                    };
-                }
-            }),
-        );
+            if (currentUser._id) {
+                await removeFromWatchList(currentUser._id, id);
+                setStarList(
+                    starList.map((item, index) => {
+                        if (item.id === id) {
+                            return {
+                                ...item,
+                                isStar: !item.isStar,
+                            };
+                        } else {
+                            return {
+                                ...item,
+                            };
+                        }
+                    }),
+                );
+            } else {
+                <LoginModal
+                    setIsShowRegisterModal={function (value: React.SetStateAction<boolean>): void {
+                        throw new Error('Function not implemented.');
+                    }}
+                ></LoginModal>;
+            }
+            socket.emit('watchlist', {
+                message: 'my watchlist',
+            });
         } catch (err) {
-             console.log(err);
-         }
+            console.log(err);
+        }
     };
 
     const tagsData = cate?.slice(5, 10).map((tag) => tag.name);
@@ -175,7 +218,7 @@ const TableToken: React.FC<Props> = (props) => {
             title: '',
             render: (id) => (
                 <span>
-                    {starList.filter((item) => item.id === id)[0].isStar ? (
+                    {starList.length > 0 && starList.filter((item) => item.id === id)[0].isStar ? (
                         <Tooltip title="Add this token to watchlist">
                             {' '}
                             <FontAwesomeIcon
@@ -315,12 +358,13 @@ const TableToken: React.FC<Props> = (props) => {
         },
         {
             title: 'Last 7 days',
-            dataIndex: 'id',
-            render: (id) => (
+            dataIndex: 'id, quote',
+            render: (id, record) => (
                 <img
-                    src={`https://s3.coinmarketcap.com/generated/sparklines/web/7d/2781/${id}.svg`}
+                    src={`https://s3.coinmarketcap.com/generated/sparklines/web/7d/2781/${record.id}.svg`}
                     alt="chart image"
                     width={100}
+                    className={record.quote.USD.percent_change_24h >= 0 ? 'chart-up' : 'chart-down'}
                 />
             ),
         },
@@ -367,12 +411,12 @@ const TableToken: React.FC<Props> = (props) => {
                     }
                     rowKey="id"
                     pagination={
-                        result.length > 10 || searchResult.length > 10
+                        result.length > 10
                             ? {
-                                  defaultPageSize: 10,
-                                  showSizeChanger: true,
-                                  pageSizeOptions: ['10', '20', '30'],
-                              }
+                                defaultPageSize: 10,
+                                showSizeChanger: true,
+                                pageSizeOptions: ['10', '20', '30'],
+                            }
                             : false
                     }
                 />

@@ -10,7 +10,6 @@ import { AppInterface, socket } from '../_app';
 import { useRouter } from 'next/router';
 import { getInfo } from '../../apis/usersApis';
 import FollowButton from '../../components/FollowButton';
-import clsx from 'clsx';
 
 interface IState {
     user: {
@@ -41,25 +40,25 @@ function index() {
     });
     const [followers, setFollowers] = useState<number>(0);
     const [token, setToken] = useState<string>('');
-    socket.on('follow', (socket: any) => {
-        if (uid) {
-            getInfo(uid, window.localStorage.getItem('token') ?? '')
-                .then((res) => {
-                    setUser(res.results);
-                    setFollowers(res.results.follower.length);
-                    const current = JSON.parse(`${window.localStorage.getItem('currentUser')}`) ?? {
-                        email: '',
-                        avatar: '',
-                        fullname: '',
-                        bio: '',
-                    };
-                    setIsFollowing(current.following?.includes(uid));
-                })
-                .catch((err) => {
-                    router.push('/home');
-                });
-        }
-    });
+    // socket.on('follow', (socket: any) => {
+    //     if (uid) {
+    //         getInfo(uid, window.localStorage.getItem('token') ?? '')
+    //             .then((res) => {
+    //                 setUser(res.results);
+    //                 setFollowers(res.results.follower.length);
+    //                 const current = JSON.parse(`${window.localStorage.getItem('currentUser')}`) ?? {
+    //                     email: '',
+    //                     avatar: '',
+    //                     fullname: '',
+    //                     bio: '',
+    //                 };
+    //                 setIsFollowing(current.following?.includes(uid));
+    //             })
+    //             .catch((err) => {
+    //                 router.push('/home');
+    //             });
+    //     }
+    // });
     useEffect(() => {
         if (uid === currentUser._id) {
             router.push('/profile');

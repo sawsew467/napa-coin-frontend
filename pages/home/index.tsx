@@ -30,10 +30,14 @@ const HomePage = () => {
     const [results, setResults] = useState<DataType[]>([]);
     const [searchResult, setSearchResult] = useState<DataType[]>([]);
     const [isSearchResult, setIsSearchResult] = useState<boolean>(false);
-    const { setCurrentUser, setIsShowLoginModal, setSearch } = bindActionCreators(actionCreators, dispatch);
+    const { setCurrentUser, setIsShowLoginModal, setSearch, setDarkmode } = bindActionCreators(
+        actionCreators,
+        dispatch,
+    );
     const timingTimeoutRef = useRef<any>(null);
 
     useEffect(() => {
+        setDarkmode(localStorage.getItem('darkmode') ?? 'light');
         setCurrentUser(
             JSON.parse(`${window.localStorage.getItem('currentUser')}`) ?? {
                 email: '',
@@ -46,8 +50,23 @@ const HomePage = () => {
             setResults(res.data.data);
         };
         listData();
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    useEffect(() => {
+        if (search !== '') {
+            const initFilter = results?.filter((token) => {
+                return (
+                    token?.name?.toLowerCase()?.includes(search.toLowerCase()) ||
+                    token?.symbol?.toLowerCase()?.includes(search.toLowerCase())
+                );
+            });
+            setSearchResult(initFilter);
+            setIsSearchResult(true);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [results]);
 
     const handleSearchDebound = (e: { target: { value: any } }) => {
         const value = e.target.value;

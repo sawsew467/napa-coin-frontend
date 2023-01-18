@@ -1,15 +1,19 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import email from '../../assets/icons/mail-line.svg';
+import emailDark from '../../assets/icons/email-dark.svg';
+import passwordDark from '../../assets/icons/password-dark.svg';
 import password from '../../assets/icons/door-lock-line.svg';
 import user from '../../assets/icons/user-3-line.svg';
+import userDark from '../../assets/icons/user-dark.svg';
 import close from '../../assets/icons/CloseOutlined.svg';
 import axios from 'axios';
 import { registerRequest } from '../../apis/authApis';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { actionCreators } from '../../redux';
+import { actionCreators, State } from '../../redux';
 import { toLowerCaseNonAccentVietnamese } from '../../functions/nameValidation';
+import { AppInterface } from '../../pages/_app';
 
 interface IProps {
     setIsShowRegisterModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -24,6 +28,7 @@ interface IState {
 }
 
 function LoginModal({ setIsShowRegisterModal }: IProps) {
+    const darkMode: AppInterface['darkmode'] = useSelector((state: State) => state.darkmode);
     const dispath = useDispatch();
     const { setIsShowLoginModal } = bindActionCreators(actionCreators, dispath);
     const [errorMessage, setErrorMessage] = useState<string>('');
@@ -97,7 +102,7 @@ function LoginModal({ setIsShowRegisterModal }: IProps) {
                 ></Image>
 
                 <div className="modal__title">Sign up</div>
-                <div className="modal__input">
+                <div className="modal__input input">
                     <input
                         placeholder="Full name"
                         onChange={(e) =>
@@ -107,9 +112,13 @@ function LoginModal({ setIsShowRegisterModal }: IProps) {
                             })
                         }
                     ></input>
-                    <Image className="icon" src={user} alt=""></Image>
+                    {darkMode === 'dark' ? (
+                        <Image className="icon" src={userDark} alt=""></Image>
+                    ) : (
+                        <Image className="icon" src={user} alt=""></Image>
+                    )}
                 </div>
-                <div className="modal__input">
+                <div className="modal__input input">
                     <input
                         placeholder="Email address"
                         onChange={(e) =>
@@ -119,9 +128,13 @@ function LoginModal({ setIsShowRegisterModal }: IProps) {
                             })
                         }
                     ></input>
-                    <Image className="icon" src={email} alt=""></Image>
+                    {darkMode === 'dark' ? (
+                        <Image className="icon" src={emailDark} alt=""></Image>
+                    ) : (
+                        <Image className="icon" src={email} alt=""></Image>
+                    )}
                 </div>
-                <div className="modal__input">
+                <div className="modal__input input">
                     <input
                         placeholder="Password"
                         type="password"
@@ -133,7 +146,11 @@ function LoginModal({ setIsShowRegisterModal }: IProps) {
                         }
                         onKeyDown={(e) => handleEnterPress(e)}
                     ></input>
-                    <Image className="icon" src={password} alt=""></Image>
+                    {darkMode === 'dark' ? (
+                        <Image className="icon" src={passwordDark} alt=""></Image>
+                    ) : (
+                        <Image className="icon" src={password} alt=""></Image>
+                    )}
                 </div>
                 {errorMessage ? (
                     <p className="modal__message">{errorMessage}</p>
