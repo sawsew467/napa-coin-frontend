@@ -69,6 +69,25 @@ function index() {
     //     }
     // });
 
+    socket.on('followed', (socket: any) => {
+        if (uid) {
+            getInfo(uid, window.localStorage.getItem('token') ?? '')
+                .then((res) => {
+                    setUser(res.results);
+                    setFollowers(res.results.follower.length);
+                    const current = JSON.parse(`${window.localStorage.getItem('currentUser')}`) ?? {
+                        email: '',
+                        avatar: '',
+                        fullname: '',
+                        bio: '',
+                    };
+                    setIsFollowing(current.following?.includes(uid));
+                })
+                .catch((err) => {
+                    router.push('/home');
+                });
+        }
+    });
     useEffect(() => {
         if (uid === currentUser._id) {
             router.push('/profile');
@@ -80,6 +99,8 @@ function index() {
                     setFollowers(res.results.follower.length);
                 })
                 .catch((err) => {
+                    console.log(err);
+
                     router.push('/home');
                 });
         }
