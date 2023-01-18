@@ -40,6 +40,7 @@ function index() {
     });
     const [followers, setFollowers] = useState<number>(0);
     const [token, setToken] = useState<string>('');
+
     socket.on('followed', (socket: any) => {
         if (uid) {
             getInfo(uid, window.localStorage.getItem('token') ?? '')

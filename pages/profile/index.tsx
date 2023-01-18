@@ -23,6 +23,7 @@ function index() {
     const router = useRouter();
     const [following, setFollowing] = useState<number>(0);
     const [follower, setFollower] = useState<number>(0);
+
     socket.on('followed', (socket: any) => {
         console.log('');
         if (currentUser._id) {
@@ -37,6 +38,7 @@ function index() {
                 });
         }
     });
+
     useEffect(() => {
         if (!JSON.parse(`${window.localStorage.getItem('currentUser')}`)) {
             router.push('/home');

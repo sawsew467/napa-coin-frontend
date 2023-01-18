@@ -50,8 +50,23 @@ const HomePage = () => {
             setResults(res.data.data);
         };
         listData();
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    useEffect(() => {
+        if (search !== '') {
+            const initFilter = results?.filter((token) => {
+                return (
+                    token?.name?.toLowerCase()?.includes(search.toLowerCase()) ||
+                    token?.symbol?.toLowerCase()?.includes(search.toLowerCase())
+                );
+            });
+            setSearchResult(initFilter);
+            setIsSearchResult(true);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [results]);
 
     const handleSearchDebound = (e: { target: { value: any } }) => {
         const value = e.target.value;

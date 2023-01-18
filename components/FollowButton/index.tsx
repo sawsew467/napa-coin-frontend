@@ -23,6 +23,7 @@ interface IProps {
 
 function index({ isLoading, setIsLoading, isFollowing, setIsFollowing, setFollowers, followedId }: IProps) {
     const [token, setToken] = useState<string>('');
+
     socket.on('followed', (socket: any) => {
         getInfo(currentUser._id, token)
             .then((res) => {
@@ -32,6 +33,7 @@ function index({ isLoading, setIsLoading, isFollowing, setIsFollowing, setFollow
                 console.log(err);
             });
     });
+
     useEffect(() => {
         setToken(window.localStorage.getItem('token') ?? '');
     }, []);

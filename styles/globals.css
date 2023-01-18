@@ -436,6 +436,14 @@ ul.slick-dots {
     color: #fff !important;
 }
 
+
+.chart-up {
+    filter: hue-rotate(85deg) saturate(80%) brightness(0.85);
+}
+
+.chart-down {
+    filter: hue-rotate(300deg) saturate(210%) brightness(0.7) contrast(170%);
+=======
 .dark
     :where(.css-dev-only-do-not-override-9ntgx0).ant-table-wrapper
     .ant-table:not(.ant-table-bordered)
@@ -459,4 +467,5 @@ ul.slick-dots {
 .dark :where(.css-dev-only-do-not-override-9ntgx0).ant-table-wrapper .ant-table-tbody > tr.ant-table-row:hover > td,
 :where(.css-dev-only-do-not-override-9ntgx0).ant-table-wrapper .ant-table-tbody > tr > td.ant-table-cell-row-hover {
     background-color: rgb(24, 24, 25) !important;
+
 }
